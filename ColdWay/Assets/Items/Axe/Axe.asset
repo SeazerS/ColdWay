@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e70b40e52e73c2447a63bcfd00e04b86, type: 3}
+  m_Name: Axe
+  m_EditorClassIdentifier: 
+  itemName: Axe
+  icon: {fileID: 21300000, guid: 68ee9e3e178d40c43baff15b560091e7, type: 3}
+  maxStackSize: 1
+  itemPrefab: {fileID: 4960893487028150065, guid: 8b364626fd36add41b686380c5a0f8a8,
+    type: 3}
+  hangItemPrefab: {fileID: 0}

@@ -54,8 +54,11 @@ namespace StarterAssets
 		// cinemachine
 		private float _cinemachineTargetPitch;
 
-		// player
-		private float _speed;
+        public static FirstPersonController Instance;
+        public bool CanLook = true; 
+
+        // player
+        private float _speed;
 		private float _rotationVelocity;
 		private float _verticalVelocity;
 		private float _terminalVelocity = 53.0f;
@@ -88,12 +91,15 @@ namespace StarterAssets
 
 		private void Awake()
 		{
+            Instance = this;
+            
 			// get a reference to our main camera
-			if (_mainCamera == null)
+            if (_mainCamera == null)
 			{
 				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 			}
-		}
+                      
+        }
 
 		private void Start()
 		{
@@ -131,8 +137,10 @@ namespace StarterAssets
 
 		private void CameraRotation()
 		{
-			// if there is an input
-			if (_input.look.sqrMagnitude >= _threshold)
+            if (!CanLook) return;
+
+            // if there is an input
+            if (_input.look.sqrMagnitude >= _threshold)
 			{
 				//Don't multiply mouse input by Time.deltaTime
 				float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
