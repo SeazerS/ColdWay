@@ -25,9 +25,9 @@ public class Inventory : MonoBehaviour
     public float equippedOpacity = 0.9f;
     public float normalOpacity = 0.58f;
 
-    private List<Slot> inventorySlots = new List<Slot>();
-    private List<Slot> hotbarSlots = new List<Slot>();
-    private List<Slot> allSlots = new List<Slot>();
+    public List<Slot> inventorySlots = new List<Slot>();
+    public List<Slot> hotbarSlots = new List<Slot>();
+    public List<Slot> allSlots = new List<Slot>();
 
     private Slot draggedSlot = null;
     private bool isDragging = false;

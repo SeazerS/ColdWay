@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CinemachineTarget
   - Agac
+  - KuruAgac
   layers:
   - Default
   - TransparentFX
