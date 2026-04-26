@@ -8,10 +8,6 @@ public class BolgeGecis : MonoBehaviour
     [Header("Bağlantılar")]
     public SicaklikSistemi sicaklik;
     public GecGunduzSistemi gecGunduz;
-    public ParticleSystem karYagisi;
-
-    [Header("Kar Yoğunluğu")]
-    public float yeniKarYogunlugu = 1500f;
 
     void OnTriggerEnter(Collider diger)
     {
@@ -20,6 +16,12 @@ public class BolgeGecis : MonoBehaviour
         // Sıcaklık güncelle
         if (sicaklik != null)
             sicaklik.BolgeGecis(yeniBolge);
+
+        // Kar sistemini sıfırla
+        KarTakip kar =
+            FindObjectOfType<KarTakip>();
+        if (kar != null)
+            kar.SahneGecisYenile();
 
         // Sahne geçişi
         if (SahneYoneticisi.Instance != null)
