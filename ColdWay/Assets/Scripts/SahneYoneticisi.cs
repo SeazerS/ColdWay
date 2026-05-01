@@ -32,31 +32,21 @@ public class SahneYoneticisi : MonoBehaviour
 
     IEnumerator SahneGecisi(int yeniIndex)
     {
-        if (yeniIndex >= sahneler.Length)
-        {
-            Debug.Log("Oyun bitti — Final sahne");
-            yield break;
-        }
+        // Kar sistemini sýfýrla
+        KarTakip kar = FindObjectOfType<KarTakip>();
+        if (kar != null)
+            kar.SahneGecisYenile();
 
-        // Yeni sahneyi yükle
         yield return SceneManager.LoadSceneAsync(
             sahneler[yeniIndex],
-            LoadSceneMode.Additive
-        );
+            LoadSceneMode.Additive);
 
-        Debug.Log("Yüklendi: " + sahneler[yeniIndex]);
-
-        // Önceki sahneyi kaldýr
-        // Bölge 1 ? 2 geçiþinde Bölge 1 açýk kalýr
-        // Bölge 2 ? 3 geçiþinde Bölge 1 kapanýr
         int kaldirilacak = yeniIndex - 2;
         if (kaldirilacak >= 0)
         {
             yield return SceneManager
                 .UnloadSceneAsync(
                     sahneler[kaldirilacak]);
-            Debug.Log("Kaldýrýldý: " +
-                      sahneler[kaldirilacak]);
         }
 
         mevcutIndex = yeniIndex;
