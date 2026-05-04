@@ -119,4 +119,18 @@ public class KopekAI : MonoBehaviour
                 break;
         }
     }
+    public void Havla()
+    {
+        animator.SetTrigger("Havla");
+    }
+
+    public void KafaEvet()
+    {
+        animator.SetTrigger("KafaEvet");
+    }
+
+    public void KafaHayir()
+    {
+        animator.SetTrigger("KafaHayir");
+    }
 }
