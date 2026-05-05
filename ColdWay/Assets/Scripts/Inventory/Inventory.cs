@@ -10,6 +10,7 @@ public class Inventory : MonoBehaviour
 
     public GameObject hotbarObj;
     public GameObject inventorySlotParent;
+    public GameObject inventorySlotBag;
 
     public GameObject container;
 

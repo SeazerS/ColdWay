@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Bolge2_BuzGol.unity
     guid: d1e02d9788f2c524fbd0c837da37daf8
+  - enabled: 1
+    path: Assets/Scenes/Bolge3_Magara.unity
+    guid: 951ebd3cf5d03cb4ca41206e42d5c533
   m_configObjects: {}
