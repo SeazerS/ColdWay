@@ -9,12 +9,24 @@ public class EnerjiKontrol : MonoBehaviour
     public float maxEnerji = 100f;
     public float mevcutEnerji = 100f;
 
-    [Header("Düþüþ Hýzlarý")]
-    public float yuruyusDususu = 0.025f;
-    public float kosmaDususu = 0.08f;
-    public float baltaDususu = 5f;
+    [Header("Düþüþ Hýzlarý - Bölge 1")]
+    public float yuruyusDususu_B1 = 0.025f;
+    public float kosmaDususu_B1 = 0.08f;
 
-    [Header("Artýþ Hýzlarý")]
+    [Header("Düþüþ Hýzlarý - Bölge 2")]
+    public float yuruyusDususu_B2 = 0.05f;
+    public float kosmaDususu_B2 = 0.14f;
+
+    [Header("Düþüþ Hýzlarý - Bölge 3")]
+    public float yuruyusDususu_B3 = 0.09f;
+    public float kosmaDususu_B3 = 0.22f;
+
+    // Aktif düþüþ hýzlarý (bölgeye göre güncellenir)
+    private float aktifYuruyusDususu;
+    private float aktifKosmaDususu;
+
+    [Header("Sabit Deðerler")]
+    public float baltaDususu = 5f;
     public float atesBasiArtisi = 0.333f;
     public float etArtisi = 20f;
     public float konserveArtisi = 35f;
@@ -22,10 +34,12 @@ public class EnerjiKontrol : MonoBehaviour
     [Header("UI")]
     public Slider enerjiSlider;
     public Image sliderDolgu;
-
     private Color normalRenk = new Color(1f, 0.8f, 0f);
     private Color tehlikeRenk = new Color(1f, 0.4f, 0f);
     private Color kritikRenk = new Color(1f, 0.1f, 0.1f);
+
+    // Aktif bölge
+    private int mevcutBolge = 1;
 
     private Player_Controller hareket;
     private bool atesBasinda = false;
@@ -34,6 +48,9 @@ public class EnerjiKontrol : MonoBehaviour
     {
         mevcutEnerji = maxEnerji;
         hareket = GetComponent<Player_Controller>();
+
+        // Baþlangýçta bölge 1 deðerleri aktif
+        BolgeGuncelle(1);
         UIGuncelle();
     }
 
@@ -49,25 +66,40 @@ public class EnerjiKontrol : MonoBehaviour
         if (atesBasinda)
         {
             mevcutEnerji += atesBasiArtisi * Time.deltaTime;
-            return; // Ateþ baþýndaysa düþme
+            mevcutEnerji = Mathf.Clamp(mevcutEnerji, 0f, maxEnerji);
+            return;
         }
 
-        // Karakter hareket ediyor mu kontrol et
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         bool hareketEdiyor = Mathf.Abs(horizontal) > 0.1f ||
                              Mathf.Abs(vertical) > 0.1f;
 
-        if (!hareketEdiyor) return; // Duruyorsa düþme
+        if (!hareketEdiyor) return;
 
-        // Koþuyor mu?
+        // Her karede direkt Inspector deðerini oku
+        float yuruDusus, kosDusus;
+        switch (mevcutBolge)
+        {
+            case 2: yuruDusus = yuruyusDususu_B2; kosDusus = kosmaDususu_B2; break;
+            case 3: yuruDusus = yuruyusDususu_B3; kosDusus = kosmaDususu_B3; break;
+            default: yuruDusus = yuruyusDususu_B1; kosDusus = kosmaDususu_B1; break;
+        }
+
         if (hareket != null && hareket.KosuyorMu())
-            mevcutEnerji -= kosmaDususu * Time.deltaTime;
+            mevcutEnerji -= kosDusus * Time.deltaTime;
         else
-            mevcutEnerji -= yuruyusDususu * Time.deltaTime;
+            mevcutEnerji -= yuruDusus * Time.deltaTime;
 
         mevcutEnerji = Mathf.Clamp(mevcutEnerji, 0f, maxEnerji);
     }
+
+    public void BolgeGuncelle(int bolgeNo)
+    {
+        mevcutBolge = bolgeNo;
+        Debug.Log($"Enerji sistemi Bölge {bolgeNo} için güncellendi.");
+    }
+
     void UIGuncelle()
     {
         if (enerjiSlider != null)
@@ -89,16 +121,11 @@ public class EnerjiKontrol : MonoBehaviour
     {
         if (hareket == null) return;
         float oran = mevcutEnerji / maxEnerji;
-
-        // %20 altýnda koþma kapanýr
-        if (oran < 0.2f)
-            hareket.kosmakAktif = false;
-        else
-            hareket.kosmakAktif = true;
+        hareket.kosmakAktif = oran >= 0.2f;
     }
 
     public void AtesAktif(bool durum) { atesBasinda = durum; }
     public void BaltaKullanildi() { mevcutEnerji -= baltaDususu; }
-    public void EtYe() { mevcutEnerji += etArtisi; }
-    public void KonserveYe() { mevcutEnerji += konserveArtisi; }
+    public void EtYe() { mevcutEnerji = Mathf.Min(mevcutEnerji + etArtisi, maxEnerji); }
+    public void KonserveYe() { mevcutEnerji = Mathf.Min(mevcutEnerji + konserveArtisi, maxEnerji); }
 }
