@@ -176,7 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4272535566425926761}
   - component: {fileID: 653250457083828653}
-  - component: {fileID: -8416867380220933693}
+  - component: {fileID: 8860071018068841003}
   m_Layer: 0
   m_Name: rock_07_4k
   m_TagString: Untagged
@@ -234,7 +234,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 8006603443505723997}
   m_Enabled: 1
---- !u!65 &-8416867380220933693
+--- !u!65 &8860071018068841003
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2058565314668732499}
   - component: {fileID: 8167558234320354832}
   - component: {fileID: 5876283230328825260}
-  - component: {fileID: 8740481684297275215}
   - component: {fileID: -382181092550369411}
+  - component: {fileID: -1712860547798439712}
   m_Layer: 0
   m_Name: rock_moss_set_02_rock11
   m_TagString: Untagged
@@ -85,7 +85,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8740481684297275215
+--- !u!65 &-382181092550369411
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,7 +106,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.019536983, y: 0.015288821, z: 0.013105233}
   m_Center: {x: 0.00008709682, y: 0.0018927999, z: 0.003979276}
---- !u!65 &-382181092550369411
+--- !u!65 &-1712860547798439712
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

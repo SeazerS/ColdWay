@@ -120,7 +120,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RimValue: 1
+    - _RimValue: -1.45
     - _Smoothness: 0.7
     - _SmoothnessTextureChannel: 0
     - _SnowBalance: 15
