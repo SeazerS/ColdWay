@@ -11,12 +11,13 @@ GameObject:
   - component: {fileID: 186277543783053055}
   - component: {fileID: 8781996937257636752}
   - component: {fileID: 6603914583561953558}
+  - component: {fileID: 3298518787774458960}
   m_Layer: 0
   m_Name: namaqualand_boulder_06_4k
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &186277543783053055
 Transform:
@@ -83,3 +84,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3298518787774458960
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8136999865895342397}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0067498297, y: 0.01211876, z: 0.006516316}
+  m_Center: {x: -0.00016764365, y: 0.00054875563, z: 0.0030736346}

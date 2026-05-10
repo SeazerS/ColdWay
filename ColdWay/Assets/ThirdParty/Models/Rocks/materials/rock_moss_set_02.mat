@@ -110,7 +110,7 @@ Material:
     - _RimValue: 0.5
     - _Smoothness: 7.17
     - _SmoothnessTextureChannel: 0
-    - _SnowBalance: 10
+    - _SnowBalance: 10.22
     - _SnowNormalStrength: 0.008
     - _SnowWetStrentgh: 0
     - _SpecularHighlights: 1

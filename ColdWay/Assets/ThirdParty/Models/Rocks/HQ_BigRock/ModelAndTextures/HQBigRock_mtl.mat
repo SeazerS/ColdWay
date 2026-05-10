@@ -112,12 +112,12 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Mode: 0
-    - _NoiseThreshold: 350
+    - _NoiseThreshold: 340.5
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RimValue: 1
+    - _RimValue: -0.2
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SnowBalance: 10
