@@ -94,12 +94,53 @@ public class SicaklikSistemi : MonoBehaviour
             dususHizi *= geceDususCarpani;
     }
 
+    [Header("Islak Durum")]
+    public float islaklıkDususCarpani = 4f;  // Islakken dusus hizi carpani
+    public float kurumaHizi = 0.05f;         // Kuruma hizi (ates basinda)
+    public float atesIyilesmeHizi = 0.8f;    // Ates basinda isi artisi (yavas)
+
+    private float islaklıkZamani = 0f;
+    public float maxIslaklıkSuresi = 120f;   // 2 dakikada kurur (ates olmadan)
+
     void SicaklikGuncelle()
     {
         if (atesBasinda)
-            mevcutSicaklik += 0.5f * Time.deltaTime;
+        {
+            // Islaksa yavaş yavaş kur
+            if (ayakIslak)
+            {
+                islaklıkZamani += Time.deltaTime * 3f; // Ates basinda 3x hizli kurur
+                if (islaklıkZamani >= maxIslaklıkSuresi)
+                {
+                    ayakIslak = false;
+                    islaklıkZamani = 0f;
+                    Debug.Log("Ayak kurudu.");
+                }
+            }
+
+            // Ates basinda yavaş yavaş isi artir
+            mevcutSicaklik += atesIyilesmeHizi * Time.deltaTime;
+        }
         else
-            mevcutSicaklik -= dususHizi * Time.deltaTime;
+        {
+            // Islaksa cok daha hizli duser
+            float gercekDusus = ayakIslak ?
+                dususHizi * islaklıkDususCarpani :
+                dususHizi;
+
+            mevcutSicaklik -= gercekDusus * Time.deltaTime;
+
+            // Ates olmadan yavas kuruma
+            if (ayakIslak)
+            {
+                islaklıkZamani += Time.deltaTime;
+                if (islaklıkZamani >= maxIslaklıkSuresi)
+                {
+                    ayakIslak = false;
+                    islaklıkZamani = 0f;
+                }
+            }
+        }
 
         mevcutSicaklik = Mathf.Clamp(mevcutSicaklik, 0f, maxSicaklik);
     }
@@ -187,4 +228,5 @@ public class SicaklikSistemi : MonoBehaviour
 
     public void AyakIslandi() { if (islaklıkAktif) ayakIslak = true; }
     public void AtesAktif(bool durum) { atesBasinda = durum; }
+    public void BolgeGecis(int bolge) { BolgeGuncelle(bolge); }
 }
