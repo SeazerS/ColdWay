@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 5431542233785232426}
   - component: {fileID: 2498680361400455396}
   - component: {fileID: 1881866037063072229}
-  - component: {fileID: 7252833695283200593}
   - component: {fileID: 7054096688723650904}
+  - component: {fileID: 7563398936296418114}
   m_Layer: 0
   m_Name: WoodItem
   m_TagString: Untagged
@@ -107,7 +107,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &7252833695283200593
+--- !u!114 &7054096688723650904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2657490610281938883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 862372b0a7002114bb204a60c23552ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: 7df95ae1f10bc6041ae57ddcfc260cc8, type: 2}
+  amount: 1
+--- !u!54 &7563398936296418114
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,17 +148,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7054096688723650904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2657490610281938883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 862372b0a7002114bb204a60c23552ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 7df95ae1f10bc6041ae57ddcfc260cc8, type: 2}
-  amount: 1
