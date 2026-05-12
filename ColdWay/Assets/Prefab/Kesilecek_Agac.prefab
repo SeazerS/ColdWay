@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3995251670304831358}
   - component: {fileID: 1999963475911232737}
   - component: {fileID: 6438287928243899728}
+  - component: {fileID: 7051579924483255439}
   m_Layer: 0
   m_Name: Kesilecek_Agac
   m_TagString: Agac
@@ -107,3 +108,19 @@ CapsuleCollider:
   m_Height: 27.682535
   m_Direction: 1
   m_Center: {x: -0.15449862, y: 13.726394, z: -0.0165144}
+--- !u!114 &7051579924483255439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443845413803684120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98a97894e27d2349a04bb59e2a71d17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kuruAagac: 1
+  maxVurus: 3
+  odunMiktari: 2
+  odunFirlatmaKuvveti: 3

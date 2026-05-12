@@ -17,12 +17,13 @@ public class Inventory : MonoBehaviour
     public Image dragIcon;
 
     public float pickupRange = 3f;
-    private Item lookedAtItem = null;
+    //private Item lookedAtItem = null;
     public Material highlightMaterial;
     private Material originalMaterial;
     private Renderer lookedAtRenderer = null;
 
-    private int equippedHotbarIndex = 0;
+    //private int equippedHotbarIndex = 0;
+    public int equippedHotbarIndex = 0;
     public float equippedOpacity = 0.9f;
     public float normalOpacity = 0.58f;
 
@@ -213,7 +214,8 @@ public class Inventory : MonoBehaviour
     {
         if (lookedAtRenderer != null && Input.GetKeyDown(KeyCode.E))
         {
-            Item item = lookedAtRenderer.GetComponent<Item>();
+            //Item item = lookedAtRenderer.GetComponent<Item>();
+            Item item = lookedAtRenderer.GetComponentInParent<Item>();
             if (item != null)
             {
                 AddItem(item.item, item.amount);
@@ -237,7 +239,8 @@ public class Inventory : MonoBehaviour
             Item item = hit.collider.GetComponent<Item>();
             if (item != null)
             {
-                Renderer rend = item.GetComponent<Renderer>();
+                //Renderer rend = item.GetComponent<Renderer>();
+                Renderer rend = item.GetComponentInChildren<Renderer>();
                 if (rend != null)
                 {
                     originalMaterial = rend.material;

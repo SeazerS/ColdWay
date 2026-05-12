@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6319815250788364874}
   - component: {fileID: 6194340199220064339}
   - component: {fileID: 7844420337410527503}
+  - component: {fileID: -5957505095050736866}
   m_Layer: 0
   m_Name: Kesilecek_Cam2
   m_TagString: Agac
@@ -27,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3462307905374330542}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.027268063, y: 0.9386088, z: 0.26373824, w: 0.22070841}
+  m_LocalRotation: {x: 0.0272713, y: 0.9386097, z: 0.26373628, w: 0.22070627}
   m_LocalPosition: {x: 218.5, y: 1.68, z: 228.44}
   m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_ConstrainProportionsScale: 0
@@ -103,7 +104,23 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.9994638
+  m_Radius: 2.26338
   m_Height: 9.036639
   m_Direction: 1
-  m_Center: {x: 0.44213104, y: 4.5087547, z: 0.05111805}
+  m_Center: {x: 0.17821552, y: 4.508755, z: 0.051118005}
+--- !u!114 &-5957505095050736866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3462307905374330542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98a97894e27d2349a04bb59e2a71d17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kuruAagac: 1
+  maxVurus: 3
+  odunMiktari: 2
+  odunFirlatmaKuvveti: 3
