@@ -111,10 +111,10 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RimValue: 2
+    - _RimValue: 0
     - _Smoothness: 0.6
     - _SmoothnessTextureChannel: 0
-    - _SnowBalance: 20
+    - _SnowBalance: 0
     - _SnowNormalStrength: 0.005
     - _SnowWetStrentgh: 0
     - _SpecularHighlights: 1
