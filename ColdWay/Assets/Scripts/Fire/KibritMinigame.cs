@@ -28,6 +28,8 @@ public class KibritMinigame : MonoBehaviour
     [Header("Hava Sartlari")]
     public SicaklikSistemi sicaklikSistemi;
 
+    public KivilcimSistemi kivilcimSistemi;
+
     private AteþNoktasi aktifAtesNoktasi;
     private float bar = 0f;
     private bool aktif = false;
@@ -165,11 +167,14 @@ public class KibritMinigame : MonoBehaviour
             {
                 bar += artis * Time.deltaTime;
                 IpucuGuncelle("iyi gidiyorsun — devam et!");
+                kivilcimSistemi?.Baslat();
+
             }
             else
             {
                 bar -= dusus * Time.deltaTime;
                 IpucuGuncelle("kýrmýzý hedefe daha yakýn ol");
+                kivilcimSistemi?.Durdur();
             }
         }
         else if (basiliMi)
@@ -181,6 +186,7 @@ public class KibritMinigame : MonoBehaviour
         {
             bar -= dusus * Time.deltaTime;
             IpucuGuncelle("sol týk basýlý tutarak sürt");
+            kivilcimSistemi?.Durdur();
         }
 
         bar = Mathf.Clamp01(bar);
@@ -188,9 +194,8 @@ public class KibritMinigame : MonoBehaviour
         if (dolumBar != null)
         {
             dolumBar.fillAmount = bar;
-            if (bar < 0.35f) dolumBar.color = new Color(0.53f, 0.53f, 0.5f);
-            else if (bar < 0.7f) dolumBar.color = new Color(0.73f, 0.46f, 0.09f);
-            else dolumBar.color = new Color(0.89f, 0.29f, 0.29f);
+            // Renk ayarýný kaldýr - texture kendi rengini kullansýn
+            dolumBar.color = Color.white;
         }
     }
 
@@ -285,5 +290,6 @@ public class KibritMinigame : MonoBehaviour
 
         if (StarterAssets.FirstPersonController.Instance != null)
             StarterAssets.FirstPersonController.Instance.CanLook = true;
+        kivilcimSistemi?.Temizle();
     }
 }
