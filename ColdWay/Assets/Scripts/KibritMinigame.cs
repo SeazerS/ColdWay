@@ -241,12 +241,36 @@ public class KibritMinigame : MonoBehaviour
             minigameIpucuText.text = mesaj;
     }
 
+    [Header("Ates Simgesi")]
+    public Image atesSimgesi;
+    public float atesSimgesiGosterSuresi = 1.8f;
+
     void Basarili()
     {
+        // Oyunu durdur ama paneli kapat
+        aktif = false;
+        bar = 1f;
+
+        // Ates simgesini goster
+        if (atesSimgesi != null)
+            atesSimgesi.gameObject.SetActive(true);
+
+        // Gecikme ile kapat
+        StartCoroutine(BasariliGecikme());
+        Debug.Log("Ates yandi!");
+    }
+
+    System.Collections.IEnumerator BasariliGecikme()
+    {
+        yield return new UnityEngine.WaitForSeconds(atesSimgesiGosterSuresi);
+
+        if (atesSimgesi != null)
+            atesSimgesi.gameObject.SetActive(false);
+
         Kapat();
+
         if (aktifAtesNoktasi != null)
             aktifAtesNoktasi.AteþiYak();
-        Debug.Log("Ates yandi!");
     }
 
     public void Kapat()

@@ -110,6 +110,9 @@ public class AtesSistemi : MonoBehaviour
         Debug.Log("Envanterde odun yok!");
     }
 
+    [Header("Odun Gorselleri")]
+    public GameObject[] odunObjeleri; // Inspector'dan odun child objelerini sur
+
     void AtesSon()
     {
         yaniyor = false;
@@ -117,8 +120,12 @@ public class AtesSistemi : MonoBehaviour
 
         if (atesParticle != null) atesParticle.SetActive(false);
         if (atesIsigi != null) atesIsigi.enabled = false;
-
         if (dumanParticle != null) dumanParticle.SetActive(true);
+
+        // Odun görsellerini gizle
+        if (odunObjeleri != null)
+            foreach (GameObject odun in odunObjeleri)
+                if (odun != null) odun.SetActive(false);
 
         if (sicaklikSistemi != null) sicaklikSistemi.AtesAktif(false);
         if (enerjiKontrol != null) enerjiKontrol.AtesAktif(false);
