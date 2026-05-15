@@ -2876,7 +2876,7 @@ PrefabInstance:
     - target: {fileID: 3681940707109223606, guid: b17fcaec9261627458a3f6db8bf78602,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4058641823528904204, guid: b17fcaec9261627458a3f6db8bf78602,
         type: 3}
@@ -4317,12 +4317,12 @@ MonoBehaviour:
   gunduzSkybox: {fileID: 2100000, guid: cede08c9fc471e64884909cd4bbeaf59, type: 2}
   geceSkybox: {fileID: 2100000, guid: 369b9ebe3a62b904dbc19bd332b44086, type: 2}
   gunes: {fileID: 1333161715}
-  gununSuresi: 40
-  baslangicSaati: 6
+  gununSuresi: 2
+  baslangicSaati: 15
   gunduzIsigiRengi: {r: 1, g: 0.95, b: 0.8, a: 1}
   aksamIsigiRengi: {r: 1, g: 0.5, b: 0.2, a: 1}
   geceIsigiRengi: {r: 0.1, g: 0.1, b: 0.3, a: 1}
-  saatText: {fileID: 0}
+  saatText: {fileID: 3375813901357893561}
   gunduzFogRengi: {r: 0.7, g: 0.8, b: 0.9, a: 1}
   aksamFogRengi: {r: 0.4, g: 0.3, b: 0.3, a: 1}
   geceFogRengi: {r: 0.05, g: 0.05, b: 0.1, a: 1}
@@ -5385,6 +5385,98 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39d98097298eec44b961d0273ab1ec6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &967450870
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 967450873}
+  - component: {fileID: 967450872}
+  - component: {fileID: 967450871}
+  m_Layer: 0
+  m_Name: Terrain_(-400.00, 0.00, 400.00)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!154 &967450871
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967450870}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_TerrainData: {fileID: 15600000, guid: b309645eb466aed4ba10d08abde7b72e, type: 2}
+  m_EnableTreeColliders: 1
+--- !u!218 &967450872
+Terrain:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967450870}
+  m_Enabled: 1
+  serializedVersion: 6
+  m_TerrainData: {fileID: 15600000, guid: b309645eb466aed4ba10d08abde7b72e, type: 2}
+  m_TreeDistance: 5000
+  m_TreeBillboardDistance: 50
+  m_TreeCrossFadeLength: 5
+  m_TreeMaximumFullLODCount: 50
+  m_DetailObjectDistance: 80
+  m_DetailObjectDensity: 1
+  m_HeightmapPixelError: 5
+  m_SplatMapDistance: 1000
+  m_HeightmapMaximumLOD: 0
+  m_ShadowCastingMode: 2
+  m_DrawHeightmap: 1
+  m_DrawInstanced: 1
+  m_DrawTreesAndFoliage: 1
+  m_StaticShadowCaster: 0
+  m_IgnoreQualitySettings: 0
+  m_ReflectionProbeUsage: 1
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
+  m_BakeLightProbesForTrees: 1
+  m_PreserveTreePrototypeLayers: 0
+  m_DeringLightProbesForTrees: 1
+  m_ReceiveGI: 1
+  m_ScaleInLightmap: 0.064
+  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
+  m_GroupingID: 0
+  m_RenderingLayerMask: 1
+  m_AllowAutoConnect: 1
+  m_EnableHeightmapRayTracing: 1
+  m_EnableTreesAndDetailsRayTracing: 0
+  m_TreeMotionVectorModeOverride: 3
+--- !u!4 &967450873
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967450870}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -400, y: 0, z: 400}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &971103958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5967,14 +6059,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   geceBonusu: 0
-  geceDususCarpani: 5
+  geceDususCarpani: 8
   "alacakaranl\u0131kBonusu": 0
-  "alacakaranl\u0131kCarpani": 2
+  "alacakaranl\u0131kCarpani": 4
   maxSicaklik: 100
   mevcutSicaklik: 100
-  bolge1Hiz: 1
-  bolge2Hiz: 0.043
-  bolge3Hiz: 0.08
+  bolge1Hiz: 0.09
+  bolge2Hiz: 0.1
+  bolge3Hiz: 0.2
   ruzgarCarpani_B1: 1.5
   ruzgarCarpani_B2: 2.5
   "islakl\u0131kCarpani_B2": 3
@@ -5983,12 +6075,11 @@ MonoBehaviour:
   atesBasinda: 0
   ayakIslak: 0
   ruzgarda: 0
-  sicaklikSlider: {fileID: 8814083636676261639}
-  sliderDolgu: {fileID: 8659680957409116284}
   "islakl\u0131kDususCarpani": 4
-  kurumaHizi: 0.05
   atesIyilesmeHizi: 0.8
   "maxIslakl\u0131kSuresi": 120
+  sicaklikSlider: {fileID: 8814083636676261639}
+  sliderDolgu: {fileID: 8659680957409116284}
 --- !u!114 &1030150355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6003,18 +6094,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxEnerji: 100
   mevcutEnerji: 100
-  yuruyusDususu_B1: 0.025
-  kosmaDususu_B1: 0.08
-  yuruyusDususu_B2: 0.05
-  kosmaDususu_B2: 0.14
-  yuruyusDususu_B3: 0.09
-  kosmaDususu_B3: 0.22
+  geceEnerjCarpani: 2
+  "alacakaranl\u0131kEnerjCarpani": 1.5
+  yuruyusDususu_B1: 0.1
+  kosmaDususu_B1: 0.2
+  yuruyusDususu_B2: 0.15
+  kosmaDususu_B2: 0.25
+  yuruyusDususu_B3: 0.25
+  kosmaDususu_B3: 0.35
   baltaDususu: 5
   atesBasiArtisi: 0.333
   etArtisi: 20
   konserveArtisi: 35
   enerjiSlider: {fileID: 8105908240118450939}
   sliderDolgu: {fileID: 3787382633718878572}
+  SicaklikSistemi: {fileID: 1030150354}
 --- !u!114 &1030150361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6181,7 +6275,7 @@ PrefabInstance:
     - target: {fileID: 8255703924160496010, guid: bb6099a62b7fbac4f87af3b3dd80cb35,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19023,6 +19117,162 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7874004970813185657}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1544975005
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1544975008}
+  - component: {fileID: 1544975007}
+  - component: {fileID: 1544975006}
+  m_Layer: 0
+  m_Name: SistemYoneticisi
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1544975006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544975005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 919e9ba82eda4294d805e1e518ccd4d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oyuncu: {fileID: 1030150353}
+  sicaklikSistemi: {fileID: 1030150354}
+  enerjiKontrol: {fileID: 1030150355}
+  sonCheckpointPoz: {x: 0, y: 0, z: 0}
+  checkpointVar: 0
+--- !u!114 &1544975007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544975005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6a77e443ea62374697c31cea7c812fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mevcutGun: 1
+  gunlukZorlukArtisi: 0.05
+--- !u!4 &1544975008
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544975005}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1545496370
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1545496373}
+  - component: {fileID: 1545496372}
+  - component: {fileID: 1545496371}
+  m_Layer: 0
+  m_Name: Terrain_(-400.00, 0.00, 0.00)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!154 &1545496371
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545496370}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_TerrainData: {fileID: 15600000, guid: 8802a0a7765791f4d8d758b1c6bad8f3, type: 2}
+  m_EnableTreeColliders: 1
+--- !u!218 &1545496372
+Terrain:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545496370}
+  m_Enabled: 1
+  serializedVersion: 6
+  m_TerrainData: {fileID: 15600000, guid: 8802a0a7765791f4d8d758b1c6bad8f3, type: 2}
+  m_TreeDistance: 5000
+  m_TreeBillboardDistance: 50
+  m_TreeCrossFadeLength: 5
+  m_TreeMaximumFullLODCount: 50
+  m_DetailObjectDistance: 80
+  m_DetailObjectDensity: 1
+  m_HeightmapPixelError: 5
+  m_SplatMapDistance: 1000
+  m_HeightmapMaximumLOD: 0
+  m_ShadowCastingMode: 2
+  m_DrawHeightmap: 1
+  m_DrawInstanced: 1
+  m_DrawTreesAndFoliage: 1
+  m_StaticShadowCaster: 0
+  m_IgnoreQualitySettings: 0
+  m_ReflectionProbeUsage: 1
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
+  m_BakeLightProbesForTrees: 1
+  m_PreserveTreePrototypeLayers: 0
+  m_DeringLightProbesForTrees: 1
+  m_ReceiveGI: 1
+  m_ScaleInLightmap: 0.064
+  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
+  m_GroupingID: 0
+  m_RenderingLayerMask: 1
+  m_AllowAutoConnect: 1
+  m_EnableHeightmapRayTracing: 1
+  m_EnableTreesAndDetailsRayTracing: 0
+  m_TreeMotionVectorModeOverride: 3
+--- !u!4 &1545496373
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545496370}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -400, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1546254291
 GameObject:
   m_ObjectHideFlags: 0
@@ -19256,6 +19506,174 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 47.800003}
   m_SizeDelta: {x: 450, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1640106121
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1640106124}
+  - component: {fileID: 1640106123}
+  - component: {fileID: 1640106122}
+  m_Layer: 0
+  m_Name: Terrain_(-400.00, 0.00, -400.00)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!154 &1640106122
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640106121}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_TerrainData: {fileID: 15600000, guid: 0488789c337bcf04d8214fd40bd6dbcd, type: 2}
+  m_EnableTreeColliders: 1
+--- !u!218 &1640106123
+Terrain:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640106121}
+  m_Enabled: 1
+  serializedVersion: 6
+  m_TerrainData: {fileID: 15600000, guid: 0488789c337bcf04d8214fd40bd6dbcd, type: 2}
+  m_TreeDistance: 5000
+  m_TreeBillboardDistance: 50
+  m_TreeCrossFadeLength: 5
+  m_TreeMaximumFullLODCount: 50
+  m_DetailObjectDistance: 80
+  m_DetailObjectDensity: 1
+  m_HeightmapPixelError: 5
+  m_SplatMapDistance: 1000
+  m_HeightmapMaximumLOD: 0
+  m_ShadowCastingMode: 2
+  m_DrawHeightmap: 1
+  m_DrawInstanced: 1
+  m_DrawTreesAndFoliage: 1
+  m_StaticShadowCaster: 0
+  m_IgnoreQualitySettings: 0
+  m_ReflectionProbeUsage: 1
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
+  m_BakeLightProbesForTrees: 1
+  m_PreserveTreePrototypeLayers: 0
+  m_DeringLightProbesForTrees: 1
+  m_ReceiveGI: 1
+  m_ScaleInLightmap: 0.064
+  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
+  m_GroupingID: 0
+  m_RenderingLayerMask: 1
+  m_AllowAutoConnect: 1
+  m_EnableHeightmapRayTracing: 1
+  m_EnableTreesAndDetailsRayTracing: 0
+  m_TreeMotionVectorModeOverride: 3
+--- !u!4 &1640106124
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640106121}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -400, y: 0, z: -400}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1645007716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1645007719}
+  - component: {fileID: 1645007718}
+  - component: {fileID: 1645007717}
+  m_Layer: 0
+  m_Name: KampAlani_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1645007717
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645007716}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5, y: 3, z: 5}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1645007718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645007716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51f1fcb0027df744e937547accd29e3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gecGunduz: {fileID: 753029369}
+  sicaklikSistemi: {fileID: 1030150354}
+  enerjiKontrol: {fileID: 1030150355}
+  checkpoint: {fileID: 1544975006}
+  atesSistemi: {fileID: 2115343843}
+  uykunaBaslangicSaati: 20
+  uykunaBitisSaati: 6
+  ipucuPanel: {fileID: 947323039}
+  ipucuText: {fileID: 998026424}
+  uyuOnayPanel: {fileID: 0}
+--- !u!4 &1645007719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645007716}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 554.4, y: 31.22, z: 158.95}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1651203014
 GameObject:
   m_ObjectHideFlags: 0
@@ -19741,7 +20159,7 @@ PrefabInstance:
     - target: {fileID: 443845413803684120, guid: 9d9bd5aa27768f84ea61a16d39dc605f,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2021674014119928175, guid: 9d9bd5aa27768f84ea61a16d39dc605f,
         type: 3}
@@ -20920,8 +21338,8 @@ MonoBehaviour:
   autoRepaint: 0
   terrainListeners: []
   bounds:
-    m_Center: {x: 600, y: 50, z: 200}
-    m_Extent: {x: 600, y: 50, z: 600}
+    m_Center: {x: 200, y: 50, z: -200}
+    m_Extent: {x: 200, y: 50, z: 200}
   filterShader: {fileID: 4800000, guid: 0f44df78e3d64d9cb2616cac3d84cb77, type: 3}
 --- !u!154 &2023802020
 TerrainCollider:
@@ -21229,6 +21647,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 398145292}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2115343843 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3639512951450629734, guid: 5b1ec612d8b7bd942a76af7abe8608a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 7874004970813185657}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 362cb0d792a96724fbad319047a51009, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2134238845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28648,7 +29078,7 @@ PrefabInstance:
     - target: {fileID: 3462307905374330542, guid: f4d1c2170703f9048821e15f1af52781,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29387,12 +29817,12 @@ PrefabInstance:
     - target: {fileID: 5042925441762679261, guid: 5b1ec612d8b7bd942a76af7abe8608a7,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6683021118021687476, guid: 5b1ec612d8b7bd942a76af7abe8608a7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 565.1
+      value: 560.2
       objectReference: {fileID: 0}
     - target: {fileID: 6683021118021687476, guid: 5b1ec612d8b7bd942a76af7abe8608a7,
         type: 3}
@@ -29402,7 +29832,7 @@ PrefabInstance:
     - target: {fileID: 6683021118021687476, guid: 5b1ec612d8b7bd942a76af7abe8608a7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 148.1
+      value: 161.57
       objectReference: {fileID: 0}
     - target: {fileID: 6683021118021687476, guid: 5b1ec612d8b7bd942a76af7abe8608a7,
         type: 3}
@@ -29837,21 +30267,24 @@ SceneRoots:
   m_Roots:
   - {fileID: 773034528}
   - {fileID: 1333161716}
+  - {fileID: 1544975008}
+  - {fileID: 4503166875550991409}
+  - {fileID: 753029370}
+  - {fileID: 980429240}
+  - {fileID: 706108972}
+  - {fileID: 709658854}
+  - {fileID: 588137172}
+  - {fileID: 7152121866568447015}
+  - {fileID: 1645007719}
   - {fileID: 262392867}
   - {fileID: 1399938173}
   - {fileID: 585813740}
   - {fileID: 1953873582}
   - {fileID: 1031921636208414503}
   - {fileID: 903530649386779285}
-  - {fileID: 4503166875550991409}
   - {fileID: 2402687640435774046}
   - {fileID: 1221851889}
   - {fileID: 1027810655}
-  - {fileID: 980429240}
-  - {fileID: 709658854}
-  - {fileID: 588137172}
-  - {fileID: 753029370}
-  - {fileID: 706108972}
   - {fileID: 631760490}
   - {fileID: 1302059415}
   - {fileID: 1096220148}
@@ -29883,7 +30316,6 @@ SceneRoots:
   - {fileID: 5886381473499225793}
   - {fileID: 825657017}
   - {fileID: 1838533960}
-  - {fileID: 7152121866568447015}
   - {fileID: 7874004970813185657}
   - {fileID: 1092711271}
   - {fileID: 468265721}
@@ -29910,3 +30342,6 @@ SceneRoots:
   - {fileID: 1577432621}
   - {fileID: 847238153}
   - {fileID: 4585932}
+  - {fileID: 1545496373}
+  - {fileID: 967450873}
+  - {fileID: 1640106124}

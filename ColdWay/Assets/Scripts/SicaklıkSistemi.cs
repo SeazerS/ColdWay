@@ -1,46 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SicaklikSistemi : MonoBehaviour
 {
-    [Header("Gece Ayarları")]
+    [Header("Gece Ayarlari")]
     public bool geceBonusu = false;
     public float geceDususCarpani = 5f;
     public bool alacakaranlıkBonusu = false;
     public float alacakaranlıkCarpani = 2f;
 
-    [Header("Sıcaklık")]
+    [Header("Sicaklik")]
     public float maxSicaklik = 100f;
     public float mevcutSicaklik = 100f;
 
-    [Header("Düşüş Hızları - Bölgeye Göre")]
-    public float bolge1Hiz = 0.033f;  // Normal
-    public float bolge2Hiz = 0.055f;  // Orta
-    public float bolge3Hiz = 0.120f;  // Çok sert
+    [Header("Dusus Hizlari")]
+    public float bolge1Hiz = 0.033f;
+    public float bolge2Hiz = 0.055f;
+    public float bolge3Hiz = 0.120f;
 
-    [Header("Hava Durumu Çarpanları")]
-    // Bölge 1 — hafif rüzgar
+    [Header("Hava Durumu Carpanlari")]
     public float ruzgarCarpani_B1 = 1.5f;
-
-    // Bölge 2 — orta rüzgar + gölet ıslaklığı riski
     public float ruzgarCarpani_B2 = 2.5f;
-    public float islaklıkCarpani_B2 = 3.0f; // Sadece bölge 2'de
-
-    // Bölge 3 — çok sert rüzgar, ıslaklık yok
+    public float islaklıkCarpani_B2 = 3.0f;
     public float ruzgarCarpani_B3 = 4.5f;
 
-    // Aktif çarpanlar
     private float aktifRuzgarCarpani = 1.5f;
     private float aktifIslaklıkCarpani = 1.0f;
-    private bool islaklıkAktif = false; // Sadece bölge 2'de true olabilir
+    private bool islaklıkAktif = false;
 
     [Header("Durum")]
     public int mevcutBolge = 1;
     public bool atesBasinda = false;
     public bool ayakIslak = false;
     public bool ruzgarda = false;
+
+    [Header("Islak Durum")]
+    public float islaklıkDususCarpani = 4f;
+    public float atesIyilesmeHizi = 0.8f;
+    private float islaklıkZamani = 0f;
+    public float maxIslaklıkSuresi = 120f;
 
     [Header("UI")]
     public Slider sicaklikSlider;
@@ -72,104 +70,86 @@ public class SicaklikSistemi : MonoBehaviour
 
     void HizBelirle()
     {
+        // Her karede BASE degerden baslat, uzerine ekle
+        float baseDusus;
         switch (mevcutBolge)
         {
-            case 1: dususHizi = bolge1Hiz; break;
-            case 2: dususHizi = bolge2Hiz; break;
-            case 3: dususHizi = bolge3Hiz; break;
+            case 1: baseDusus = bolge1Hiz; break;
+            case 2: baseDusus = bolge2Hiz; break;
+            case 3: baseDusus = bolge3Hiz; break;
+            default: baseDusus = bolge1Hiz; break;
         }
 
-        // Rüzgar her bölgede var ama şiddeti farklı
-        if (ruzgarda)
-            dususHizi *= aktifRuzgarCarpani;
+        // Gun carpanini sadece bir kez uygula
+        float gunCarpani = GunSayaci.Instance != null ?
+                           GunSayaci.Instance.ZorlukCarpani : 1f;
 
-        // Islaklık SADECE bölge 2'de ve gölete girince
-        if (ayakIslak && islaklıkAktif)
-            dususHizi *= aktifIslaklıkCarpani;
+        dususHizi = baseDusus * gunCarpani;
 
-        if (alacakaranlıkBonusu && !geceBonusu)
-            dususHizi *= alacakaranlıkCarpani;
-
-        if (geceBonusu)
-            dususHizi *= geceDususCarpani;
+        if (ruzgarda) dususHizi *= aktifRuzgarCarpani;
+        if (ayakIslak && islaklıkAktif) dususHizi *= aktifIslaklıkCarpani;
+        if (alacakaranlıkBonusu && !geceBonusu) dususHizi *= alacakaranlıkCarpani;
+        if (geceBonusu) dususHizi *= geceDususCarpani;
     }
-
-    [Header("Islak Durum")]
-    public float islaklıkDususCarpani = 4f;  // Islakken dusus hizi carpani
-    public float kurumaHizi = 0.05f;         // Kuruma hizi (ates basinda)
-    public float atesIyilesmeHizi = 0.8f;    // Ates basinda isi artisi (yavas)
-
-    private float islaklıkZamani = 0f;
-    public float maxIslaklıkSuresi = 120f;   // 2 dakikada kurur (ates olmadan)
 
     void SicaklikGuncelle()
     {
+        if (mevcutSicaklik < 10f)
+            Debug.Log($"Dusuk isi! {mevcutSicaklik:F1} | dususHizi: {dususHizi:F4} | gece: {geceBonusu}");
+        
         if (atesBasinda)
         {
-            // Islaksa yavaş yavaş kur
             if (ayakIslak)
             {
-                islaklıkZamani += Time.deltaTime * 3f; // Ates basinda 3x hizli kurur
+                islaklıkZamani += Time.deltaTime * 3f;
                 if (islaklıkZamani >= maxIslaklıkSuresi)
-                {
-                    ayakIslak = false;
-                    islaklıkZamani = 0f;
-                    Debug.Log("Ayak kurudu.");
-                }
+                { ayakIslak = false; islaklıkZamani = 0f; }
             }
-
-            // Ates basinda yavaş yavaş isi artir
             mevcutSicaklik += atesIyilesmeHizi * Time.deltaTime;
         }
         else
         {
-            // Islaksa cok daha hizli duser
             float gercekDusus = ayakIslak ?
-                dususHizi * islaklıkDususCarpani :
-                dususHizi;
-
+                dususHizi * islaklıkDususCarpani : dususHizi;
             mevcutSicaklik -= gercekDusus * Time.deltaTime;
 
-            // Ates olmadan yavas kuruma
             if (ayakIslak)
             {
                 islaklıkZamani += Time.deltaTime;
                 if (islaklıkZamani >= maxIslaklıkSuresi)
-                {
-                    ayakIslak = false;
-                    islaklıkZamani = 0f;
-                }
+                { ayakIslak = false; islaklıkZamani = 0f; }
             }
         }
-
         mevcutSicaklik = Mathf.Clamp(mevcutSicaklik, 0f, maxSicaklik);
+    }
+
+    // Uyku sonrasi isiy toparlama
+    public void UykuSonrasiIsi(bool atesVarMiydi)
+    {
+        float artis = atesVarMiydi ? 30f : 15f;
+        mevcutSicaklik = Mathf.Min(mevcutSicaklik + artis, maxSicaklik);
+        Debug.Log($"Uyku sonrasi isi +{artis}. Mevcut: {mevcutSicaklik}");
     }
 
     public void BolgeGuncelle(int bolgeNo)
     {
         mevcutBolge = bolgeNo;
-
         switch (bolgeNo)
         {
             case 1:
                 aktifRuzgarCarpani = ruzgarCarpani_B1;
-                islaklıkAktif = false; // Bölge 1'de ıslaklık yok
-                ayakIslak = false;
+                islaklıkAktif = false; ayakIslak = false;
                 break;
             case 2:
                 aktifRuzgarCarpani = ruzgarCarpani_B2;
                 aktifIslaklıkCarpani = islaklıkCarpani_B2;
-                islaklıkAktif = true; // Gölet var, ıslanabilir
+                islaklıkAktif = true;
                 break;
             case 3:
                 aktifRuzgarCarpani = ruzgarCarpani_B3;
-                islaklıkAktif = false; // Bölge 3'te ıslaklık yok
-                ayakIslak = false;     // Varsa sıfırla
+                islaklıkAktif = false; ayakIslak = false;
                 break;
         }
-
-        Debug.Log($"Sıcaklık sistemi Bölge {bolgeNo} için güncellendi. " +
-                  $"Islaklık aktif: {islaklıkAktif}");
     }
 
     void UIGuncelle()
@@ -180,15 +160,11 @@ public class SicaklikSistemi : MonoBehaviour
         if (sliderDolgu != null)
         {
             float oran = mevcutSicaklik / maxSicaklik;
-            if (oran > 0.5f)
-                sliderDolgu.color = normalRenk;
-            else if (oran > 0.25f)
-                sliderDolgu.color = tehlikeRenk;
-            else
-                sliderDolgu.color = kritikRenk;
+            sliderDolgu.color = oran > 0.5f ? normalRenk :
+                                oran > 0.25f ? tehlikeRenk : kritikRenk;
         }
 
-        Player_Controller hareket = GetComponent<Player_Controller>();
+        var hareket = GetComponent<Player_Controller>();
         if (hareket != null)
         {
             float oran = mevcutSicaklik / maxSicaklik;
@@ -199,34 +175,33 @@ public class SicaklikSistemi : MonoBehaviour
 
     void PostProcessGuncelle()
     {
-        float oran = mevcutSicaklik / maxSicaklik;
-        if (oran < 0.25f)
-            Debug.Log("KRİTİK — Ekran efekti başlasın");
+        if (mevcutSicaklik / maxSicaklik < 0.25f)
+            Debug.Log("KRITIK — Ekran efekti baslasin");
     }
 
     void OlumKontrol()
     {
+        if (oldu) return;
         if (mevcutSicaklik <= 0f)
         {
             oldu = true;
-            Debug.Log("ÖLDÜ — Checkpoint'e dön");
+            Debug.LogWarning("OLUM! Sicaklik: " + mevcutSicaklik +
+                             " | geceBonusu: " + geceBonusu +
+                             " | alacakaranlık: " + alacakaranlıkBonusu +
+                             " | ruzgarda: " + ruzgarda +
+                             " | dususHizi: " + dususHizi);
+            CheckpointSistemi.Instance?.OlumGerceklesti();
         }
     }
 
-    // Gölet trigger'ından çağrılır (sadece bölge 2'de)
-    public void GoleteGirdi()
+    public void Oldu_Sifirla()
     {
-        if (mevcutBolge == 2)
-        {
-            ayakIslak = true;
-            Debug.Log("Ayak ıslandı!");
-        }
+        oldu = false;
+        mevcutSicaklik = 50f;
     }
-
-    // Ateş başında veya kuruduktan sonra çağrılır
+    public void GoleteGirdi() { if (mevcutBolge == 2) ayakIslak = true; }
     public void Kurudu() { ayakIslak = false; }
-
     public void AyakIslandi() { if (islaklıkAktif) ayakIslak = true; }
-    public void AtesAktif(bool durum) { atesBasinda = durum; }
-    public void BolgeGecis(int bolge) { BolgeGuncelle(bolge); }
+    public void AtesAktif(bool d) { atesBasinda = d; }
+    public void BolgeGecis(int b) { BolgeGuncelle(b); }
 }
