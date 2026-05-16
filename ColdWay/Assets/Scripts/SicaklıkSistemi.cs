@@ -185,11 +185,6 @@ public class SicaklikSistemi : MonoBehaviour
         if (mevcutSicaklik <= 0f)
         {
             oldu = true;
-            Debug.LogWarning("OLUM! Sicaklik: " + mevcutSicaklik +
-                             " | geceBonusu: " + geceBonusu +
-                             " | alacakaranlık: " + alacakaranlıkBonusu +
-                             " | ruzgarda: " + ruzgarda +
-                             " | dususHizi: " + dususHizi);
             CheckpointSistemi.Instance?.OlumGerceklesti();
         }
     }

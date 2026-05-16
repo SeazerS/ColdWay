@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
 public class CheckpointSistemi : MonoBehaviour
 {
@@ -12,6 +14,13 @@ public class CheckpointSistemi : MonoBehaviour
     [Header("Son Checkpoint")]
     public Vector3 sonCheckpointPoz;
     public bool checkpointVar = false;
+
+    [Header("Olum Ekrani")]
+    public Image karartmaEkrani; // Canvas'ta tam ekran siyah Image
+    public float karartmaSuresi = 1.0f;
+    public float beklemeSuresi = 1.5f;
+    public float acilmaSuresi = 1.0f;
+
     private bool olumIsleniyor = false;
 
     void Awake()
@@ -24,14 +33,17 @@ public class CheckpointSistemi : MonoBehaviour
     {
         if (oyuncu != null)
             sonCheckpointPoz = oyuncu.position;
+
+        // Baslangicta ekran acik
+        if (karartmaEkrani != null)
+            karartmaEkrani.color = new Color(0, 0, 0, 0);
     }
 
-    // Cadýr kurulunca cagir
     public void CheckpointKaydet(Vector3 poz)
     {
         sonCheckpointPoz = poz;
         checkpointVar = true;
-        Debug.Log($"Checkpoint kaydedildi: {poz}");
+        Debug.Log("Checkpoint kaydedildi.");
     }
 
     public void OlumGerceklesti()
@@ -40,23 +52,64 @@ public class CheckpointSistemi : MonoBehaviour
         olumIsleniyor = true;
         StartCoroutine(OlumSonrasiDon());
     }
-    // Uyku sisteminden cagir - coroutine'i iptal et
+
     public void OlumIptal()
     {
         olumIsleniyor = false;
         StopAllCoroutines();
+
+        // Ekrani ac
+        if (karartmaEkrani != null)
+            karartmaEkrani.color = new Color(0, 0, 0, 0);
     }
 
-    System.Collections.IEnumerator OlumSonrasiDon()
+    IEnumerator OlumSonrasiDon()
     {
-        yield return new WaitForSeconds(1.5f);
-        if (!olumIsleniyor) yield break; // Iptal edildiyse dur
+        // 1. Ekrani kaart
+        yield return StartCoroutine(EkranKarar(karartmaSuresi));
 
-        if (oyuncu != null)
+        // 2. Bekle
+        yield return new WaitForSeconds(beklemeSuresi);
+
+        // 3. Oyuncuyu checkpoint'e taþý
+        if (oyuncu != null && checkpointVar)
             oyuncu.position = sonCheckpointPoz;
 
+        // 4. Sistemleri sifirla
         sicaklikSistemi?.Oldu_Sifirla();
         enerjiKontrol?.Oldu_Sifirla();
+
+        // 5. Ekrani ac
+        yield return StartCoroutine(EkranAc(acilmaSuresi));
+
         olumIsleniyor = false;
+    }
+
+    IEnumerator EkranKarar(float sure)
+    {
+        if (karartmaEkrani == null) yield break;
+        float t = 0f;
+        while (t < sure)
+        {
+            t += Time.deltaTime;
+            float alpha = Mathf.Clamp01(t / sure);
+            karartmaEkrani.color = new Color(0, 0, 0, alpha);
+            yield return null;
+        }
+        karartmaEkrani.color = new Color(0, 0, 0, 1);
+    }
+
+    IEnumerator EkranAc(float sure)
+    {
+        if (karartmaEkrani == null) yield break;
+        float t = 0f;
+        while (t < sure)
+        {
+            t += Time.deltaTime;
+            float alpha = 1f - Mathf.Clamp01(t / sure);
+            karartmaEkrani.color = new Color(0, 0, 0, alpha);
+            yield return null;
+        }
+        karartmaEkrani.color = new Color(0, 0, 0, 0);
     }
 }

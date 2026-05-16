@@ -25,10 +25,10 @@ public class UykuSistemi : MonoBehaviour
     private bool oyuncuYakinda = false;
     private Vector3 cadirKurulacakPoz;
 
+
     void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+     
     }
 
     void Update()
@@ -61,13 +61,13 @@ public class UykuSistemi : MonoBehaviour
         float saat = gecGunduz != null ?
             float.Parse(gecGunduz.SaatiAl().Split(':')[0]) : 12f;
 
-        bool geceVakti = saat >= uykunaBaslangicSaati || saat < uykunaBitisSaati;
+        bool geceVakti = sicaklikSistemi != null &&
+                 sicaklikSistemi.geceBonusu;
 
-        if (!geceVakti)
-        {
-            Debug.Log("Gece olmadan cadir kurulamaz.");
-            return;
-        }
+        if (geceVakti)
+            ipucuText.text = "E — Çadýr Kur ve Uyu";
+        else
+            ipucuText.text = "Hava henüz kararmadý";
 
         // Enerji kontrolu
         if (enerjiKontrol != null && enerjiKontrol.mevcutEnerji < 10f)

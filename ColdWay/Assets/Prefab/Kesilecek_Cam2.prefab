@@ -18,7 +18,7 @@ GameObject:
   m_TagString: Agac
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3304716926166090147
 Transform:
@@ -121,6 +121,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kuruAagac: 1
-  maxVurus: 3
-  odunMiktari: 2
-  odunFirlatmaKuvveti: 3
+  maxVurus: 5
+  odunMiktari: 3
+  odunFirlatmaKuvveti: 2
