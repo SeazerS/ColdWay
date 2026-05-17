@@ -4,6 +4,7 @@ public class GecGunduzSistemi : MonoBehaviour
 {
     [Header("Skybox")]
     public Material gunduzSkybox;
+    public Material aksamSkybox;
     public Material geceSkybox;
 
     [Header("Güneþ")]
@@ -28,18 +29,23 @@ public class GecGunduzSistemi : MonoBehaviour
     public float gunduzFogYogunluk = 0.01f;
     public float geceFogYogunluk = 0.03f;
 
+    [Header("Ambient Iþýk")]
+    public Color gunduzAmbient = new Color(0.4f, 0.4f, 0.5f);
+    public Color aksamAmbient = new Color(0.3f, 0.2f, 0.15f);
+    public Color geceAmbient = new Color(0.05f, 0.05f, 0.1f);
+
     [Header("Ay Iþýðý")]
     public Color ayIsigiRengi = new Color(0.5f, 0.6f, 1.0f);
     public float ayIsigiYogunlugu = 0.08f;
 
     [Header("Kar Zaman Çarpanlarý")]
-    public float gunduzKarCarpani = 1f;    // Bölge 1 ayarý korunur
-    public float aksamKarCarpani = 1.5f;   // Akþam biraz artar
-    public float geceKarCarpani = 2.5f;    // Gece çok yoðun
+    public float gunduzKarCarpani = 1f;
+    public float aksamKarCarpani = 1.5f;
+    public float geceKarCarpani = 2.5f;
 
     [Header("Sistem Referanslarý")]
-    public KarTakip karSistemi;         // Inspector'dan sürükle
-    public RuzgarSistemi ruzgarSistemi; // Inspector'dan sürükle
+    public KarTakip karSistemi;
+    public RuzgarSistemi ruzgarSistemi;
 
     private float mevcutSaat;
     private float gunSuresiSaniye;
@@ -47,12 +53,15 @@ public class GecGunduzSistemi : MonoBehaviour
     private bool olumBasladi = false;
     private SicaklikSistemi sicaklik;
 
+    // Skybox gecis kontrolu
+    private string mevcutSkyboxAdi = "";
+
     void Start()
     {
         mevcutSaat = baslangicSaati;
         gunSuresiSaniye = gununSuresi * 60f;
         sicaklik = FindObjectOfType<SicaklikSistemi>();
-        RenderSettings.skybox = gunduzSkybox;
+        SkyboxAyarla(gunduzSkybox, "gunduz");
     }
 
     void Update()
@@ -61,6 +70,7 @@ public class GecGunduzSistemi : MonoBehaviour
         GunesGuncelle();
         SkyboxGuncelle();
         FogGuncelle();
+        AmbientGuncelle();
         KarZamanGuncelle();
         UIGuncelle();
         TehlikeKontrol();
@@ -77,16 +87,12 @@ public class GecGunduzSistemi : MonoBehaviour
     {
         if (gunes == null) return;
 
-        bool geceVakti = mevcutSaat < 6f || mevcutSaat >= 20f;
-
-        if (geceVakti)
+        if (mevcutSaat < 6f || mevcutSaat >= 20f)
         {
             gunes.color = ayIsigiRengi;
             gunes.intensity = ayIsigiYogunlugu;
-            return;
         }
-
-        if (mevcutSaat >= 6f && mevcutSaat < 8f)
+        else if (mevcutSaat >= 6f && mevcutSaat < 8f)
         {
             float oran = (mevcutSaat - 6f) / 2f;
             gunes.color = Color.Lerp(aksamIsigiRengi, gunduzIsigiRengi, oran);
@@ -110,37 +116,101 @@ public class GecGunduzSistemi : MonoBehaviour
 
     void SkyboxGuncelle()
     {
-        bool geceVakti = mevcutSaat < 6f || mevcutSaat >= 20f;
+        Color hedefRenk;
 
-        if (geceVakti)
+        if (mevcutSaat >= 6f && mevcutSaat < 16f)
+            hedefRenk = new Color(0.8f, 0.85f, 1f);
+        else if (mevcutSaat >= 16f && mevcutSaat < 20f)
         {
-            RenderSettings.skybox = geceSkybox;
-            DynamicGI.UpdateEnvironment();
-            return;
-        }
-
-        if (mevcutSaat >= 17f && mevcutSaat < 20f)
-        {
-            float oran = (mevcutSaat - 17f) / 3f;
-            RenderSettings.skybox = oran > 0.5f ? geceSkybox : gunduzSkybox;
+            float oran = (mevcutSaat - 16f) / 4f;
+            hedefRenk = Color.Lerp(
+                new Color(0.8f, 0.85f, 1f),
+                new Color(0.05f, 0.05f, 0.15f), oran);
         }
         else
+            hedefRenk = new Color(0.05f, 0.05f, 0.15f);
+
+        if (gunduzSkybox != null)
         {
-            RenderSettings.skybox = gunduzSkybox;
+            // Cubemap shader icin dogru property adini bul
+            string[] properties = { "_Tint", "_SkyTint", "_Color", "_SkyColor" };
+            foreach (string prop in properties)
+            {
+                if (gunduzSkybox.HasProperty(prop))
+                {
+                    Color mevcutRenk = gunduzSkybox.GetColor(prop);
+                    gunduzSkybox.SetColor(prop,
+                        Color.Lerp(mevcutRenk, hedefRenk, Time.deltaTime * 0.3f));
+                    break;
+                }
+            }
         }
+    }
+
+    void SkyboxAyarla(Material skybox, string ad)
+    {
+        if (skybox == null || mevcutSkyboxAdi == ad) return;
+        mevcutSkyboxAdi = ad;
+        RenderSettings.skybox = skybox;
         DynamicGI.UpdateEnvironment();
     }
 
-    // Kar zaman çarpanýný KarTakip'e ilet
-    // KarTakip bölge çarpanýyla birleþtirir
+    void AmbientGuncelle()
+    {
+        Color hedefAmbient;
+
+        if (mevcutSaat >= 6f && mevcutSaat < 16f)
+            hedefAmbient = gunduzAmbient;
+        else if (mevcutSaat >= 16f && mevcutSaat < 20f)
+        {
+            float oran = (mevcutSaat - 16f) / 4f;
+            hedefAmbient = Color.Lerp(gunduzAmbient, geceAmbient, oran);
+        }
+        else
+            hedefAmbient = geceAmbient;
+
+        // Cok yumusak gecis
+        RenderSettings.ambientLight = Color.Lerp(
+            RenderSettings.ambientLight, hedefAmbient, Time.deltaTime * 0.3f);
+    }
+
+    void FogGuncelle()
+    {
+        RenderSettings.fog = true;
+
+        Color hedefFog;
+        float hedefYogunluk;
+
+        if (mevcutSaat >= 6f && mevcutSaat < 16f)
+        {
+            hedefFog = gunduzFogRengi;
+            hedefYogunluk = gunduzFogYogunluk;
+        }
+        else if (mevcutSaat >= 16f && mevcutSaat < 20f)
+        {
+            float oran = (mevcutSaat - 16f) / 4f;
+            hedefFog = Color.Lerp(gunduzFogRengi, geceFogRengi, oran);
+            hedefYogunluk = Mathf.Lerp(gunduzFogYogunluk, geceFogYogunluk, oran);
+        }
+        else
+        {
+            hedefFog = geceFogRengi;
+            hedefYogunluk = geceFogYogunluk;
+        }
+
+        // Yumusak gecis
+        RenderSettings.fogColor = Color.Lerp(
+            RenderSettings.fogColor, hedefFog, Time.deltaTime * 0.5f);
+        RenderSettings.fogDensity = Mathf.Lerp(
+            RenderSettings.fogDensity, hedefYogunluk, Time.deltaTime * 0.5f);
+    }
+
     void KarZamanGuncelle()
     {
-        bool geceVakti = mevcutSaat < 6f || mevcutSaat >= 20f;
-
         float karCarpan;
         float ruzgarCarpan;
 
-        if (geceVakti)
+        if (mevcutSaat < 6f || mevcutSaat >= 20f)
         {
             karCarpan = geceKarCarpani;
             ruzgarCarpan = 2f;
@@ -150,7 +220,7 @@ public class GecGunduzSistemi : MonoBehaviour
             karCarpan = gunduzKarCarpani;
             ruzgarCarpan = 1f;
         }
-        else // 16:00 - 20:00 arasý geçiþ
+        else
         {
             float oran = (mevcutSaat - 16f) / 4f;
             karCarpan = Mathf.Lerp(gunduzKarCarpani, geceKarCarpani, oran);
@@ -159,31 +229,6 @@ public class GecGunduzSistemi : MonoBehaviour
 
         karSistemi?.ZamanCarpaniGuncelle(karCarpan);
         ruzgarSistemi?.ZamanCarpaniGuncelle(ruzgarCarpan);
-    }
-
-    void FogGuncelle()
-    {
-        RenderSettings.fog = true;
-        bool geceVakti = mevcutSaat < 6f || mevcutSaat >= 20f;
-
-        if (geceVakti)
-        {
-            RenderSettings.fogColor = geceFogRengi;
-            RenderSettings.fogDensity = geceFogYogunluk;
-            return;
-        }
-
-        if (mevcutSaat >= 6f && mevcutSaat < 16f)
-        {
-            RenderSettings.fogColor = gunduzFogRengi;
-            RenderSettings.fogDensity = gunduzFogYogunluk;
-        }
-        else if (mevcutSaat >= 16f && mevcutSaat < 20f)
-        {
-            float oran = (mevcutSaat - 16f) / 4f;
-            RenderSettings.fogColor = Color.Lerp(gunduzFogRengi, geceFogRengi, oran);
-            RenderSettings.fogDensity = Mathf.Lerp(gunduzFogYogunluk, geceFogYogunluk, oran);
-        }
     }
 
     void UIGuncelle()
@@ -199,21 +244,13 @@ public class GecGunduzSistemi : MonoBehaviour
         if (mevcutSaat >= 18f && mevcutSaat < 20f && !uyariVerildi)
         {
             uyariVerildi = true;
-            if (sicaklik != null)
-            {
-                sicaklik.alacakaranlýkBonusu = true;
-                Debug.Log("Alacakaranlýk aktif.");
-            }
+            if (sicaklik != null) sicaklik.alacakaranlýkBonusu = true;
         }
 
         if (mevcutSaat >= 20f && !olumBasladi)
         {
             olumBasladi = true;
-            if (sicaklik != null)
-            {
-                sicaklik.geceBonusu = true;
-                Debug.Log("Gece aktif.");
-            }
+            if (sicaklik != null) sicaklik.geceBonusu = true;
         }
     }
 
@@ -236,7 +273,7 @@ public class GecGunduzSistemi : MonoBehaviour
             sicaklik.alacakaranlýkBonusu = false;
         }
 
-        RenderSettings.skybox = gunduzSkybox;
-        DynamicGI.UpdateEnvironment();
+        SkyboxAyarla(gunduzSkybox, "");
+        mevcutSkyboxAdi = "";
     }
 }

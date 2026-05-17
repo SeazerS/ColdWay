@@ -28,6 +28,9 @@ public class KibritMinigame : MonoBehaviour
     [Header("Hava Sartlari")]
     public SicaklikSistemi sicaklikSistemi;
 
+    [Header("Gece Ayarlari")]
+    public float geceZorluCarpani = 2.5f;
+
     public KivilcimSistemi kivilcimSistemi;
 
     private AteþNoktasi aktifAtesNoktasi;
@@ -158,8 +161,33 @@ public class KibritMinigame : MonoBehaviour
 
         bool ruzgar = sicaklikSistemi != null && sicaklikSistemi.ruzgarda;
         bool islak = sicaklikSistemi != null && sicaklikSistemi.ayakIslak;
+        bool geceVakti = sicaklikSistemi != null && sicaklikSistemi.geceBonusu;
+        bool alacakaranlik = sicaklikSistemi != null && sicaklikSistemi.alacakaranlýkBonusu;
+
         float artis = islak ? artisHizi * 0.6f : artisHizi;
         float dusus = ruzgar ? dususHizi * 1.6f : dususHizi;
+
+        // Gece carpani
+        if (geceVakti)
+        {
+            dusus *= geceZorluCarpani;        // Bar daha hýzlý düþer
+            artis *= 0.5f;                     // Bar daha yavaþ dolar
+            hedefYaricap = 25f;               // Hedef daha küçük
+            hedefHareketSuresi = 1.5f;        // Hedef daha hýzlý hareket eder
+        }
+        else if (alacakaranlik)
+        {
+            dusus *= geceZorluCarpani * 0.5f;
+            artis *= 0.75f;
+            hedefYaricap = 32f;
+            hedefHareketSuresi = 2f;
+        }
+        else
+        {
+            // Gunduz normal degerler
+            hedefYaricap = 40f;
+            hedefHareketSuresi = 3f;
+        }
 
         if (basiliMi && hareketMiktari > 0.3f)
         {

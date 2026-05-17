@@ -48,12 +48,13 @@ public class UykuSistemi : MonoBehaviour
         float saat = gecGunduz != null ?
             float.Parse(gecGunduz.SaatiAl().Split(':')[0]) : 12f;
 
-        bool geceVakti = saat >= uykunaBaslangicSaati || saat < uykunaBitisSaati;
+        bool geceVakti = sicaklikSistemi != null &&
+                 sicaklikSistemi.geceBonusu;
 
         if (geceVakti)
-            ipucuText.text = "E — Cadýr Kur ve Uyu";
+            ipucuText.text = "E — Çadýr Kur ve Uyu";
         else
-            ipucuText.text = "Sadece gece uyuyabilirsin (20:00 - 06:00)";
+            ipucuText.text = "Hava henüz kararmadý";
     }
 
     void EtusunaBasildi()
