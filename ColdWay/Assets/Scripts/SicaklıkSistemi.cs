@@ -51,6 +51,7 @@ public class SicaklikSistemi : MonoBehaviour
     private float dususHizi;
     private bool oldu = false;
 
+
     void Start()
     {
         mevcutSicaklik = maxSicaklik;
