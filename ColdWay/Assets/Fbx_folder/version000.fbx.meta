@@ -3,7 +3,17 @@ guid: 38228cffe4f7d1f469d400aa865f8320
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: dog-govde
+    second: {fileID: 2100000, guid: 9f208bf3d00b5cd4eb395e17ee705d15, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: dog-tongue
+    second: {fileID: 2100000, guid: 187ab051b132a894b8d20b4df6fa1027, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

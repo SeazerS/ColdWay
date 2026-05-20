@@ -51,7 +51,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             iconImage.enabled = true;
             iconImage.sprite = holdItem.icon;
-            amountText.text = itemAmount.ToString();
+            //amountText.text = itemAmount.ToString();
+            amountText.text = holdItem.maxStackSize > 1 ?
+                          itemAmount.ToString() : "";
         }
         else
         {
