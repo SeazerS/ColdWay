@@ -7,6 +7,7 @@ public class ItemSO : ScriptableObject
 {
     public string itemName;
     public Sprite icon;
+    public Sprite iconFull;
     public int maxStackSize;
     public GameObject itemPrefab;
     public GameObject hangItemPrefab;

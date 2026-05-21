@@ -41,7 +41,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void UpdateSlot()
     {
-        if (iconImage==null)
+        if (iconImage == null)
         {
             iconImage = transform.GetChild(0).GetComponent<Image>();
             amountText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
@@ -50,10 +50,13 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (holdItem != null)
         {
             iconImage.enabled = true;
-            iconImage.sprite = holdItem.icon;
-            //amountText.text = itemAmount.ToString();
-            amountText.text = holdItem.maxStackSize > 1 ?
-                          itemAmount.ToString() : "";
+
+            if (holdItem.iconFull != null && itemAmount >= holdItem.maxStackSize)
+                iconImage.sprite = holdItem.iconFull;
+            else
+                iconImage.sprite = holdItem.icon;
+
+            amountText.text = holdItem.maxStackSize > 1 ? itemAmount.ToString() : "";
         }
         else
         {

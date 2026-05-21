@@ -19,8 +19,10 @@ public class Inventory : MonoBehaviour
     public float pickupRange = 3f;
     //private Item lookedAtItem = null;
     public Material highlightMaterial;
-    private Material originalMaterial;
-    private Renderer lookedAtRenderer = null;
+    //private Material[] originalMaterials;
+    //private Renderer lookedAtRenderer = null;
+    private List<Renderer> lookedAtRenderers = new List<Renderer>();
+    private List<Material[]> originalMaterials = new List<Material[]>();
 
     //private int equippedHotbarIndex = 0;
     public int equippedHotbarIndex = 0;
@@ -33,6 +35,8 @@ public class Inventory : MonoBehaviour
 
     private Slot draggedSlot = null;
     private bool isDragging = false;
+
+    public GameObject selectionIndicator;
 
     private void Awake()
     {
@@ -110,7 +114,7 @@ public class Inventory : MonoBehaviour
                     return;
             }
         }
-        
+
 
         if (remanining > 0)
         {
@@ -212,40 +216,46 @@ public class Inventory : MonoBehaviour
 
     private void Pickup()
     {
-        if (lookedAtRenderer != null && Input.GetKeyDown(KeyCode.E))
+        if (lookedAtRenderers.Count > 0 && Input.GetKeyDown(KeyCode.E))
         {
-            //Item item = lookedAtRenderer.GetComponent<Item>();
-            Item item = lookedAtRenderer.GetComponentInParent<Item>();
+            Item item = lookedAtRenderers[0].GetComponentInParent<Item>();
             if (item != null)
             {
                 AddItem(item.item, item.amount);
                 Destroy(item.gameObject);
+                lookedAtRenderers.Clear();
+                originalMaterials.Clear();
             }
         }
     }
 
     private void DetectLookedAtItem()
     {
-        if (lookedAtRenderer != null)
-        {
-            lookedAtRenderer.material = originalMaterial;
-            lookedAtRenderer = null;
-            originalMaterial = null;
-        }
+        // Önceki highlight'ý temizle
+        for (int i = 0; i < lookedAtRenderers.Count; i++)
+            lookedAtRenderers[i].materials = originalMaterials[i];
+        lookedAtRenderers.Clear();
+        originalMaterials.Clear();
 
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, pickupRange))
         {
             Item item = hit.collider.GetComponent<Item>();
+            if (item == null)
+                item = hit.collider.GetComponentInParent<Item>();
+
             if (item != null)
             {
-                //Renderer rend = item.GetComponent<Renderer>();
-                Renderer rend = item.GetComponentInChildren<Renderer>();
-                if (rend != null)
+                // Hem objenin hem children'larýn tüm renderer'larýný al
+                Renderer[] rends = item.GetComponentsInChildren<Renderer>(true);
+                foreach (Renderer rend in rends)
                 {
-                    originalMaterial = rend.material;
-                    rend.material = highlightMaterial;
-                    lookedAtRenderer = rend;
+                    originalMaterials.Add(rend.materials);
+                    Material[] highlighted = new Material[rend.materials.Length];
+                    for (int i = 0; i < highlighted.Length; i++)
+                        highlighted[i] = highlightMaterial;
+                    rend.materials = highlighted;
+                    lookedAtRenderers.Add(rend);
                 }
             }
         }
@@ -256,9 +266,20 @@ public class Inventory : MonoBehaviour
         {
             Image icon = hotbarSlots[i].GetComponent<Image>();
             if (icon != null)
-            {
-                icon.color = (i == equippedHotbarIndex) ? new Color(1, 1, 1, equippedOpacity) : new Color(1, 1, 1, normalOpacity);
-            }
+                icon.color = new Color(1, 1, 1, 1f);
+        }
+
+        if (selectionIndicator != null)
+        {
+            RectTransform slotRect = hotbarSlots[equippedHotbarIndex].GetComponent<RectTransform>();
+            selectionIndicator.transform.SetParent(slotRect, false);
+            selectionIndicator.transform.SetAsFirstSibling(); // ? deðiþen tek þey
+
+            RectTransform indicatorRect = selectionIndicator.GetComponent<RectTransform>();
+            indicatorRect.anchorMin = Vector2.zero;
+            indicatorRect.anchorMax = Vector2.one;
+            indicatorRect.offsetMin = Vector2.zero;
+            indicatorRect.offsetMax = Vector2.zero;
         }
     }
 
