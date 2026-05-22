@@ -55,6 +55,8 @@ public class AtesSistemi : MonoBehaviour
 
     public void AtesBas(int odunMiktari)
     {
+        Debug.Log("ATES BAS ÇAÐRILDI");
+
         mevcutOdun = Mathf.Min(odunMiktari, maxOdun);
         kalanSure = mevcutOdun * odunBasinaYanmaSuresi;
         yaniyor = true;
@@ -62,23 +64,24 @@ public class AtesSistemi : MonoBehaviour
         if (atesParticle != null)
         {
             atesParticle.SetActive(true);
-            ParticleSystem[] particles = atesParticle
-                .GetComponentsInChildren<ParticleSystem>(true);
+
+            ParticleSystem[] particles = atesParticle.GetComponentsInChildren<ParticleSystem>(true);
+
             foreach (ParticleSystem ps in particles)
             {
                 ps.gameObject.SetActive(true);
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                ps.Clear();
                 ps.Play();
             }
         }
+
         if (dumanParticle != null) dumanParticle.SetActive(false);
         if (atesIsigi != null) atesIsigi.enabled = true;
 
         if (sicaklikSistemi != null) sicaklikSistemi.AtesAktif(true);
         if (enerjiKontrol != null) enerjiKontrol.AtesAktif(true);
-
-        Debug.Log("Ates yandi! Sure: " + kalanSure + " sn");
     }
-
     void OdunEkle()
     {
         if (inventory == null || odunItemSO == null) return;

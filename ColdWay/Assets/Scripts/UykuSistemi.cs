@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class UykuSistemi : MonoBehaviour
 {
@@ -20,6 +21,15 @@ public class UykuSistemi : MonoBehaviour
     public GameObject ipucuPanel;
     public TextMeshProUGUI ipucuText;
     public GameObject uyuOnayPanel;
+
+    [Header("Cadir")]
+    public GameObject cadirPrefab;
+    public float cadirMesafesi = 3f;
+    private GameObject mevcutCadir;
+
+    [Header("Cadir UI")]
+    public Image cadirIcon;       // çadýr sprite ikonu
+    public GameObject cadirPanel; // çadýrýn açýldýðýný gösteren panel
 
     private bool cadirBolgesi = false;
     private bool oyuncuYakinda = false;
@@ -83,6 +93,20 @@ public class UykuSistemi : MonoBehaviour
 
     void Uyu()
     {
+        // Önceki çadýrý kaldýr
+        if (mevcutCadir != null)
+            Destroy(mevcutCadir);
+
+        // Yeni çadýrý kur
+        if (cadirPrefab != null)
+        {
+            Vector3 cadirPoz = cadirKurulacakPoz +
+                               transform.forward * cadirMesafesi;
+            cadirPoz.y = cadirKurulacakPoz.y;
+            mevcutCadir = Instantiate(cadirPrefab, cadirPoz,
+                                      transform.rotation);
+        }
+
         // Olum coroutine'ini iptal et
         checkpoint?.OlumIptal();
         // 1. ONCE gece bonuslarini kapat
@@ -122,6 +146,7 @@ public class UykuSistemi : MonoBehaviour
         oyuncuYakinda = true;
         cadirKurulacakPoz = other.transform.position;
         if (ipucuPanel != null) ipucuPanel.SetActive(true);
+        if (cadirPanel != null) cadirPanel.SetActive(true); // ? ekle
     }
 
     void OnTriggerExit(Collider other)
@@ -129,5 +154,6 @@ public class UykuSistemi : MonoBehaviour
         if (!other.CompareTag("Player")) return;
         oyuncuYakinda = false;
         if (ipucuPanel != null) ipucuPanel.SetActive(false);
+        if (cadirPanel != null) cadirPanel.SetActive(false); // ? ekle
     }
 }
