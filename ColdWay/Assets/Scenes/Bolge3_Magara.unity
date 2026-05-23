@@ -13875,6 +13875,7 @@ MonoBehaviour:
   hotbarSlots: []
   allSlots: []
   selectionIndicator: {fileID: 0}
+  cadirItem: {fileID: 0}
 --- !u!4 &1037407842 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1203119909982145038, guid: dcf8acc207261074e993501b9feeadae,
@@ -25407,9 +25408,20 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5891672091533523153, guid: 67678138d459d244c99ee2122e4b45e7,
         type: 3}
+      propertyPath: cadirItem
+      value: 
+      objectReference: {fileID: 11400000, guid: 793a3f22a9599224387ff258664caa6e,
+        type: 2}
+    - target: {fileID: 5891672091533523153, guid: 67678138d459d244c99ee2122e4b45e7,
+        type: 3}
       propertyPath: gecGunduz
       value: 
       objectReference: {fileID: 753029369}
+    - target: {fileID: 5891672091533523153, guid: 67678138d459d244c99ee2122e4b45e7,
+        type: 3}
+      propertyPath: inventory
+      value: 
+      objectReference: {fileID: 8664859640283797385}
     - target: {fileID: 5891672091533523153, guid: 67678138d459d244c99ee2122e4b45e7,
         type: 3}
       propertyPath: ipucuText
@@ -25439,7 +25451,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cadirPrefab
       value: 
-      objectReference: {fileID: 919132149155446097, guid: 14a8a2121935e374f926e1a982f23a5b,
+      objectReference: {fileID: 9018459284851815281, guid: e4758a85450397240acd7997f69f7037,
         type: 3}
     - target: {fileID: 5891672091533523153, guid: 67678138d459d244c99ee2122e4b45e7,
         type: 3}
@@ -40303,6 +40315,12 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 3266851757460684186, guid: af899c59b0f21914ebefa113c122a971,
+        type: 3}
+      propertyPath: cadirItem
+      value: 
+      objectReference: {fileID: 11400000, guid: 793a3f22a9599224387ff258664caa6e,
+        type: 2}
     - target: {fileID: 3266851757460684186, guid: af899c59b0f21914ebefa113c122a971,
         type: 3}
       propertyPath: selectionIndicator

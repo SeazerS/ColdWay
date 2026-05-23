@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 public class UykuSistemi : MonoBehaviour
 {
+    [Header("Envanter")]
+    public Inventory inventory;
+    public ItemSO cadirItem;
+
     public static UykuSistemi Instance;
 
     [Header("Referanslar")]
@@ -88,11 +92,46 @@ public class UykuSistemi : MonoBehaviour
             return;
         }
 
-        Uyu();
+        if (inventory != null && cadirItem != null)
+        {
+            bool cadirVar = false;
+            foreach (Slot slot in inventory.allSlots)
+            {
+                if (slot.HasItem() && slot.GetItem() == cadirItem)
+                {
+                    cadirVar = true;
+                    break;
+                }
+            }
+
+            if (!cadirVar)
+            {
+                if (ipucuText != null)
+                    ipucuText.text = "Çadýr yok!";
+                return;
+            }
+        }
+
+            Uyu();
     }
 
     void Uyu()
     {
+        // Çadýrý envanterden sil ve sahneye koy
+        if (inventory != null && cadirItem != null)
+            inventory.RemoveItem(cadirItem, 1);
+
+        if (cadirPrefab != null)
+        {
+            if (mevcutCadir != null)
+                Destroy(mevcutCadir);
+
+            Vector3 cadirPoz = cadirKurulacakPoz +
+                               transform.forward * cadirMesafesi;
+            cadirPoz.y = cadirKurulacakPoz.y;
+            mevcutCadir = Instantiate(cadirPrefab, cadirPoz,
+                                      transform.rotation);
+        }
         // Önceki çadýrý kaldýr
         if (mevcutCadir != null)
             Destroy(mevcutCadir);

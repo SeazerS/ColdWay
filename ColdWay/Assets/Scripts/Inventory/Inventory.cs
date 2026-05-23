@@ -38,6 +38,9 @@ public class Inventory : MonoBehaviour
 
     public GameObject selectionIndicator;
 
+    [Header("Baslangic Esyalari")]
+    public ItemSO cadirItem;
+
     private void Awake()
     {
         inventorySlots.AddRange(inventorySlotParent.GetComponentsInChildren<Slot>());
@@ -45,6 +48,11 @@ public class Inventory : MonoBehaviour
 
         allSlots.AddRange(inventorySlots);
         allSlots.AddRange(hotbarSlots);
+    }
+
+    private void Start()
+    {
+        AddItem(cadirItem, 1);
     }
 
     void Update()
@@ -315,6 +323,18 @@ public class Inventory : MonoBehaviour
         item.amount = equippedSlot.GetAmount();
 
         equippedSlot.ClearSlot();
+    }
+
+    public void RemoveItem(ItemSO itemToRemove, int amount)
+    {
+        foreach (Slot slot in allSlots)
+        {
+            if (slot.HasItem() && slot.GetItem() == itemToRemove)
+            {
+                slot.RemoveAmount(amount);
+                return;
+            }
+        }
     }
 }
 
