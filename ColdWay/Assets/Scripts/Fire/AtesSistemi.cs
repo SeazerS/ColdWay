@@ -27,8 +27,10 @@ public class AtesSistemi : MonoBehaviour
     private bool yaniyor = false;
     private int mevcutOdun = 0;
 
+
+
     void Update()
-    {
+    { 
         if (!yaniyor) return;
 
         kalanSure -= Time.deltaTime;

@@ -13,9 +13,9 @@ public class AteşNoktasi : MonoBehaviour
     [Header("Duman")]
     public GameObject dumanParticle;
 
-    [Header("UI")]
-    public GameObject ipucuPanel;
-    public TextMeshProUGUI ipucuText;
+    //[Header("UI")]
+    //public GameObject ipucuPanel;
+    //public TextMeshProUGUI ipucuText;
 
     [Header("Ayarlar")]
     public float etkilesimMesafesi = 3f;
@@ -25,7 +25,7 @@ public class AteşNoktasi : MonoBehaviour
 
     void Start()
     {
-        if (ipucuPanel != null) ipucuPanel.SetActive(false);
+        //if (ipucuPanel != null) ipucuPanel.SetActive(false);
         if (dumanParticle != null) dumanParticle.SetActive(true);
     }
 
@@ -36,17 +36,16 @@ public class AteşNoktasi : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            // Odun kontrolu
             if (!OdunVarMi())
             {
-                ipucuText.text = gerekliOdun + " odun gerekli!";
+                IpucuYoneticisi.Instance.MesajGoster("ates", gerekliOdun + " odun gerekli!");
                 return;
             }
 
             // Kibrit kontrolu
             if (!KibritVarMi())
             {
-                ipucuText.text = "Kibrit gerekli!";
+                IpucuYoneticisi.Instance.MesajGoster("ates", "Kibrit gerekli!");
                 return;
             }
 
@@ -60,8 +59,6 @@ public class AteşNoktasi : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         oyuncuYakinda = true;
-
-        if (ipucuPanel != null) ipucuPanel.SetActive(true);
         GuncelleMesaj();
     }
 
@@ -69,23 +66,23 @@ public class AteşNoktasi : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         oyuncuYakinda = false;
-        if (ipucuPanel != null) ipucuPanel.SetActive(false);
+        IpucuYoneticisi.Instance.MesajGizle("ates");
     }
 
     void GuncelleMesaj()
     {
         if (atesSistemi != null && atesSistemi.YaniyorMu())
         {
-            ipucuText.text = "E — Odun Ekle";
+            IpucuYoneticisi.Instance.MesajGoster("ates", "E — Odun Ekle");
             return;
         }
 
         if (!OdunVarMi())
-            ipucuText.text = gerekliOdun + " odun gerekli";
+            IpucuYoneticisi.Instance.MesajGoster("ates", gerekliOdun + " odun gerekli");
         else if (!KibritVarMi())
-            ipucuText.text = "Kibrit gerekli";
+            IpucuYoneticisi.Instance.MesajGoster("ates", "Kibrit gerekli");
         else
-            ipucuText.text = "E — Ateş Kur";
+            IpucuYoneticisi.Instance.MesajGoster("ates", "E — Ateş Kur");
     }
 
     bool OdunVarMi()

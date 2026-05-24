@@ -1,14 +1,12 @@
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 
 public class UykuSistemi : MonoBehaviour
 {
+    public static UykuSistemi Instance;
+
     [Header("Envanter")]
     public Inventory inventory;
     public ItemSO cadirItem;
-
-    public static UykuSistemi Instance;
 
     [Header("Referanslar")]
     public GecGunduzSistemi gecGunduz;
@@ -18,165 +16,137 @@ public class UykuSistemi : MonoBehaviour
     public AtesSistemi atesSistemi;
 
     [Header("Saat Kisitlamasi")]
-    public float uykunaBaslangicSaati = 20f; // 20:00
-    public float uykunaBitisSaati = 6f;  // 06:00
-
-    [Header("UI")]
-    public GameObject ipucuPanel;
-    public TextMeshProUGUI ipucuText;
-    public GameObject uyuOnayPanel;
+    public float uykunaBaslangicSaati = 20f;
+    public float uykunaBitisSaati = 6f;
 
     [Header("Cadir")]
     public GameObject cadirPrefab;
     public float cadirMesafesi = 3f;
     private GameObject mevcutCadir;
 
-    [Header("Cadir UI")]
-    public Image cadirIcon;       // çadýr sprite ikonu
-    public GameObject cadirPanel; // çadýrýn açýldýðýný gösteren panel
-
-    private bool cadirBolgesi = false;
     private bool oyuncuYakinda = false;
     private Vector3 cadirKurulacakPoz;
 
+    private enum CadirDurum { Kurulmadi, KurulduUyunmadi, Uyundu }
+    private CadirDurum cadirDurum = CadirDurum.Kurulmadi;
 
     void Awake()
     {
-     
+        //if (Instance == null) Instance = this;
+        //else Destroy(gameObject);
     }
 
     void Update()
     {
         if (!oyuncuYakinda) return;
-
         GuncelleMesaj();
 
         if (Input.GetKeyDown(KeyCode.T))
-            TtusunaBasildi();
+        {
+            switch (cadirDurum)
+            {
+                case CadirDurum.Kurulmadi:
+                    CadirKur();
+                    break;
+                case CadirDurum.KurulduUyunmadi:
+                    Uyu();
+                    break;
+                case CadirDurum.Uyundu:
+                    CadirKaldir();
+                    break;
+            }
+        }
     }
 
     void GuncelleMesaj()
     {
-        if (ipucuText == null) return;
+        bool geceVakti = sicaklikSistemi != null && sicaklikSistemi.geceBonusu;
 
-        float saat = gecGunduz != null ?
-            float.Parse(gecGunduz.SaatiAl().Split(':')[0]) : 12f;
-
-        bool geceVakti = sicaklikSistemi != null &&
-                 sicaklikSistemi.geceBonusu;
-
-        if (geceVakti)
-            ipucuText.text = "T — Çadýr Kur ve Uyu";
-        else
-            ipucuText.text = "Hava henüz kararmadý";
+        switch (cadirDurum)
+        {
+            case CadirDurum.Kurulmadi:
+                IpucuYoneticisi.Instance.MesajGoster("cadir",
+                    geceVakti ? "T — Çadýr Kur" : "Hava henüz kararmadý");
+                break;
+            case CadirDurum.KurulduUyunmadi:
+                IpucuYoneticisi.Instance.MesajGoster("cadir", "T — Uyu");
+                break;
+            case CadirDurum.Uyundu:
+                IpucuYoneticisi.Instance.MesajGoster("cadir", "T — Çadýrý Topla");
+                break;
+        }
     }
 
-    void TtusunaBasildi()
+    void CadirKur()
     {
-        float saat = gecGunduz != null ?
-            float.Parse(gecGunduz.SaatiAl().Split(':')[0]) : 12f;
+        // Gece kontrolü
+        bool geceVakti = sicaklikSistemi != null && sicaklikSistemi.geceBonusu;
 
-        bool geceVakti = sicaklikSistemi != null &&
-                 sicaklikSistemi.geceBonusu;
-
-        if (geceVakti)
-            ipucuText.text = "T — Çadýr Kur ve Uyu";
-        else
-            ipucuText.text = "Hava henüz kararmadý";
-
-        // Enerji kontrolu
-        if (enerjiKontrol != null && enerjiKontrol.mevcutEnerji < 10f)
+        if (!geceVakti)
         {
-            if (ipucuText != null)
-                ipucuText.text = "Enerji cok dusuk! Once yemek ye.";
+            IpucuYoneticisi.Instance.MesajGoster("cadir", "Hava henüz kararmadý!");
             return;
         }
 
-        if (inventory != null && cadirItem != null)
+        // Envanterde çadýr var mý
+        bool cadirVar = false;
+        foreach (Slot slot in inventory.allSlots)
         {
-            bool cadirVar = false;
-            foreach (Slot slot in inventory.allSlots)
-            {
-                if (slot.HasItem() && slot.GetItem() == cadirItem)
-                {
-                    cadirVar = true;
-                    break;
-                }
-            }
-
-            if (!cadirVar)
-            {
-                if (ipucuText != null)
-                    ipucuText.text = "Çadýr yok!";
-                return;
-            }
+            if (slot.HasItem() && slot.GetItem() == cadirItem)
+            { cadirVar = true; break; }
         }
 
-            Uyu();
+        if (!cadirVar)
+        {
+            IpucuYoneticisi.Instance.MesajGoster("cadir", "Çadýr yok!");
+            return;
+        }
+
+        inventory.RemoveItem(cadirItem, 1);
+
+        Vector3 cadirPoz = cadirKurulacakPoz +
+                           transform.forward * cadirMesafesi;
+        cadirPoz.y = cadirKurulacakPoz.y;
+        mevcutCadir = Instantiate(cadirPrefab, cadirPoz, transform.rotation);
+
+        cadirDurum = CadirDurum.KurulduUyunmadi;
     }
 
     void Uyu()
     {
-        // Çadýrý envanterden sil ve sahneye koy
-        if (inventory != null && cadirItem != null)
-            inventory.RemoveItem(cadirItem, 1);
-
-        if (cadirPrefab != null)
-        {
-            if (mevcutCadir != null)
-                Destroy(mevcutCadir);
-
-            Vector3 cadirPoz = cadirKurulacakPoz +
-                               transform.forward * cadirMesafesi;
-            cadirPoz.y = cadirKurulacakPoz.y;
-            mevcutCadir = Instantiate(cadirPrefab, cadirPoz,
-                                      transform.rotation);
-        }
-        // Önceki çadýrý kaldýr
-        if (mevcutCadir != null)
-            Destroy(mevcutCadir);
-
-        // Yeni çadýrý kur
-        if (cadirPrefab != null)
-        {
-            Vector3 cadirPoz = cadirKurulacakPoz +
-                               transform.forward * cadirMesafesi;
-            cadirPoz.y = cadirKurulacakPoz.y;
-            mevcutCadir = Instantiate(cadirPrefab, cadirPoz,
-                                      transform.rotation);
-        }
-
-        // Olum coroutine'ini iptal et
         checkpoint?.OlumIptal();
-        // 1. ONCE gece bonuslarini kapat
+
         if (sicaklikSistemi != null)
         {
             sicaklikSistemi.geceBonusu = false;
             sicaklikSistemi.alacakaranlýkBonusu = false;
         }
 
-        // 2. oldu flaglerini sifirla
         sicaklikSistemi?.Oldu_Sifirla();
         enerjiKontrol?.Oldu_Sifirla();
 
-        // 3. Checkpoint kaydet
         checkpoint?.CheckpointKaydet(cadirKurulacakPoz);
 
-        // 4. Isi toparlama
         bool atesYaniyor = atesSistemi != null && atesSistemi.YaniyorMu();
         sicaklikSistemi?.UykuSonrasiIsi(atesYaniyor);
 
-        // 5. Enerji dususu
         if (enerjiKontrol != null)
             enerjiKontrol.UykuSonrasiEnerji(enerjiKontrol.mevcutEnerji);
 
-        // 6. Sabaha atla
         gecGunduz?.SabahOldu();
-
-        // 7. Yeni gun
         GunSayaci.Instance?.YeniGun();
 
+        cadirDurum = CadirDurum.Uyundu;
         Debug.Log("Uyku tamamlandi!");
+    }
+
+    void CadirKaldir()
+    {
+        if (mevcutCadir != null)
+            Destroy(mevcutCadir);
+
+        inventory.AddItem(cadirItem, 1);
+        cadirDurum = CadirDurum.Kurulmadi;
     }
 
     void OnTriggerEnter(Collider other)
@@ -184,15 +154,12 @@ public class UykuSistemi : MonoBehaviour
         if (!other.CompareTag("Player")) return;
         oyuncuYakinda = true;
         cadirKurulacakPoz = other.transform.position;
-        if (ipucuPanel != null) ipucuPanel.SetActive(true);
-        if (cadirPanel != null) cadirPanel.SetActive(true); // ? ekle
     }
 
     void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
         oyuncuYakinda = false;
-        if (ipucuPanel != null) ipucuPanel.SetActive(false);
-        if (cadirPanel != null) cadirPanel.SetActive(false); // ? ekle
+        IpucuYoneticisi.Instance.MesajGizle("cadir");
     }
 }
