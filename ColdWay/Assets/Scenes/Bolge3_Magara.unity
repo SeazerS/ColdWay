@@ -9929,7 +9929,7 @@ MonoBehaviour:
   aksamSkybox: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
   geceSkybox: {fileID: 2100000, guid: f531e09e2ad2fb440b4eed7605863143, type: 2}
   gunes: {fileID: 1333161715}
-  gununSuresi: 3
+  gununSuresi: 2
   baslangicSaati: 15
   gunduzIsigiRengi: {r: 1, g: 0.95, b: 0.8, a: 1}
   aksamIsigiRengi: {r: 1, g: 0.5, b: 0.2, a: 1}

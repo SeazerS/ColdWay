@@ -51,8 +51,8 @@ public class UykuSistemi : MonoBehaviour
 
         GuncelleMesaj();
 
-        if (Input.GetKeyDown(KeyCode.E))
-            EtusunaBasildi();
+        if (Input.GetKeyDown(KeyCode.T))
+            TtusunaBasildi();
     }
 
     void GuncelleMesaj()
@@ -66,12 +66,12 @@ public class UykuSistemi : MonoBehaviour
                  sicaklikSistemi.geceBonusu;
 
         if (geceVakti)
-            ipucuText.text = "E — Çadýr Kur ve Uyu";
+            ipucuText.text = "T — Çadýr Kur ve Uyu";
         else
             ipucuText.text = "Hava henüz kararmadý";
     }
 
-    void EtusunaBasildi()
+    void TtusunaBasildi()
     {
         float saat = gecGunduz != null ?
             float.Parse(gecGunduz.SaatiAl().Split(':')[0]) : 12f;
@@ -80,7 +80,7 @@ public class UykuSistemi : MonoBehaviour
                  sicaklikSistemi.geceBonusu;
 
         if (geceVakti)
-            ipucuText.text = "E — Çadýr Kur ve Uyu";
+            ipucuText.text = "T — Çadýr Kur ve Uyu";
         else
             ipucuText.text = "Hava henüz kararmadý";
 
