@@ -57,6 +57,11 @@ public class EnerjiKontrol : MonoBehaviour
         UIGuncelle();
         KisitlamaKontrol();
         OlumKontrol();
+
+        if (PostProsses.Instance != null)
+        {
+            PostProsses.Instance.EnerjiEfektiGuncelle(mevcutEnerji / maxEnerji);
+        }
     }
 
     void EnerjiGuncelle()

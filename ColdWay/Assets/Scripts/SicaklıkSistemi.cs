@@ -176,8 +176,13 @@ public class SicaklikSistemi : MonoBehaviour
 
     void PostProcessGuncelle()
     {
-        if (mevcutSicaklik / maxSicaklik < 0.25f)
-            Debug.Log("KRITIK — Ekran efekti baslasin");
+            float oran = mevcutSicaklik / maxSicaklik;
+
+            if (PostProsses.Instance != null)
+            {
+            PostProsses.Instance.SicaklikEfektiGuncelle(oran);
+            }
+
     }
 
     void OlumKontrol()
