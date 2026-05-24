@@ -4,6 +4,9 @@
     "m_ObjectId": "38c3dc2c0e1a4da29e59021856014bde",
     "m_Properties": [
         {
+            "m_Id": "c54dec432af04dfba5884686bf28c284"
+        },
+        {
             "m_Id": "43c0dc1e161743e4b8040a67d7c7d603"
         },
         {
@@ -625,8 +628,8 @@
     ],
     "m_VertexContext": {
         "m_Position": {
-            "x": 349.0000305175781,
-            "y": 7.0000128746032719
+            "x": 617.0000610351563,
+            "y": -221.00003051757813
         },
         "m_Blocks": [
             {
@@ -2458,10 +2461,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 0.0,
-            "height": 0.0
+            "x": 359.0,
+            "y": 51.000022888183597,
+            "width": 200.0,
+            "height": 40.99998474121094
         }
     },
     "m_Slots": [
@@ -2516,10 +2519,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -298.0,
-            "y": 1841.9998779296875,
-            "width": 139.99996948242188,
-            "height": 34.0001220703125
+            "x": -297.0,
+            "y": 1421.0,
+            "width": 140.0,
+            "height": 34.0
         }
     },
     "m_Slots": [
@@ -3416,6 +3419,9 @@
         },
         {
             "m_Id": "803dfa8b8a544a51b401d703a1bb81ba"
+        },
+        {
+            "m_Id": "c54dec432af04dfba5884686bf28c284"
         }
     ]
 }
@@ -3519,6 +3525,34 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "c54dec432af04dfba5884686bf28c284",
+    "m_Guid": {
+        "m_GuidSerialized": "2e275f3c-cb85-451d-b969-4b5459fe8b43"
+    },
+    "m_Name": "SnowHeight",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "SnowHeight",
+    "m_DefaultReferenceName": "_SnowHeight",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 1.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
 }
 
 {
@@ -3649,8 +3683,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -292.0,
-            "y": 1729.0,
+            "x": -291.0,
+            "y": 1308.0,
             "width": 132.0,
             "height": 94.0
         }

@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: rock_set_mat
-  m_Shader: {fileID: -6465566751694194690, guid: b9a402d86912d0443a2e8c175a5cb61d,
+  m_Shader: {fileID: -6465566751694194690, guid: fc432729846f1ca40b5325e56f687f53,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -128,7 +128,11 @@ Material:
     - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
     - _SnowBalance: 15
+    - _SnowHeight: 1
+    - _SnowMultiplier: 35.55
+    - _SnowNoiseScale: 3.9
     - _SnowNormalStrength: 0.003
+    - _SnowSoftEdge: 2.03
     - _SnowWetStrentgh: 0.07
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -141,5 +145,7 @@ Material:
     - _BaseColor: {r: 1, g: 0.96816033, b: 0.9575471, a: 1}
     - _Color: {r: 1, g: 0.96816033, b: 0.9575471, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SnowColor: {r: 1, g: 1, b: 1, a: 0}
+    - _SnowDirection: {r: 0, g: 1, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
