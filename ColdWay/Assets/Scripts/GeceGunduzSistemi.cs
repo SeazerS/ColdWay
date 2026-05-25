@@ -7,6 +7,9 @@ public class GecGunduzSistemi : MonoBehaviour
     public Material aksamSkybox;
     public Material geceSkybox;
 
+    [Header("Gecis Ayarlari")]
+    public float gecisSuresi = 30f;
+
     [Header("Güneþ")]
     public Light gunes;
 
@@ -53,15 +56,50 @@ public class GecGunduzSistemi : MonoBehaviour
     private bool olumBasladi = false;
     private SicaklikSistemi sicaklik;
 
-    // Skybox gecis kontrolu
-    private string mevcutSkyboxAdi = "";
+    // Skybox gecis degiskenleri
+    private float tintDeger = 1f;
+    private bool karartiyor = false;
+    private bool aciyor = false;
+    private Material bekleyenSkybox;
+    private Material aktifSkybox;
+
+    private Color gunduzOrijinalTint;
+    private Color aksamOrijinalTint;
+    private Color geceOrijinalTint;
+
+    private Material gunduzInstance;
+    private Material aksamInstance;
+    private Material geceInstance;
+
 
     void Start()
     {
         mevcutSaat = baslangicSaati;
         gunSuresiSaniye = gununSuresi * 60f;
         sicaklik = FindObjectOfType<SicaklikSistemi>();
-        SkyboxAyarla(gunduzSkybox, "gunduz");
+
+        gunduzInstance = new Material(gunduzSkybox);
+        aksamInstance = new Material(aksamSkybox);
+        geceInstance = new Material(geceSkybox);
+
+        gunduzOrijinalTint = SkyboxTintAl(gunduzSkybox);
+        aksamOrijinalTint = SkyboxTintAl(aksamSkybox);
+        geceOrijinalTint = SkyboxTintAl(geceSkybox);
+
+        Color SkyboxTintAl(Material mat)
+        {
+            if (mat == null) return Color.white;
+            string[] properties = { "_Tint", "_SkyTint", "_Color" };
+            foreach (string prop in properties)
+                if (mat.HasProperty(prop))
+                    return mat.GetColor(prop);
+            return Color.white;
+        }
+
+        aktifSkybox = gunduzSkybox;
+        bekleyenSkybox = gunduzSkybox;
+        RenderSettings.skybox = gunduzSkybox;
+        DynamicGI.UpdateEnvironment();
     }
 
     void Update()
@@ -116,43 +154,83 @@ public class GecGunduzSistemi : MonoBehaviour
 
     void SkyboxGuncelle()
     {
-        Color hedefRenk;
+        Material hedef = null;
 
         if (mevcutSaat >= 6f && mevcutSaat < 16f)
-            hedefRenk = new Color(0.8f, 0.85f, 1f);
+            hedef = gunduzInstance;
         else if (mevcutSaat >= 16f && mevcutSaat < 20f)
-        {
-            float oran = (mevcutSaat - 16f) / 4f;
-            hedefRenk = Color.Lerp(
-                new Color(0.8f, 0.85f, 1f),
-                new Color(0.05f, 0.05f, 0.15f), oran);
-        }
+            hedef = aksamInstance;
         else
-            hedefRenk = new Color(0.05f, 0.05f, 0.15f);
+            hedef = geceInstance;
 
-        if (gunduzSkybox != null)
+        if (hedef != aktifSkybox && hedef != bekleyenSkybox
+            && !karartiyor && !aciyor)
         {
-            // Cubemap shader icin dogru property adini bul
-            string[] properties = { "_Tint", "_SkyTint", "_Color", "_SkyColor" };
-            foreach (string prop in properties)
+            bekleyenSkybox = hedef;
+            karartiyor = true;
+        }
+
+        // Karar: skybox'i kaart
+        if (karartiyor)
+        {
+            tintDeger -= Time.deltaTime / gecisSuresi;
+
+            if (tintDeger <= 0f)
             {
-                if (gunduzSkybox.HasProperty(prop))
-                {
-                    Color mevcutRenk = gunduzSkybox.GetColor(prop);
-                    gunduzSkybox.SetColor(prop,
-                        Color.Lerp(mevcutRenk, hedefRenk, Time.deltaTime * 0.3f));
-                    break;
-                }
+                tintDeger = 0f;
+                karartiyor = false;
+                aciyor = true;
+
+                // Skybox'i degistir
+                aktifSkybox = bekleyenSkybox;
+                RenderSettings.skybox = aktifSkybox;
+                DynamicGI.UpdateEnvironment();
             }
+
+            SkyboxTintAyarla(tintDeger);
+        }
+
+        // Ac: skybox'i ac
+        if (aciyor)
+        {
+            tintDeger += Time.deltaTime / gecisSuresi;
+
+            if (tintDeger >= 1f)
+            {
+                tintDeger = 1f;
+                aciyor = false;
+            }
+
+            SkyboxTintAyarla(tintDeger);
         }
     }
 
-    void SkyboxAyarla(Material skybox, string ad)
+    void SkyboxTintAyarla(float deger)
     {
-        if (skybox == null || mevcutSkyboxAdi == ad) return;
-        mevcutSkyboxAdi = ad;
-        RenderSettings.skybox = skybox;
-        DynamicGI.UpdateEnvironment();
+        if (RenderSettings.skybox == null) return;
+
+        Color orijinal = Color.white;
+        if (aktifSkybox == gunduzInstance) orijinal = gunduzOrijinalTint;
+        else if (aktifSkybox == aksamInstance) orijinal = aksamOrijinalTint;
+        else if (aktifSkybox == geceInstance) orijinal = geceOrijinalTint;
+
+        string[] properties = { "_Tint", "_SkyTint", "_Color" };
+        foreach (string prop in properties)
+        {
+            if (RenderSettings.skybox.HasProperty(prop))
+            {
+                RenderSettings.skybox.SetColor(prop,
+                    new Color(
+                        orijinal.r * deger,
+                        orijinal.g * deger,
+                        orijinal.b * deger,
+                        orijinal.a));
+                break;
+            }
+        }
+
+        if (RenderSettings.skybox.HasProperty("_Exposure"))
+            RenderSettings.skybox.SetFloat("_Exposure", deger);
     }
 
     void AmbientGuncelle()
@@ -169,7 +247,6 @@ public class GecGunduzSistemi : MonoBehaviour
         else
             hedefAmbient = geceAmbient;
 
-        // Cok yumusak gecis
         RenderSettings.ambientLight = Color.Lerp(
             RenderSettings.ambientLight, hedefAmbient, Time.deltaTime * 0.3f);
     }
@@ -198,7 +275,6 @@ public class GecGunduzSistemi : MonoBehaviour
             hedefYogunluk = geceFogYogunluk;
         }
 
-        // Yumusak gecis
         RenderSettings.fogColor = Color.Lerp(
             RenderSettings.fogColor, hedefFog, Time.deltaTime * 0.5f);
         RenderSettings.fogDensity = Mathf.Lerp(
@@ -266,6 +342,9 @@ public class GecGunduzSistemi : MonoBehaviour
         mevcutSaat = 6f;
         uyariVerildi = false;
         olumBasladi = false;
+        karartiyor = false;
+        aciyor = false;
+        tintDeger = 1f;
 
         if (sicaklik != null)
         {
@@ -273,7 +352,10 @@ public class GecGunduzSistemi : MonoBehaviour
             sicaklik.alacakaranlýkBonusu = false;
         }
 
-        SkyboxAyarla(gunduzSkybox, "");
-        mevcutSkyboxAdi = "";
+        aktifSkybox = gunduzInstance;
+        bekleyenSkybox = gunduzInstance;
+        RenderSettings.skybox = gunduzInstance;
+        SkyboxTintAyarla(1f);
+        DynamicGI.UpdateEnvironment();
     }
 }
