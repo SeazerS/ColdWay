@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.51722145, g: 0.5303489, b: 0.5566038, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 4e154bf235e41704bbd6bbc6fd6c63f6, type: 2}
   m_HaloStrength: 0.5
@@ -10054,30 +10054,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunduzSkybox: {fileID: 2100000, guid: 4e154bf235e41704bbd6bbc6fd6c63f6, type: 2}
   aksamSkybox: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
-  geceSkybox: {fileID: 2100000, guid: f531e09e2ad2fb440b4eed7605863143, type: 2}
-  gecisSuresi: 30
   gunes: {fileID: 1333161715}
-  gununSuresi: 2
+  gununSuresi: 1
   baslangicSaati: 8
   gunduzIsigiRengi: {r: 1, g: 0.95, b: 0.8, a: 1}
   aksamIsigiRengi: {r: 1, g: 0.5, b: 0.2, a: 1}
   geceIsigiRengi: {r: 0.1, g: 0.1, b: 0.3, a: 1}
-  saatText: {fileID: 3375813901357893561}
-  gunduzFogRengi: {r: 0.7, g: 0.8, b: 0.9, a: 1}
-  aksamFogRengi: {r: 0.4, g: 0.3, b: 0.3, a: 1}
-  geceFogRengi: {r: 0.05, g: 0.05, b: 0.1, a: 1}
+  geceIsigiYogunlugu: 0.1
+  gunduzAmbient: {r: 0.4, g: 0.4, b: 0.5, a: 1}
+  aksamAmbient: {r: 0.25, g: 0.18, b: 0.12, a: 1}
+  geceAmbient: {r: 0.06412425, g: 0.06412425, b: 0.103773594, a: 1}
+  gunduzFog: {r: 0.7, g: 0.8, b: 0.9, a: 1}
+  aksamFog: {r: 0.3, g: 0.2, b: 0.15, a: 1}
+  geceFog: {r: 0.02, g: 0.02, b: 0.05, a: 1}
   gunduzFogYogunluk: 0.01
   geceFogYogunluk: 0.03
-  gunduzAmbient: {r: 0.4, g: 0.4, b: 0.5, a: 1}
-  aksamAmbient: {r: 0.3, g: 0.2, b: 0.15, a: 1}
-  geceAmbient: {r: 0.05, g: 0.05, b: 0.1, a: 1}
-  ayIsigiRengi: {r: 0.5, g: 0.6, b: 1, a: 1}
-  ayIsigiYogunlugu: 0.08
   gunduzKarCarpani: 1
-  aksamKarCarpani: 1.5
   geceKarCarpani: 2.5
   karSistemi: {fileID: 2148934426609744957}
   ruzgarSistemi: {fileID: 7498575535265512227}
+  saatText: {fileID: 3375813901357893561}
 --- !u!4 &753029370
 Transform:
   m_ObjectHideFlags: 0
