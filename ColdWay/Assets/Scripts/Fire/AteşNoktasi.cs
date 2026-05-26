@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 
 public class AteşNoktasi : MonoBehaviour
 {
@@ -12,10 +11,7 @@ public class AteşNoktasi : MonoBehaviour
 
     [Header("Duman")]
     public GameObject dumanParticle;
-
-    //[Header("UI")]
-    //public GameObject ipucuPanel;
-    //public TextMeshProUGUI ipucuText;
+    private ParticleSystem dumanPS;
 
     [Header("Ayarlar")]
     public float etkilesimMesafesi = 3f;
@@ -25,8 +21,35 @@ public class AteşNoktasi : MonoBehaviour
 
     void Start()
     {
-        //if (ipucuPanel != null) ipucuPanel.SetActive(false);
-        if (dumanParticle != null) dumanParticle.SetActive(true);
+        dumanPS = dumanParticle != null
+            ? dumanParticle.GetComponentInChildren<ParticleSystem>(true)
+            : null;
+
+        DumanBaslat();
+    }
+
+    public void DumanBaslat()
+    {
+        if (dumanParticle == null) return;
+
+        dumanParticle.SetActive(true);
+
+        ParticleSystem[] tumPS = dumanParticle
+            .GetComponentsInChildren<ParticleSystem>(true);
+        foreach (ParticleSystem p in tumPS)
+        {
+            p.gameObject.SetActive(true);
+            p.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            p.Play();
+        }
+    }
+
+    public void DumanDurdur()
+    {
+        if (dumanParticle == null) return;
+        if (dumanPS != null)
+            dumanPS.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        dumanParticle.SetActive(false);
     }
 
     void Update()
@@ -42,14 +65,12 @@ public class AteşNoktasi : MonoBehaviour
                 return;
             }
 
-            // Kibrit kontrolu
             if (!KibritVarMi())
             {
                 IpucuYoneticisi.Instance.MesajGoster("ates", "Kibrit gerekli!");
                 return;
             }
 
-            // Minigame baslat
             if (kibritMinigame != null)
                 kibritMinigame.Baslat(this);
         }
@@ -85,42 +106,30 @@ public class AteşNoktasi : MonoBehaviour
             IpucuYoneticisi.Instance.MesajGoster("ates", "E — Ateş Kur");
     }
 
-    bool OdunVarMi()
-    {
-        if (inventory == null || odunItemSO == null) return false;
-        int toplam = 0;
-        foreach (Slot slot in inventory.allSlots)
-            if (slot.HasItem() && slot.GetItem() == odunItemSO)
-                toplam += slot.GetAmount();
-        return toplam >= gerekliOdun;
-    }
-
-    bool KibritVarMi()
-    {
-        if (inventory == null || kibritItemSO == null) return false;
-        foreach (Slot slot in inventory.allSlots)
-            if (slot.HasItem() && slot.GetItem() == kibritItemSO)
-                return true;
-        return false;
-    }
-
-    // Minigame basarili oldugunda cagrilir
     public void AteşiYak()
     {
-        // Odunu envanterden kaldir
         OdunuKaldir(gerekliOdun);
-
-        // Kibrit azalt
         KibritiKullan();
 
-        // Ateşi başlat
         if (atesSistemi != null)
             atesSistemi.AtesBas(gerekliOdun);
 
-        // Duman kapat
         if (dumanParticle != null)
+        {
+            ParticleSystem[] tumPS = dumanParticle
+                .GetComponentsInChildren<ParticleSystem>(true);
+            foreach (ParticleSystem p in tumPS)
+                p.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             dumanParticle.SetActive(false);
+        }
 
+        GuncelleMesaj();
+    }
+
+    // Ateş sönünce AtesSistemi buraya çağırır
+    public void AtesSondu()
+    {
+        DumanBaslat();
         GuncelleMesaj();
     }
 
@@ -147,11 +156,9 @@ public class AteşNoktasi : MonoBehaviour
         }
     }
 
-    // 3 kibrit de bitince kutu envanterden kalkar
     public void KibritKutusunuAzalt()
     {
         KibritiKullan();
-        Debug.Log("Kibrit kutusu bitti, envanterden kaldirildi.");
     }
 
     void KibritiKullan()
@@ -166,5 +173,24 @@ public class AteşNoktasi : MonoBehaviour
                 return;
             }
         }
+    }
+
+    bool OdunVarMi()
+    {
+        if (inventory == null || odunItemSO == null) return false;
+        int toplam = 0;
+        foreach (Slot slot in inventory.allSlots)
+            if (slot.HasItem() && slot.GetItem() == odunItemSO)
+                toplam += slot.GetAmount();
+        return toplam >= gerekliOdun;
+    }
+
+    bool KibritVarMi()
+    {
+        if (inventory == null || kibritItemSO == null) return false;
+        foreach (Slot slot in inventory.allSlots)
+            if (slot.HasItem() && slot.GetItem() == kibritItemSO)
+                return true;
+        return false;
     }
 }

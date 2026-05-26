@@ -8,7 +8,7 @@ public class AtesSistemi : MonoBehaviour
 
     [Header("Particle ve Isik")]
     public GameObject atesParticle;
-    public GameObject dumanParticle;
+    //public GameObject dumanParticle;
     public Light atesIsigi;
 
     [Header("Kul")]
@@ -26,6 +26,11 @@ public class AtesSistemi : MonoBehaviour
     private float kalanSure = 0f;
     private bool yaniyor = false;
     private int mevcutOdun = 0;
+
+    [Header("Ates Noktasi")]
+    public AteþNoktasi atesNoktasi;
+
+
 
 
 
@@ -57,6 +62,7 @@ public class AtesSistemi : MonoBehaviour
 
     public void AtesBas(int odunMiktari)
     {
+
         Debug.Log("ATES BAS ÇAÐRILDI");
 
         mevcutOdun = Mathf.Min(odunMiktari, maxOdun);
@@ -78,7 +84,6 @@ public class AtesSistemi : MonoBehaviour
             }
         }
 
-        if (dumanParticle != null) dumanParticle.SetActive(false);
         if (atesIsigi != null) atesIsigi.enabled = true;
 
         if (sicaklikSistemi != null) sicaklikSistemi.AtesAktif(true);
@@ -125,7 +130,6 @@ public class AtesSistemi : MonoBehaviour
 
         if (atesParticle != null) atesParticle.SetActive(false);
         if (atesIsigi != null) atesIsigi.enabled = false;
-        if (dumanParticle != null) dumanParticle.SetActive(true);
 
         // Odun görsellerini gizle
         if (odunObjeleri != null)
@@ -140,6 +144,10 @@ public class AtesSistemi : MonoBehaviour
             Instantiate(kulPrefab, transform.position, Quaternion.identity);
 
         Debug.Log("Ates sondü. Kul biraktirildi.");
+
+        // Duman tekrar baþlat
+        if (atesNoktasi != null)
+            atesNoktasi.DumanBaslat();
     }
 
     public bool YaniyorMu() { return yaniyor; }
