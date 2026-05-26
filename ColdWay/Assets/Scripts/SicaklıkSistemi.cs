@@ -199,6 +199,7 @@ public class SicaklikSistemi : MonoBehaviour
     {
         oldu = false;
         mevcutSicaklik = 50f;
+        PostProcessGuncelle();
     }
     public void GoleteGirdi() { if (mevcutBolge == 2) ayakIslak = true; }
     public void Kurudu() { ayakIslak = false; }
