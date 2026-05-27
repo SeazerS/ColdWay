@@ -7,6 +7,7 @@ TagManager:
   - CinemachineTarget
   - Agac
   - KuruAgac
+  - AtesNoktasi
   layers:
   - Default
   - TransparentFX

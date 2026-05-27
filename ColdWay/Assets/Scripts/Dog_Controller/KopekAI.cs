@@ -44,12 +44,14 @@ public class KopekAI : MonoBehaviour
 
     void Start()
     {
+
         if (kopekAnimator == null)
             kopekAnimator = GetComponentInChildren<Animator>();
         animator = kopekAnimator;
         agent = GetComponent<NavMeshAgent>();
 
         agent.stoppingDistance = durmaMessafesi;
+        agent.updateRotation = false;
         agent.angularSpeed = 720f;
         agent.acceleration = 80f;
 
@@ -84,14 +86,19 @@ public class KopekAI : MonoBehaviour
 
     void KritikIsiKontrol()
     {
-        if (sicaklikSistemi == null) return;
+        if (sicaklikSistemi == null)
+        {
+            Debug.LogError("SicaklikSistemi null!");
+            return;
+        }
 
         float isiOrani = sicaklikSistemi.mevcutSicaklik / sicaklikSistemi.maxSicaklik;
-        bool isiKritik = isiOrani < kritikIsiEsigi;
+        Debug.Log($"Isý oraný: {isiOrani} | Kritik eþik: {kritikIsiEsigi} | Yönlendirme: {yonlendirmeAktif}");
 
         AtesSistemi yakinAtes = EnYakinYananAtesiGetir();
         if (yakinAtes != null && yakinAtes.YaniyorMu())
         {
+            Debug.Log("Yakýnda yanan ateþ var, yönlendirme iptal.");
             if (yonlendirmeAktif)
             {
                 yonlendirmeAktif = false;
@@ -100,19 +107,16 @@ public class KopekAI : MonoBehaviour
             return;
         }
 
-        if (isiKritik && !yonlendirmeAktif)
+        if (isiOrani < kritikIsiEsigi && !yonlendirmeAktif)
         {
             enYakinAtesNoktasi = EnYakinAtesNoktasiniBul();
+            Debug.Log($"Ateþ noktasý bulundu mu: {enYakinAtesNoktasi != null}");
             if (enYakinAtesNoktasi != null)
             {
                 yonlendirmeAktif = true;
                 agent.stoppingDistance = atesNoktasiDurmaMessafesi;
+                Debug.Log("Yönlendirme baþladý!");
             }
-        }
-        else if (!isiKritik && yonlendirmeAktif)
-        {
-            yonlendirmeAktif = false;
-            agent.stoppingDistance = durmaMessafesi;
         }
     }
 
@@ -125,19 +129,34 @@ public class KopekAI : MonoBehaviour
 
     void YonlendirmeGuncelle()
     {
-        if (enYakinAtesNoktasi == null) return;
+        if (enYakinAtesNoktasi == null) { yonlendirmeAktif = false; return; }
 
-        float mesafe = Vector3.Distance(transform.position, enYakinAtesNoktasi.position);
-        Debug.Log($"Mesafe: {mesafe} | hasPath: {agent.hasPath} | pathPending: {agent.pathPending} | pathStatus: {agent.pathStatus}");
+        float mesafe = Vector3.Distance(
+            transform.position, enYakinAtesNoktasi.position);
 
         if (mesafe > atesNoktasiDurmaMessafesi + 0.5f)
         {
+            agent.isStopped = false; // ? bunu ekle
             agent.speed = 8f;
             agent.SetDestination(enYakinAtesNoktasi.position);
-            AnimasyonAyarla(false, agent.velocity.magnitude > 0.2f);
+
+            if (agent.velocity.magnitude > 0.2f)
+                AnimasyonAyarla(false, true);
+            else
+                AnimasyonAyarla(false, false);
+
+            // Yumuþak rotasyon
+            if (agent.velocity.sqrMagnitude > 0.1f)
+            {
+                Quaternion hedef = Quaternion.LookRotation(
+                    agent.velocity.normalized);
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation, hedef, 8f * Time.deltaTime);
+            }
         }
         else
         {
+            agent.isStopped = true;
             agent.ResetPath();
             AnimasyonAyarla(false, false);
             OyuncuyaBak();
@@ -154,6 +173,7 @@ public class KopekAI : MonoBehaviour
             agent.SetDestination(oyuncu.position);
             AnimasyonAyarla(agent.velocity.magnitude > 0.1f, false);
         }
+
         else
         {
             agent.ResetPath();
@@ -164,6 +184,13 @@ public class KopekAI : MonoBehaviour
                 sonEnerjiHavlaZamani = Time.time;
                 animator.SetTrigger("Havla");
             }
+        }
+
+        if (agent.velocity.sqrMagnitude > 0.1f)
+        {
+            Quaternion hedefRotasyon = Quaternion.LookRotation(agent.velocity.normalized);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation, hedefRotasyon, 8f * Time.deltaTime);
         }
     }
 
@@ -196,6 +223,18 @@ public class KopekAI : MonoBehaviour
 
     void DurumUygula(float mesafe)
     {
+        void DurumUygula(float mesafe)
+        {
+            agent.isStopped = false;
+            agent.SetDestination(oyuncu.position);
+        }
+        // Yumuþak rotasyon
+        if (agent.velocity.sqrMagnitude > 0.1f)
+        {
+            Quaternion hedefRotasyon = Quaternion.LookRotation(agent.velocity.normalized);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation, hedefRotasyon, 8f * Time.deltaTime);
+        }
         agent.SetDestination(oyuncu.position);
 
         if (mesafe > 5f)
