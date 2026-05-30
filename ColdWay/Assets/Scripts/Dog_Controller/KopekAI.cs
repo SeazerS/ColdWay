@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -27,31 +26,41 @@ public class KopekAI : MonoBehaviour
     [Range(0f, 1f)]
     public float kritikEnerjiEsigi = 0.20f;
     public float enerjiUyariHavlaAraligi = 5f;
-    private float sonEnerjiHavlaZamani = 0f;
-    private bool enerjiUyariAktif = false;
 
+    [Header("Rotasyon")]
+    public float rotasyonHizi = 6f;
+
+    [Header("Takilma")]
+    public float takilmaEsigi = 2f;
+
+    // Private
     private Animator animator;
     private NavMeshAgent agent;
 
-    // Yonlendirme
     private bool yonlendirmeAktif = false;
+    private bool enerjiUyariAktif = false;
     private Transform enYakinAtesNoktasi;
-    private float sonHavlaZamani = 0f;
 
-    private Vector3 sonPozisyon;
+    private float sonHavlaZamani = 0f;
+    private float sonEnerjiHavlaZamani = 0f;
     private float takilmaZamani = 0f;
-    public float takilmaEsigi = 2f;
+
+    private Vector3 sonHedef = Vector3.zero;
+    private float hedefGuncellemeMesafesi = 0.5f;
 
     void Start()
     {
-
         if (kopekAnimator == null)
             kopekAnimator = GetComponentInChildren<Animator>();
         animator = kopekAnimator;
         agent = GetComponent<NavMeshAgent>();
 
+        if (agent == null) { Debug.LogError("NavMeshAgent yok!"); return; }
+
         agent.stoppingDistance = durmaMessafesi;
         agent.updateRotation = false;
+        agent.updatePosition = true;
+        agent.isStopped = false;
         agent.angularSpeed = 720f;
         agent.acceleration = 80f;
 
@@ -73,32 +82,35 @@ public class KopekAI : MonoBehaviour
         KritikIsiKontrol();
         KritikEnerjiKontrol();
 
-        if (yonlendirmeAktif) { YonlendirmeGuncelle(); return; }
-        if (enerjiUyariAktif) { EnerjiUyariGuncelle(); return; }
+        if (yonlendirmeAktif)
+            YonlendirmeGuncelle();
+        else if (enerjiUyariAktif)
+            EnerjiUyariGuncelle();
+        else
+        {
+            float mesafe = Vector3.Distance(transform.position, oyuncu.position);
+            DurumGecisKontrol(mesafe);
+            DurumUygula(mesafe);
+            TakilmaKontrol();
+        }
 
-        float mesafe = Vector3.Distance(transform.position, oyuncu.position);
-        DurumGecisKontrol(mesafe);
-        DurumUygula(mesafe);
-
-        TakilmaKontrol();
-
+        // Rotasyon tek yerden yönetiliyor
+        RotasyonGuncelle();
     }
+
+    // ??? Kritik Kontroller ????????????????????????????????????????????????
 
     void KritikIsiKontrol()
     {
-        if (sicaklikSistemi == null)
-        {
-            Debug.LogError("SicaklikSistemi null!");
-            return;
-        }
+        if (sicaklikSistemi == null) return;
 
-        float isiOrani = sicaklikSistemi.mevcutSicaklik / sicaklikSistemi.maxSicaklik;
-        Debug.Log($"Isý oraný: {isiOrani} | Kritik eþik: {kritikIsiEsigi} | Yönlendirme: {yonlendirmeAktif}");
+        float isiOrani = sicaklikSistemi.mevcutSicaklik /
+                         sicaklikSistemi.maxSicaklik;
 
+        // Yakýnda yanan ateþ varsa yönlendirmeyi iptal et
         AtesSistemi yakinAtes = EnYakinYananAtesiGetir();
-        if (yakinAtes != null && yakinAtes.YaniyorMu())
+        if (yakinAtes != null)
         {
-            Debug.Log("Yakýnda yanan ateþ var, yönlendirme iptal.");
             if (yonlendirmeAktif)
             {
                 yonlendirmeAktif = false;
@@ -110,13 +122,16 @@ public class KopekAI : MonoBehaviour
         if (isiOrani < kritikIsiEsigi && !yonlendirmeAktif)
         {
             enYakinAtesNoktasi = EnYakinAtesNoktasiniBul();
-            Debug.Log($"Ateþ noktasý bulundu mu: {enYakinAtesNoktasi != null}");
             if (enYakinAtesNoktasi != null)
             {
                 yonlendirmeAktif = true;
                 agent.stoppingDistance = atesNoktasiDurmaMessafesi;
-                Debug.Log("Yönlendirme baþladý!");
             }
+        }
+        else if (isiOrani >= kritikIsiEsigi && yonlendirmeAktif)
+        {
+            yonlendirmeAktif = false;
+            agent.stoppingDistance = durmaMessafesi;
         }
     }
 
@@ -127,6 +142,8 @@ public class KopekAI : MonoBehaviour
         enerjiUyariAktif = oran < kritikEnerjiEsigi;
     }
 
+    // ??? Hareket Metodlarý ????????????????????????????????????????????????
+
     void YonlendirmeGuncelle()
     {
         if (enYakinAtesNoktasi == null) { yonlendirmeAktif = false; return; }
@@ -136,30 +153,16 @@ public class KopekAI : MonoBehaviour
 
         if (mesafe > atesNoktasiDurmaMessafesi + 0.5f)
         {
-            agent.isStopped = false; // ? bunu ekle
+            agent.isStopped = false;
             agent.speed = 8f;
             agent.SetDestination(enYakinAtesNoktasi.position);
-
-            if (agent.velocity.magnitude > 0.2f)
-                AnimasyonAyarla(false, true);
-            else
-                AnimasyonAyarla(false, false);
-
-            // Yumuþak rotasyon
-            if (agent.velocity.sqrMagnitude > 0.1f)
-            {
-                Quaternion hedef = Quaternion.LookRotation(
-                    agent.velocity.normalized);
-                transform.rotation = Quaternion.Slerp(
-                    transform.rotation, hedef, 8f * Time.deltaTime);
-            }
+            AnimasyonAyarla(false, agent.velocity.magnitude > 0.2f);
         }
         else
         {
             agent.isStopped = true;
             agent.ResetPath();
             AnimasyonAyarla(false, false);
-            OyuncuyaBak();
             HavlaZamanla();
         }
     }
@@ -167,53 +170,45 @@ public class KopekAI : MonoBehaviour
     void EnerjiUyariGuncelle()
     {
         float mesafe = Vector3.Distance(transform.position, oyuncu.position);
+
         if (mesafe > 2.5f)
         {
+            agent.isStopped = false;
             agent.speed = 4f;
             agent.SetDestination(oyuncu.position);
             AnimasyonAyarla(agent.velocity.magnitude > 0.1f, false);
         }
-
         else
         {
+            agent.isStopped = true;
             agent.ResetPath();
             AnimasyonAyarla(false, false);
-            OyuncuyaBak();
+
             if (Time.time - sonEnerjiHavlaZamani >= enerjiUyariHavlaAraligi)
             {
                 sonEnerjiHavlaZamani = Time.time;
                 animator.SetTrigger("Havla");
             }
         }
-
-        if (agent.velocity.sqrMagnitude > 0.1f)
-        {
-            Quaternion hedefRotasyon = Quaternion.LookRotation(agent.velocity.normalized);
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation, hedefRotasyon, 8f * Time.deltaTime);
-        }
     }
 
     void DurumGecisKontrol(float mesafe)
     {
         string yeniDurum = mevcutDurum;
+
         switch (mevcutDurum)
         {
             case "idle":
             case "dur":
-                // Herhangi bir mesafede aninda tepki ver
                 if (mesafe > durmaMessafesi)
                     yeniDurum = mesafe > kosmaBaslangic ? "run" : "walk";
                 break;
             case "walk":
-                if (mesafe > kosmaBaslangic)
-                    yeniDurum = "run";
-                else if (mesafe <= durmaMessafesi)
-                    yeniDurum = "dur";
+                if (mesafe > kosmaBaslangic) yeniDurum = "run";
+                else if (mesafe <= durmaMessafesi) yeniDurum = "dur";
                 break;
             case "run":
-                if (mesafe <= yurumeBaslangic)
-                    yeniDurum = "walk";
+                if (mesafe <= yurumeBaslangic) yeniDurum = "walk";
                 break;
         }
 
@@ -223,46 +218,64 @@ public class KopekAI : MonoBehaviour
 
     void DurumUygula(float mesafe)
     {
-        void DurumUygula(float mesafe)
-        {
-            agent.isStopped = false;
-            agent.SetDestination(oyuncu.position);
-        }
-        // Yumuþak rotasyon
-        if (agent.velocity.sqrMagnitude > 0.1f)
-        {
-            Quaternion hedefRotasyon = Quaternion.LookRotation(agent.velocity.normalized);
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation, hedefRotasyon, 8f * Time.deltaTime);
-        }
-        agent.SetDestination(oyuncu.position);
+        agent.isStopped = false;
 
+        // Oyuncu 0.5 birimden fazla hareket ettiyse güncelle
+        if (Vector3.Distance(oyuncu.position, sonHedef) >
+            hedefGuncellemeMesafesi)
+        {
+            sonHedef = oyuncu.position;
+            agent.SetDestination(sonHedef);
+        }
+
+        float hedefHiz;
         if (mesafe > 5f)
         {
-            agent.speed = 10f;
+            hedefHiz = 10f;
             AnimasyonAyarla(false, true);
         }
         else if (mesafe > 2f)
         {
-            agent.speed = 3f;
+            hedefHiz = 3f;
             AnimasyonAyarla(true, false);
         }
         else
         {
-            agent.speed = 0f;
+            hedefHiz = 0f;
             AnimasyonAyarla(false, false);
         }
+
+        agent.speed = Mathf.Lerp(agent.speed, hedefHiz, Time.deltaTime * 5f);
     }
-    void OyuncuyaBak()
+
+    // ??? Rotasyon — tek yerden yönetilir ?????????????????????????????????
+
+    void RotasyonGuncelle()
     {
-        Vector3 yon = oyuncu.position - transform.position;
-        yon.y = 0;
-        if (yon == Vector3.zero) return;
+        Vector3 hedefYon = Vector3.zero;
+
+        // Hareket ediyorsa velocity yönüne dön
+        if (agent.velocity.sqrMagnitude > 0.05f)
+            hedefYon = agent.velocity.normalized;
+        // Duruyorsa oyuncuya dön
+        else
+        {
+            Vector3 fark = oyuncu.position - transform.position;
+            fark.y = 0;
+            if (fark.sqrMagnitude > 0.01f)
+                hedefYon = fark.normalized;
+        }
+
+        if (hedefYon == Vector3.zero) return;
+
+        hedefYon.y = 0;
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
-            Quaternion.LookRotation(yon),
-            8f * Time.deltaTime);
+            Quaternion.LookRotation(hedefYon),
+            rotasyonHizi * Time.deltaTime);
     }
+
+    // ??? Yardýmcýlar ??????????????????????????????????????????????????????
 
     void HavlaZamanla()
     {
@@ -273,15 +286,25 @@ public class KopekAI : MonoBehaviour
         }
     }
 
+    void AnimasyonAyarla(bool yuruyor, bool kosuyor)
+    {
+        animator.SetBool("yuruyorum", yuruyor);
+        animator.SetBool("kosuyorum", kosuyor);
+    }
+
     Transform EnYakinAtesNoktasiniBul()
     {
         AteþNoktasi[] noktalar = FindObjectsOfType<AteþNoktasi>();
         Transform enYakin = null;
         float enYakinMesafe = float.MaxValue;
+
         foreach (AteþNoktasi nokta in noktalar)
         {
-            if (nokta.atesSistemi != null && nokta.atesSistemi.YaniyorMu()) continue;
-            float m = Vector3.Distance(transform.position, nokta.transform.position);
+            if (nokta.atesSistemi != null &&
+                nokta.atesSistemi.YaniyorMu()) continue;
+
+            float m = Vector3.Distance(
+                transform.position, nokta.transform.position);
             if (m < enYakinMesafe) { enYakinMesafe = m; enYakin = nokta.transform; }
         }
         return enYakin;
@@ -292,45 +315,39 @@ public class KopekAI : MonoBehaviour
         AtesSistemi[] atesler = FindObjectsOfType<AtesSistemi>();
         foreach (AtesSistemi ates in atesler)
         {
-            if (ates.YaniyorMu())
-            {
-                float m = Vector3.Distance(oyuncu.position, ates.transform.position);
-                if (m < 15f) return ates;
-            }
+            if (!ates.YaniyorMu()) continue;
+            float m = Vector3.Distance(oyuncu.position, ates.transform.position);
+            if (m < 15f) return ates;
         }
         return null;
     }
 
-    void AnimasyonAyarla(bool yuruyor, bool kosuyor)
-    {
-        animator.SetBool("yuruyorum", yuruyor);
-        animator.SetBool("kosuyorum", kosuyor);
-    }
+    private string oncekiDurum = "";
 
     void TakilmaKontrol()
     {
+        // Durum yeni deðiþtiyse sayacý sýfýrla
+        if (mevcutDurum != oncekiDurum)
+        {
+            oncekiDurum = mevcutDurum;
+            takilmaZamani = 0f;
+            return;
+        }
+
         if (agent.velocity.magnitude < 0.1f &&
             Vector3.Distance(transform.position, oyuncu.position) > 3f)
         {
             takilmaZamani += Time.deltaTime;
-
             if (takilmaZamani >= takilmaEsigi)
             {
-                // Takildi - oyuncuya dogru isýnla
                 takilmaZamani = 0f;
                 NavMeshHit hit;
-                // Oyuncunun yakininda gecerli bir NavMesh noktasi bul
-                if (NavMesh.SamplePosition(oyuncu.position, out hit, 5f, NavMesh.AllAreas))
-                {
+                if (NavMesh.SamplePosition(
+                    oyuncu.position, out hit, 5f, NavMesh.AllAreas))
                     agent.Warp(hit.position);
-                    Debug.Log("Kopek takilmadan kurtuldu!");
-                }
             }
         }
-        else
-        {
-            takilmaZamani = 0f;
-        }
+        else takilmaZamani = 0f;
     }
 
     public void Havla() { animator.SetTrigger("Havla"); }
