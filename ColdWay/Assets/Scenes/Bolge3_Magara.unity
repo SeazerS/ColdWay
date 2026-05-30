@@ -15185,6 +15185,7 @@ MonoBehaviour:
   "maxIslakl\u0131kSuresi": 120
   sicaklikSlider: {fileID: 1187243512}
   sliderDolgu: {fileID: 0}
+  atesEtkiMesafesi: 5
 --- !u!114 &1030150355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50974,6 +50975,11 @@ PrefabInstance:
       propertyPath: sicaklikSistemi
       value: 
       objectReference: {fileID: 1030150354}
+    - target: {fileID: 3639512951450629734, guid: 5b1ec612d8b7bd942a76af7abe8608a7,
+        type: 3}
+      propertyPath: odunBasinaYanmaSuresi
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 5042925441762679261, guid: 5b1ec612d8b7bd942a76af7abe8608a7,
         type: 3}
       propertyPath: m_Name

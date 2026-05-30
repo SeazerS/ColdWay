@@ -43,16 +43,25 @@ public class EnerjiKontrol : MonoBehaviour
     private Player_Controller hareket;
     private bool atesBasinda = false;
 
+    private bool oldu = false;
+
+    [Header("Ates Isýnma")]
+    public float atesEtkiMesafesi = 5f;
+    private AtesSistemi[] tumAtesler;
+
     void Start()
     {
         mevcutEnerji = maxEnerji;
         hareket = GetComponent<Player_Controller>();
         BolgeGuncelle(1);
         UIGuncelle();
+        tumAtesler = FindObjectsOfType<AtesSistemi>();
+
     }
 
     void Update()
     {
+        AtesYakinlikKontrol();
         EnerjiGuncelle();
         UIGuncelle();
         KisitlamaKontrol();
@@ -113,9 +122,23 @@ public class EnerjiKontrol : MonoBehaviour
 
     void OlumKontrol()
     {
+        if (oldu) return;
         if (mevcutEnerji <= 0f)
-            CheckpointSistemi.Instance?.OlumGerceklesti();
+        {
+            oldu = true;
+            CheckpointSistemi.Instance?.OlumGerceklesti(
+                CheckpointSistemi.OlumNedeni.Enerji);
+        }
     }
+
+    public void OlduFlagSifirla() { oldu = false; }
+
+    public void Oldu_Sifirla()
+    {
+        oldu = false;
+        mevcutEnerji = maxEnerji * 0.15f; // Az enerji ama sýfýr deðil
+    }
+
 
     // Uyku sonrasi enerji
     public void UykuSonrasiEnerji(float mevcut)
@@ -145,9 +168,32 @@ public class EnerjiKontrol : MonoBehaviour
         if (hareket == null) return;
         hareket.kosmakAktif = (mevcutEnerji / maxEnerji) >= 0.2f;
     }
+    void AtesYakinlikKontrol()
+    {
+        if (tumAtesler == null || tumAtesler.Length == 0)
+        {
+            tumAtesler = FindObjectsOfType<AtesSistemi>();
+            return;
+        }
 
-    public void Oldu_Sifirla() { mevcutEnerji = maxEnerji * 0.75f; }
-    public void AtesAktif(bool d) { atesBasinda = d; }
+        bool yakinAtes = false;
+        foreach (AtesSistemi ates in tumAtesler)
+        {
+            if (ates == null || !ates.YaniyorMu()) continue;
+
+            float mesafe = Vector3.Distance(
+                transform.position, ates.transform.position);
+
+            if (mesafe <= atesEtkiMesafesi)
+            {
+                yakinAtes = true;
+                break;
+            }
+        }
+
+        atesBasinda = yakinAtes;
+    }
+    public void AtesAktif(bool d) { } // mesafe ile kontrol ediliyor
     public void BaltaKullanildi() { mevcutEnerji -= baltaDususu; }
     public void EtYe() { mevcutEnerji = Mathf.Min(mevcutEnerji + etArtisi, maxEnerji); }
     public void KonserveYe() { mevcutEnerji = Mathf.Min(mevcutEnerji + konserveArtisi, maxEnerji); }

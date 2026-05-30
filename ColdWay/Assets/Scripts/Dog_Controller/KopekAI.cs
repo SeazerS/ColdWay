@@ -48,6 +48,9 @@ public class KopekAI : MonoBehaviour
     private Vector3 sonHedef = Vector3.zero;
     private float hedefGuncellemeMesafesi = 0.5f;
 
+    [Header("Yonlendirme Ayarlari")]
+    public float yakinAtesAlgimaMesafesi = 15f; // ? ekle
+
     void Start()
     {
         if (kopekAnimator == null)
@@ -317,7 +320,7 @@ public class KopekAI : MonoBehaviour
         {
             if (!ates.YaniyorMu()) continue;
             float m = Vector3.Distance(oyuncu.position, ates.transform.position);
-            if (m < 15f) return ates;
+            if (m < yakinAtesAlgimaMesafesi) return ates;
         }
         return null;
     }

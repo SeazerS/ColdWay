@@ -21,7 +21,13 @@ public class CheckpointSistemi : MonoBehaviour
     public float beklemeSuresi = 1.5f;
     public float acilmaSuresi = 1.0f;
 
+    public enum OlumNedeni { Sicaklik, Enerji }
+    private OlumNedeni sonOlumNedeni;
+
     private bool olumIsleniyor = false;
+
+    private float olumAnindakiSicaklik;
+    private float olumAnindakiEnerji;
 
     void Awake()
     {
@@ -76,8 +82,26 @@ public class CheckpointSistemi : MonoBehaviour
             oyuncu.position = sonCheckpointPoz;
 
         // 4. Sistemleri sifirla
-        sicaklikSistemi?.Oldu_Sifirla();
-        enerjiKontrol?.Oldu_Sifirla();
+        if (sonOlumNedeni == OlumNedeni.Sicaklik)
+        {
+            sicaklikSistemi?.Oldu_Sifirla();           // sýcaklýk 15'e düþer
+            if (enerjiKontrol != null)
+            {
+                enerjiKontrol.OlduFlagSifirla();
+                enerjiKontrol.mevcutEnerji = olumAnindakiEnerji; // enerji korunur
+            }
+        }
+        else
+        {
+            enerjiKontrol?.Oldu_Sifirla();             // enerji %15'e düþer
+            if (sicaklikSistemi != null)
+            {
+                sicaklikSistemi.OlduFlagSifirla();
+                sicaklikSistemi.mevcutSicaklik = olumAnindakiSicaklik; // sýcaklýk korunur
+            }
+        }
+
+        
 
         // 5. Ekrani ac
         yield return StartCoroutine(EkranAc(acilmaSuresi));
@@ -111,5 +135,20 @@ public class CheckpointSistemi : MonoBehaviour
             yield return null;
         }
         karartmaEkrani.color = new Color(0, 0, 0, 0);
+    }
+
+    public void OlumGerceklesti(OlumNedeni neden)
+    {
+        if (olumIsleniyor) return;
+        sonOlumNedeni = neden;
+
+        // Ölüm anýndaki deðerleri kaydet
+        olumAnindakiSicaklik = sicaklikSistemi != null ?
+            sicaklikSistemi.mevcutSicaklik : 50f;
+        olumAnindakiEnerji = enerjiKontrol != null ?
+            enerjiKontrol.mevcutEnerji : 50f;
+
+        olumIsleniyor = true;
+        StartCoroutine(OlumSonrasiDon());
     }
 }
