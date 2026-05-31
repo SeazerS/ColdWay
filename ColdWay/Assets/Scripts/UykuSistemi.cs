@@ -122,8 +122,8 @@ public class UykuSistemi : MonoBehaviour
             sicaklikSistemi.alacakaranlýkBonusu = false;
         }
 
-        sicaklikSistemi?.Oldu_Sifirla();
-        enerjiKontrol?.Oldu_Sifirla();
+        //sicaklikSistemi?.Oldu_Sifirla();
+        //enerjiKontrol?.Oldu_Sifirla();
 
         checkpoint?.CheckpointKaydet(cadirKurulacakPoz);
 

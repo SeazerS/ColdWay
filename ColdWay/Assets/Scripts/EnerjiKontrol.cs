@@ -143,10 +143,10 @@ public class EnerjiKontrol : MonoBehaviour
     // Uyku sonrasi enerji
     public void UykuSonrasiEnerji(float mevcut)
     {
-        float dusus = 20f; // Aç uyuduysa -20
-        if (mevcut < 30f) dusus = 10f; // Cok actiysa daha az dus
-        mevcutEnerji = Mathf.Max(5f, mevcutEnerji - dusus);
-        Debug.Log($"Uyku sonrasi enerji -{dusus}. Mevcut: {mevcutEnerji}");
+        float artisOrani = 0.15f;
+        float artis = maxEnerji * artisOrani;
+        mevcutEnerji = Mathf.Min(maxEnerji, mevcutEnerji + artis);
+        Debug.Log($"Uyku sonrasý enerji +{artis:F1}. Mevcut: {mevcutEnerji:F1}");
     }
 
     public void BolgeGuncelle(int bolgeNo) { mevcutBolge = bolgeNo; }

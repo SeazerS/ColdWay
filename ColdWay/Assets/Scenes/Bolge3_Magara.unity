@@ -9345,62 +9345,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6858040}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &630199644
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 630199646}
-  - component: {fileID: 630199645}
-  m_Layer: 0
-  m_Name: DENEME-ayakizi
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &630199645
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 630199644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: b7b733e80986370488cd11c412818d6c, type: 2}
-  m_DrawDistance: 1000
-  m_FadeScale: 0.9
-  m_StartAngleFade: 180
-  m_EndAngleFade: 180
-  m_UVScale: {x: 1, y: 1}
-  m_UVBias: {x: 0, y: 0}
-  m_DecalLayerMask: 0
-  m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 0.5}
-  m_Size: {x: 0.5, y: 1, z: 1}
-  m_FadeFactor: 1
---- !u!4 &630199646
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 630199644}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 584.1736, y: 29.81, z: 157.04214}
-  m_LocalScale: {x: 9.2031, y: 9.2031, z: 9.2031}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &631760486
 GameObject:
   m_ObjectHideFlags: 0
@@ -10892,7 +10836,7 @@ MonoBehaviour:
   aksamSkybox: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
   gunes: {fileID: 1333161715}
   gununSuresi: 15
-  baslangicSaati: 8
+  baslangicSaati: 21
   gecisAdimiSuresi: 25
   gunduzIsigiRengi: {r: 1, g: 0.95, b: 0.8, a: 1}
   aksamIsigiRengi: {r: 1, g: 0.5, b: 0.2, a: 1}
@@ -15215,6 +15159,7 @@ MonoBehaviour:
   enerjiSlider: {fileID: 2145598370}
   sliderDolgu: {fileID: 0}
   SicaklikSistemi: {fileID: 1030150354}
+  atesEtkiMesafesi: 5
 --- !u!114 &1030150361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42828,27 +42773,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &583566505180009275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2692188636771903983}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a4f0b36e6c0a884f8edf66cf7cee090, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventory: {fileID: 0}
-  woodItemSO: {fileID: 11400000, guid: 7df95ae1f10bc6041ae57ddcfc260cc8, type: 2}
-  woodPilePrefab: {fileID: 7125702130867883266, guid: 636cc1d3771bd7a42a64ba5ce96d9b94,
-    type: 3}
-  fireParticlePrefab: {fileID: 503650815918672786, guid: 63408aa9e803b224699ce09df8dabb86,
-    type: 3}
-  interactionDistance: 20
-  interactionBar: {fileID: 0}
-  barContainer: {fileID: 0}
 --- !u!1 &600719920913430897
 GameObject:
   m_ObjectHideFlags: 0
@@ -44241,21 +44165,6 @@ PrefabInstance:
       addedObject: {fileID: 837293842}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af899c59b0f21914ebefa113c122a971, type: 3}
---- !u!4 &903530649386779285
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2692188636771903983}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 325.8108, y: 0.01809083, z: 306.8483}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1031921636208414503
 RectTransform:
   m_ObjectHideFlags: 0
@@ -49380,23 +49289,6 @@ RectTransform:
   m_AnchoredPosition: {x: 242.89996, y: -80.799805}
   m_SizeDelta: {x: 280, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &2692188636771903983
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 903530649386779285}
-  - component: {fileID: 583566505180009275}
-  m_Layer: 0
-  m_Name: mech
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
 --- !u!114 &2708408977924872711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51472,7 +51364,6 @@ SceneRoots:
   - {fileID: 585813740}
   - {fileID: 1953873582}
   - {fileID: 1031921636208414503}
-  - {fileID: 903530649386779285}
   - {fileID: 2402687640435774046}
   - {fileID: 1221851889}
   - {fileID: 1027810655}
@@ -51553,7 +51444,6 @@ SceneRoots:
   - {fileID: 1130881693}
   - {fileID: 311813781}
   - {fileID: 1655027769}
-  - {fileID: 630199646}
   - {fileID: 854877272}
   - {fileID: 1916918687}
   - {fileID: 916436236}

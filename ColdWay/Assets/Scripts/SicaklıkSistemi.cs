@@ -133,9 +133,10 @@ public class SicaklikSistemi : MonoBehaviour
     // Uyku sonrasi isiy toparlama
     public void UykuSonrasiIsi(bool atesVarMiydi)
     {
-        float artis = atesVarMiydi ? 30f : 15f;
-        mevcutSicaklik = Mathf.Min(mevcutSicaklik + artis, maxSicaklik);
-        Debug.Log($"Uyku sonrasi isi +{artis}. Mevcut: {mevcutSicaklik}");
+        float azalisOrani = atesVarMiydi ? 0.10f : 0.15f;
+        float azalis = mevcutSicaklik * azalisOrani;
+        mevcutSicaklik = Mathf.Max(10f, mevcutSicaklik - azalis);
+        Debug.Log($"Uyku sonrası ısı -{azalis:F1}. Mevcut: {mevcutSicaklik:F1}");
     }
 
     public void BolgeGuncelle(int bolgeNo)
@@ -238,6 +239,8 @@ public class SicaklikSistemi : MonoBehaviour
 
         atesBasinda = yakinAtes;
     }
+
+
 
     public void GoleteGirdi() { if (mevcutBolge == 2) ayakIslak = true; }
     public void Kurudu() { ayakIslak = false; }
