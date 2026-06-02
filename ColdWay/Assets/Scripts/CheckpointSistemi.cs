@@ -151,4 +151,31 @@ public class CheckpointSistemi : MonoBehaviour
         olumIsleniyor = true;
         StartCoroutine(OlumSonrasiDon());
     }
+
+    // Bölge dýþý ölüm — stat sýfýrlanmaz, sadece pozisyon resetlenir
+    public void OlumGerceklestiBolgeDisi()
+    {
+        if (olumIsleniyor) return;
+        olumIsleniyor = true;
+        StartCoroutine(BolgeDisiOlumCoroutine());
+    }
+
+    IEnumerator BolgeDisiOlumCoroutine()
+    {
+        // Ekraný kaart
+        yield return StartCoroutine(EkranKarar(karartmaSuresi));
+        yield return new WaitForSeconds(beklemeSuresi);
+
+        // Sadece pozisyonu sýfýrla — stat deðiþmez
+        if (oyuncu != null && checkpointVar)
+            oyuncu.position = sonCheckpointPoz;
+
+        // oldu flaglerini sýfýrla (stat deðerleri korunur)
+        sicaklikSistemi?.OlduFlagSifirla();
+        enerjiKontrol?.OlduFlagSifirla();
+
+        // Ekraný aç
+        yield return StartCoroutine(EkranAc(acilmaSuresi));
+        olumIsleniyor = false;
+    }
 }

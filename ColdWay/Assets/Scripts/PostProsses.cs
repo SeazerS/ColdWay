@@ -18,6 +18,10 @@ public class PostProsses : MonoBehaviour
     private float mevcutSicaklikOrani = 1f;
     private float mevcutEnerjiOrani = 1f;
 
+    private float bolgeDisiEtkiGucu = 0f;
+    private float bolgeDisiHedef = 0f;
+
+
     [Header("Buzlanma UI Ayarlarý")]
 
     public Image[] buzDokulari;
@@ -40,6 +44,17 @@ public class PostProsses : MonoBehaviour
             Debug.LogError("Global Volume veya Profil script tarafýndan bulunamadý!");
         }
     }
+
+    public void BolgeDisiEfektAc(float yogunluk)
+    {
+        bolgeDisiHedef = Mathf.Clamp01(yogunluk);
+    }
+
+    public void BolgeDisiEfektKapat()
+    {
+        bolgeDisiHedef = 0f;
+    }
+
 
     public void SicaklikEfektiGuncelle(float sicaklikOrani)
     {
@@ -112,6 +127,46 @@ public class PostProsses : MonoBehaviour
             {
                 vignette.intensity.Override(0f);
                 vignette.active = false;
+            }
+        }
+
+        // Bölge dýþý efekti — yumuþak geçiþ
+        bolgeDisiEtkiGucu = Mathf.Lerp(
+            bolgeDisiEtkiGucu, bolgeDisiHedef, Time.deltaTime * 3f);
+
+        if (bolgeDisiEtkiGucu > 0.01f)
+        {
+            // Kýrmýzý pulse vignette
+            float pulse = Mathf.Abs(Mathf.Sin(Time.time * 2.5f));
+            float vignetteYogunluk = Mathf.Lerp(0.3f, 0.65f, pulse)
+                                     * bolgeDisiEtkiGucu;
+
+            if (vignette != null)
+            {
+                vignette.active = true;
+                // Diðer efektlerle karþýlaþtýr, en yükseði al
+                float mevcutYogunluk = vignette.intensity.value;
+                vignette.intensity.Override(
+                    Mathf.Max(mevcutYogunluk, vignetteYogunluk));
+                vignette.color.Override(
+                    Color.Lerp(vignette.color.value,
+                    new Color(0.6f, 0f, 0f), bolgeDisiEtkiGucu));
+            }
+
+            // Renk bozulmasý
+            if (colorAdjustments != null)
+            {
+                colorAdjustments.active = true;
+                colorAdjustments.saturation.Override(
+                    Mathf.Lerp(0f, -30f, bolgeDisiEtkiGucu));
+            }
+
+            // Blur artar
+            if (depthOfField != null)
+            {
+                depthOfField.active = true;
+                depthOfField.focusDistance.Override(
+                    Mathf.Lerp(10f, 1.5f, bolgeDisiEtkiGucu * 0.5f));
             }
         }
     }
