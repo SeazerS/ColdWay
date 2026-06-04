@@ -2879,6 +2879,102 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 186937979}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
+=======
+--- !u!1 &188905578
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 188905580}
+  - component: {fileID: 188905579}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &188905579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188905578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9c79fe38b566f343a9e81b4e0a56d24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - audioName: Ates_Sesi
+    clip: {fileID: 8300000, guid: b5aec20eaa884a54d97e283d0df66883, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - audioName: Kopek_Havlama
+    clip: {fileID: 8300000, guid: 4ef06169251ee854e85b686473f96ef1, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - audioName: Kopek_Sevme
+    clip: {fileID: 8300000, guid: 5ae7003a3f68a7340bd2ade30719efba, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - audioName: Odun_Kesme
+    clip: {fileID: 8300000, guid: 3515a988f5437fc4e991c40564c7eb69, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - audioName: Ruzgar_Sesi
+    clip: {fileID: 8300000, guid: a0f185cce68db324aa8f85bb43d04055, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - audioName: Somine_Atesi
+    clip: {fileID: 8300000, guid: b4abdbf5f1c01a741ba69ca31571b938, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - audioName: Yeme_Sesi
+    clip: {fileID: 8300000, guid: 46401bf56ac849041bf0aca7f86988a2, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - audioName: Yurume_Sesi
+    clip: {fileID: 8300000, guid: ea4f5222537e231498ba9b9bd8cf96b7, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+--- !u!4 &188905580
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188905578}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+>>>>>>> Stashed changes
 --- !u!1 &189372469
 GameObject:
   m_ObjectHideFlags: 0
@@ -8657,6 +8753,11 @@ PrefabInstance:
         type: 3}
       propertyPath: SprintSpeed
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 453084650579209848, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
+        type: 3}
+      propertyPath: GroundLayers.m_Bits
+      value: 129
       objectReference: {fileID: 0}
     - target: {fileID: 453084650579209855, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
@@ -52137,3 +52238,7 @@ SceneRoots:
   - {fileID: 823026842}
   - {fileID: 1082829504}
   - {fileID: 401645551}
+<<<<<<< Updated upstream
+=======
+  - {fileID: 188905580}
+>>>>>>> Stashed changes
