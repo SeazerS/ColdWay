@@ -25,6 +25,9 @@ public class KopekIziSistemi : MonoBehaviour
     public float yerdenYukseklik = 0.02f;
     public LayerMask zeminLayer;
 
+    [Header("Ýz Rengi")]
+    public Color izRengi = new Color(0.75f, 0.80f, 0.85f, 0.5f);
+
     [Header("Adým Ayarlarý")]
     public float yuruyusAdimArasi = 0.5f;
     public float kosusAdimArasi = 0.9f;
@@ -54,7 +57,6 @@ public class KopekIziSistemi : MonoBehaviour
 
         float mesafe = Vector3.Distance(mevcutPoz, sonPoz2D);
 
-        // Hareket yönünü güncelle
         if (mesafe > 0.01f)
         {
             Vector3 yon = (mevcutPoz - sonPoz2D).normalized;
@@ -65,7 +67,6 @@ public class KopekIziSistemi : MonoBehaviour
         sonAdimMesafesi += mesafe;
         sonPozisyon = transform.position;
 
-        // Hýza göre adým aralýðý
         float hiz = mesafe / Time.deltaTime;
         float adimArasi = hiz > 3f ? kosusAdimArasi : yuruyusAdimArasi;
 
@@ -105,7 +106,6 @@ public class KopekIziSistemi : MonoBehaviour
 
         adimSayaci++;
 
-        // Zemin yüzeyini bul
         RaycastHit hit;
         if (Physics.Raycast(spawnPoz + Vector3.up * 0.5f,
             Vector3.down, out hit, 2f, zeminLayer))
@@ -113,10 +113,9 @@ public class KopekIziSistemi : MonoBehaviour
             spawnPoz = hit.point + Vector3.up * yerdenYukseklik;
         }
 
-        // Hareket yönüne göre rotasyon
-        float yon = Mathf.Atan2(sonHareketYonu.x, sonHareketYonu.z)
-                    * Mathf.Rad2Deg;
-        Quaternion izRotasyon = Quaternion.Euler(90f, yon, 0f);
+        float yonAci = Mathf.Atan2(sonHareketYonu.x, sonHareketYonu.z)
+                       * Mathf.Rad2Deg;
+        Quaternion izRotasyon = Quaternion.Euler(90f, yonAci, 0f);
 
         GameObject iz = new GameObject("KopekIzi");
         iz.transform.position = spawnPoz;
@@ -126,8 +125,8 @@ public class KopekIziSistemi : MonoBehaviour
         SpriteRenderer sr = iz.AddComponent<SpriteRenderer>();
         sr.sprite = penceIziSprite;
         sr.sortingOrder = 1;
+        sr.color = izRengi; // ? kar rengine yakýn ton
 
-        // Max iz kontrolü
         aktifIzler.Enqueue(iz);
         if (aktifIzler.Count > maxIzSayisi)
         {
