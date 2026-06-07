@@ -6,12 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Main_Menu.unity
+    guid: fc69999be7f065a4d9767a555e839f33
+  - enabled: 1
+    path: Assets/Scenes/Bolge3_Magara.unity
+    guid: 951ebd3cf5d03cb4ca41206e42d5c533
+  - enabled: 1
     path: Assets/Scenes/Bolge1_Orman.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Scenes/Bolge2_BuzGol.unity
     guid: d1e02d9788f2c524fbd0c837da37daf8
-  - enabled: 1
-    path: Assets/Scenes/Bolge3_Magara.unity
-    guid: 951ebd3cf5d03cb4ca41206e42d5c533
   m_configObjects: {}
