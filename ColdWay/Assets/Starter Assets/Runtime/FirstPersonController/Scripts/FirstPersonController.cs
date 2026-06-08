@@ -67,14 +67,14 @@
             private float _jumpTimeoutDelta;
             private float _fallTimeoutDelta;
 
-            // === SİZİN İÇİN EKLENEN ALAN (DEĞİŞKENLER) ===
             private float _footstepTimer = 0f;
             [Header("Audio Settings")]
             [Tooltip("Yürürken iki adım arasındaki süre (saniye)")]
             public float WalkStepRate = 0.5f;
             [Tooltip("Koşarken iki adım arasındaki süre (saniye)")]
             public float SprintStepRate = 0.3f;
-            // ============================================
+
+
 
     #if ENABLE_INPUT_SYSTEM
             private PlayerInput _playerInput;

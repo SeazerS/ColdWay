@@ -1,3 +1,4 @@
+using StarterAssets;
 using UnityEngine;
 
 public class AtesSistemi : MonoBehaviour
@@ -35,7 +36,20 @@ public class AtesSistemi : MonoBehaviour
 
 
     void Update()
-    { 
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            Debug.Log("[TEST] Ateþ ve Ses tetiklendi.");
+            if (AudioManager.instance != null) AudioManager.instance.Play("Ates_Sesi");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            Debug.Log("[TEST] Ateþ ve Ses durduruldu.");
+            if (AudioManager.instance != null) AudioManager.instance.Stop("Ates_Sesi");
+        }
+
+
         if (!yaniyor) return;
 
         kalanSure -= Time.deltaTime;

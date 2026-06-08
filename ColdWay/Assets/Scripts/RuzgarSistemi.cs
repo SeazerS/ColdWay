@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using StarterAssets;
 
 public class RuzgarSistemi : MonoBehaviour
 {
@@ -22,6 +24,8 @@ public class RuzgarSistemi : MonoBehaviour
     private float aktifBolgeCarpani = 1f;
     private float aktifZamanCarpani = 1f;
 
+    [Range(0f, 1f)] public float MaksimumSesSiniri = 0.7f;
+
     void Start()
     {
         windZone = GetComponent<WindZone>();
@@ -31,6 +35,8 @@ public class RuzgarSistemi : MonoBehaviour
             return;
         }
         BolgeGuncelle(1);
+
+        StartCoroutine(RuzgarSesiniBaslat());
     }
 
     public void BolgeGuncelle(int bolgeNo)
@@ -59,5 +65,44 @@ public class RuzgarSistemi : MonoBehaviour
         windZone.windTurbulence = orijinalTurbulence * carpan;
         windZone.windPulseMagnitude = orijinalPulseMag * carpan;
         windZone.windPulseFrequency = orijinalPulseFreq;
+
+        SesSeviyesiniAyarla();  
+    }
+
+    private IEnumerator RuzgarSesiniBaslat()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        if (AudioManager.instance != null)
+        {
+            BolgeGuncelle(1);
+
+            Sounds ruzgarSesi = System.Array.Find(AudioManager.instance.sounds, sound => sound.audioName == "Ruzgar_Sesi");
+            if (ruzgarSesi != null && ruzgarSesi.source != null)
+            {
+                ruzgarSesi.source.volume = ruzgarSesi.originalVolume;
+            }
+
+            AudioManager.instance.Play("Ruzgar_Sesi");
+
+            SesSeviyesiniAyarla();
+        }
+    }
+
+    void SesSeviyesiniAyarla()
+    {
+        if (AudioManager.instance == null) return;
+
+        Sounds ruzgarSesi = System.Array.Find(AudioManager.instance.sounds, sound => sound.audioName == "Ruzgar_Sesi");
+
+        if (ruzgarSesi != null && ruzgarSesi.source != null)
+        {
+            float toplamCarpan = aktifBolgeCarpani * aktifZamanCarpani;
+
+            float yeniVolume = ruzgarSesi.originalVolume * toplamCarpan;
+
+            yeniVolume = Mathf.Clamp(yeniVolume, 0f, MaksimumSesSiniri);
+            ruzgarSesi.source.volume = yeniVolume;
+        }
     }
 }

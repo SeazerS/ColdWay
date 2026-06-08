@@ -1,4 +1,5 @@
 using UnityEngine;
+using StarterAssets;
 
 public class AteşNoktasi : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class AteşNoktasi : MonoBehaviour
     public int gerekliOdun = 2;
 
     private bool oyuncuYakinda = false;
+
 
     void Start()
     {
@@ -54,6 +56,7 @@ public class AteşNoktasi : MonoBehaviour
 
     void Update()
     {
+
         if (!oyuncuYakinda) return;
         if (atesSistemi != null && atesSistemi.YaniyorMu()) return;
 
@@ -123,12 +126,22 @@ public class AteşNoktasi : MonoBehaviour
             dumanParticle.SetActive(false);
         }
 
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("Ates_Sesi");
+        }
+
         GuncelleMesaj();
     }
 
     // Ateş sönünce AtesSistemi buraya çağırır
     public void AtesSondu()
     {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Stop("Ates_Sesi");
+        }
+
         DumanBaslat();
         GuncelleMesaj();
     }

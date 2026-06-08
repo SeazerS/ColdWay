@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using StarterAssets;
 
 public class KopekAI : MonoBehaviour
 {
@@ -81,6 +82,13 @@ public class KopekAI : MonoBehaviour
     void Update()
     {
         if (animator == null || agent == null || oyuncu == null) return;
+
+
+        if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            Debug.Log("[KÖPEK TEST] Havla fonksiyonu elle tetiklendi.");
+            Havla(); 
+        }
 
         KritikIsiKontrol();
         KritikEnerjiKontrol();
@@ -190,7 +198,7 @@ public class KopekAI : MonoBehaviour
             if (Time.time - sonEnerjiHavlaZamani >= enerjiUyariHavlaAraligi)
             {
                 sonEnerjiHavlaZamani = Time.time;
-                animator.SetTrigger("Havla");
+                Havla();
             }
         }
     }
@@ -285,7 +293,7 @@ public class KopekAI : MonoBehaviour
         if (Time.time - sonHavlaZamani >= havlaAraliði)
         {
             sonHavlaZamani = Time.time;
-            animator.SetTrigger("Havla");
+            Havla();
         }
     }
 
@@ -353,7 +361,15 @@ public class KopekAI : MonoBehaviour
         else takilmaZamani = 0f;
     }
 
-    public void Havla() { animator.SetTrigger("Havla"); }
+    public void Havla()
+    {
+        if (animator != null) animator.SetTrigger("Havla");
+
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("Kopek_Havlama");
+        }
+    }
     public void KafaEvet() { animator.SetTrigger("KafaEvet"); }
     public void KafaHayir() { animator.SetTrigger("KafaHayir"); }
 }

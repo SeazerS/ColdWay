@@ -2921,54 +2921,62 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
-  - audioName: Ates_Sesi
-    clip: {fileID: 8300000, guid: b5aec20eaa884a54d97e283d0df66883, type: 3}
-    volume: 0.7
-    pitch: 1
-    loop: 1
-    source: {fileID: 0}
-  - audioName: Kopek_Havlama
-    clip: {fileID: 8300000, guid: 4ef06169251ee854e85b686473f96ef1, type: 3}
-    volume: 0.7
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - audioName: Kopek_Sevme
-    clip: {fileID: 8300000, guid: 5ae7003a3f68a7340bd2ade30719efba, type: 3}
-    volume: 0.7
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - audioName: Odun_Kesme
-    clip: {fileID: 8300000, guid: 3515a988f5437fc4e991c40564c7eb69, type: 3}
-    volume: 0.7
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - audioName: Ruzgar_Sesi
-    clip: {fileID: 8300000, guid: a0f185cce68db324aa8f85bb43d04055, type: 3}
-    volume: 0.7
-    pitch: 1
-    loop: 1
-    source: {fileID: 0}
-  - audioName: Somine_Atesi
-    clip: {fileID: 8300000, guid: b4abdbf5f1c01a741ba69ca31571b938, type: 3}
-    volume: 0.7
-    pitch: 1
-    loop: 1
-    source: {fileID: 0}
-  - audioName: Yeme_Sesi
-    clip: {fileID: 8300000, guid: 46401bf56ac849041bf0aca7f86988a2, type: 3}
-    volume: 0.7
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
   - audioName: Yurume_Sesi
     clip: {fileID: 8300000, guid: ea4f5222537e231498ba9b9bd8cf96b7, type: 3}
     volume: 0.2
     pitch: 1
     loop: 0
     source: {fileID: 0}
+    originalVolume: 0
+  - audioName: Ruzgar_Sesi
+    clip: {fileID: 8300000, guid: a0f185cce68db324aa8f85bb43d04055, type: 3}
+    volume: 0.02
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+    originalVolume: 0
+  - audioName: Ates_Sesi
+    clip: {fileID: 8300000, guid: b5aec20eaa884a54d97e283d0df66883, type: 3}
+    volume: 0.35
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+    originalVolume: 0
+  - audioName: Kopek_Havlama
+    clip: {fileID: 8300000, guid: 4ef06169251ee854e85b686473f96ef1, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - audioName: Kopek_Sevme
+    clip: {fileID: 8300000, guid: 5ae7003a3f68a7340bd2ade30719efba, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - audioName: Odun_Kesme
+    clip: {fileID: 8300000, guid: 3515a988f5437fc4e991c40564c7eb69, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - audioName: Somine_Atesi
+    clip: {fileID: 8300000, guid: b4abdbf5f1c01a741ba69ca31571b938, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+    originalVolume: 0
+  - audioName: Yeme_Sesi
+    clip: {fileID: 8300000, guid: 46401bf56ac849041bf0aca7f86988a2, type: 3}
+    volume: 0.7
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+    originalVolume: 0
 --- !u!4 &188905580
 Transform:
   m_ObjectHideFlags: 0
@@ -52925,6 +52933,7 @@ MonoBehaviour:
   oglenCarpani: 1
   aksamCarpani: 1.5
   geceCarpani: 2
+  MaksimumSesSiniri: 1
 --- !u!114 &7584883176105909295
 MonoBehaviour:
   m_ObjectHideFlags: 0

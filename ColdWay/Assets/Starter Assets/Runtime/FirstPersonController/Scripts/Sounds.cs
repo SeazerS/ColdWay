@@ -1,6 +1,5 @@
 using UnityEngine;
 
-// === DEÐÝÞÝKLÝK: Sound sýnýfýný da StarterAssets odasýna aldýk ===
 namespace StarterAssets
 {
     [System.Serializable]
@@ -9,15 +8,11 @@ namespace StarterAssets
         public string audioName;
         public AudioClip clip;
 
-        [Range(0f, 1f)]
-        public float volume = 0.7f;
-
-        [Range(.1f, 3f)]
-        public float pitch = 1f;
-
+        [Range(0f, 1f)] public float volume;
+        [Range(0.1f, 3f)] public float pitch;
         public bool loop;
 
-        [HideInInspector]
-        public AudioSource source;
+        [HideInInspector] public AudioSource source;
+        [HideInInspector] public float originalVolume;
     }
 }

@@ -31,6 +31,7 @@ namespace StarterAssets
                 s.source.volume = s.volume;
                 s.source.pitch = s.pitch;
                 s.source.loop = s.loop;
+                s.originalVolume = s.volume;
             }
         }
 
@@ -41,6 +42,14 @@ namespace StarterAssets
             {
                 Debug.LogWarning("Ses bulunamadý: " + name);
                 return;
+            }
+            if (name == "Yurume_Sesi")
+            {
+                s.source.pitch = s.pitch + UnityEngine.Random.Range(-0.15f, 0.15f);
+            }
+            else
+            {
+                s.source.pitch = s.pitch;
             }
             s.source.Play();
         }
