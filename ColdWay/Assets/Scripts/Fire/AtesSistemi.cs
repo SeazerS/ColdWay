@@ -7,6 +7,10 @@ public class AtesSistemi : MonoBehaviour
     public SicaklikSistemi sicaklikSistemi;
     public EnerjiKontrol enerjiKontrol;
 
+    [Header("Odun Modelleri")]
+    public GameObject yanmamisOdunModeli;  // kýrmýzýlýklý
+    public GameObject kulOdunModeli;       // gri kül
+
     [Header("Particle ve Isik")]
     public GameObject atesParticle;
     //public GameObject dumanParticle;
@@ -32,6 +36,16 @@ public class AtesSistemi : MonoBehaviour
     public AteþNoktasi atesNoktasi;
 
 
+    void Start()
+    {
+        // Baþlangýçta campfire mesh gizli
+        if (odunObjeleri != null)
+            foreach (GameObject odun in odunObjeleri)
+                if (odun != null) odun.SetActive(false);
+
+        if (yanmamisOdunModeli != null) yanmamisOdunModeli.SetActive(true);
+        if (kulOdunModeli != null) kulOdunModeli.SetActive(false);
+    }
 
 
 
@@ -82,6 +96,14 @@ public class AtesSistemi : MonoBehaviour
         mevcutOdun = Mathf.Min(odunMiktari, maxOdun);
         kalanSure = mevcutOdun * odunBasinaYanmaSuresi;
         yaniyor = true;
+
+        if (yanmamisOdunModeli != null) yanmamisOdunModeli.SetActive(false);
+        if (kulOdunModeli != null) kulOdunModeli.SetActive(false);
+
+        // Campfire mesh görünsün
+        if (odunObjeleri != null)
+            foreach (GameObject odun in odunObjeleri)
+                if (odun != null) odun.SetActive(true);
 
         if (atesParticle != null)
         {
@@ -141,6 +163,14 @@ public class AtesSistemi : MonoBehaviour
     {
         yaniyor = false;
         mevcutOdun = 0;
+
+        // Campfire mesh gizle
+        if (odunObjeleri != null)
+            foreach (GameObject odun in odunObjeleri)
+                if (odun != null) odun.SetActive(false);
+
+        if (yanmamisOdunModeli != null) yanmamisOdunModeli.SetActive(false);
+        if (kulOdunModeli != null) kulOdunModeli.SetActive(true);
 
         if (atesParticle != null) atesParticle.SetActive(false);
         if (atesIsigi != null) atesIsigi.enabled = false;
