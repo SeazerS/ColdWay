@@ -16,7 +16,7 @@ public class AteşNoktasi : MonoBehaviour
 
     [Header("Ayarlar")]
     public float etkilesimMesafesi = 3f;
-    public int gerekliOdun = 2;
+    public int gerekliOdun = 3;
 
     private bool oyuncuYakinda = false;
 

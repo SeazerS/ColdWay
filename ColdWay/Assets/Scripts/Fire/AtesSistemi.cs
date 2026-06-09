@@ -31,11 +31,19 @@ public class AtesSistemi : MonoBehaviour
     private bool yaniyor = false;
     private int mevcutOdun = 0;
 
+  
+
     [Header("Ates Noktasi")]
     public AteþNoktasi atesNoktasi;
 
     [Header("Odun Gorselleri")]
     public GameObject[] odunObjeleri; // Inspector'dan odun child objelerini sur
+
+    // Baþlangýçta aktif olacak indexler
+    private int[] baslangicIndexleri = { 3, 4, 6 };
+    // Sonradan ekleneceklerin sýrasý
+    private int[] ekstraIndexler = { 0, 1, 2, 5, 7 };
+
 
     void Start()
     {
@@ -84,10 +92,7 @@ public class AtesSistemi : MonoBehaviour
         if (yanmamisOdunModeli != null) yanmamisOdunModeli.SetActive(false);
         if (kulOdunModeli != null) kulOdunModeli.SetActive(false);
 
-        // Campfire mesh görününsün
-        if (odunObjeleri != null)
-            foreach (GameObject odun in odunObjeleri)
-                if (odun != null) odun.SetActive(true);
+        OdunGorselGuncelle();
 
         if (atesParticle != null)
         {
@@ -137,6 +142,8 @@ public class AtesSistemi : MonoBehaviour
                 mevcutOdun += eklenecek;
                 kalanSure += eklenecek * odunBasinaYanmaSuresi;
 
+                OdunGorselGuncelle();
+
                 Debug.Log(eklenecek + " odun eklendi. Kalan sure: " + Mathf.Round(kalanSure) + " sn");
                 return;
             }
@@ -148,6 +155,7 @@ public class AtesSistemi : MonoBehaviour
     {
         yaniyor = false;
         mevcutOdun = 0;
+        OdunGorselGuncelle();
 
         // Campfire mesh gizle
         if (odunObjeleri != null)
@@ -177,6 +185,31 @@ public class AtesSistemi : MonoBehaviour
         if (atesNoktasi != null)
         {
             atesNoktasi.AtesSondu();
+        }
+    }
+
+    void OdunGorselGuncelle()
+    {
+        if (odunObjeleri == null) return;
+
+        // Önce hepsini kapat
+        foreach (GameObject odun in odunObjeleri)
+            if (odun != null) odun.SetActive(false);
+
+        if (!yaniyor) return;
+
+        // Baþlangýç 3 odunu aç (index 3, 4, 6)
+        foreach (int index in baslangicIndexleri)
+            if (index < odunObjeleri.Length && odunObjeleri[index] != null)
+                odunObjeleri[index].SetActive(true);
+
+        // 3'ten fazla odun varsa ekstralarý aç
+        int ekstra = mevcutOdun - 3;
+        for (int i = 0; i < ekstra && i < ekstraIndexler.Length; i++)
+        {
+            int index = ekstraIndexler[i];
+            if (index < odunObjeleri.Length && odunObjeleri[index] != null)
+                odunObjeleri[index].SetActive(true);
         }
     }
 
