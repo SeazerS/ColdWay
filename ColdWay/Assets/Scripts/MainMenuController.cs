@@ -10,6 +10,7 @@ public class MainMenuController : MonoBehaviour
 
     public GameObject menuArea;
     public GameObject optionsPanel;
+    public GameObject saveSlotsPanel; // Kayit Slotlari paneli
 
     public void NewGame()
     {
@@ -17,9 +18,25 @@ public class MainMenuController : MonoBehaviour
         // normal akýþýna döndür
         Time.timeScale = 1f;
 
-        
+
         SceneManager.LoadScene(gameplaySceneName);
     }
+
+    // YENI Yükle butonuna basýnca slot panelini açar
+    public void OpenSaveSlots()
+    {
+        menuArea.SetActive(false);
+        saveSlotsPanel.SetActive(true);
+    }
+
+    // YENI Slot panelindeki Geri butonuna basýnca menüye döner
+    public void CloseSaveSlots()
+    {
+        saveSlotsPanel.SetActive(false);
+        menuArea.SetActive(true);
+    }
+
+
 
     // AYARLAR butonuna basýnca çalýþacak
     public void OpenOptions()
@@ -28,7 +45,7 @@ public class MainMenuController : MonoBehaviour
         optionsPanel.SetActive(true); // Ayarlar panelini göster
     }
 
-    // GERÝ butonuna basýnca çalýþacak
+    // GERI butonuna basýnca çalýþacak
     public void CloseOptions()
     {
         optionsPanel.SetActive(false); // Ayarlar panelini gizle

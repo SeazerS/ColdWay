@@ -82,7 +82,8 @@ Material:
     - _RimValue: 6.06
     - _Roughness: 1.25
     - _Smoothness: 0.2
-    - _SnowBalance: 20
+    - _SnowBalance: 0
+    - _SnowHeight: 1
     - _SnowNormalStrength: 0.1
     - _SnowWetStrentgh: 0
     m_Colors:
