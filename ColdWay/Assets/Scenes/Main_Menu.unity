@@ -656,6 +656,7 @@ GameObject:
   - component: {fileID: 429721907}
   - component: {fileID: 429721906}
   - component: {fileID: 429721909}
+  - component: {fileID: 429721910}
   m_Layer: 5
   m_Name: SaveLoad_Button
   m_TagString: Untagged
@@ -799,6 +800,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &429721910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429721904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
 --- !u!1 &455429802
 GameObject:
   m_ObjectHideFlags: 0
@@ -1620,6 +1634,7 @@ GameObject:
   - component: {fileID: 1468788688}
   - component: {fileID: 1468788687}
   - component: {fileID: 1468788690}
+  - component: {fileID: 1468788691}
   m_Layer: 5
   m_Name: NewGame_Button
   m_TagString: Untagged
@@ -1763,6 +1778,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1468788691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468788685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
 --- !u!1 &1497099041
 GameObject:
   m_ObjectHideFlags: 0
