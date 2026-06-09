@@ -13,7 +13,6 @@ public class AtesSistemi : MonoBehaviour
 
     [Header("Particle ve Isik")]
     public GameObject atesParticle;
-    //public GameObject dumanParticle;
     public Light atesIsigi;
 
     [Header("Kul")]
@@ -35,10 +34,11 @@ public class AtesSistemi : MonoBehaviour
     [Header("Ates Noktasi")]
     public AteþNoktasi atesNoktasi;
 
+    [Header("Odun Gorselleri")]
+    public GameObject[] odunObjeleri; // Inspector'dan odun child objelerini sur
 
     void Start()
     {
-        // Baþlangýçta campfire mesh gizli
         if (odunObjeleri != null)
             foreach (GameObject odun in odunObjeleri)
                 if (odun != null) odun.SetActive(false);
@@ -47,23 +47,8 @@ public class AtesSistemi : MonoBehaviour
         if (kulOdunModeli != null) kulOdunModeli.SetActive(false);
     }
 
-
-
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            Debug.Log("[TEST] Ateþ ve Ses tetiklendi.");
-            if (AudioManager.instance != null) AudioManager.instance.Play("Ates_Sesi");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            Debug.Log("[TEST] Ateþ ve Ses durduruldu.");
-            if (AudioManager.instance != null) AudioManager.instance.Stop("Ates_Sesi");
-        }
-
-
         if (!yaniyor) return;
 
         kalanSure -= Time.deltaTime;
@@ -72,7 +57,7 @@ public class AtesSistemi : MonoBehaviour
         if (atesIsigi != null)
             atesIsigi.intensity = 1.5f + Mathf.Sin(Time.time * 8f) * 0.3f;
 
-        // Ates sondume
+        // Ates sonurme
         if (kalanSure <= 0f)
             AtesSon();
 
@@ -90,7 +75,6 @@ public class AtesSistemi : MonoBehaviour
 
     public void AtesBas(int odunMiktari)
     {
-
         Debug.Log("ATES BAS ÇAÐRILDI");
 
         mevcutOdun = Mathf.Min(odunMiktari, maxOdun);
@@ -100,7 +84,7 @@ public class AtesSistemi : MonoBehaviour
         if (yanmamisOdunModeli != null) yanmamisOdunModeli.SetActive(false);
         if (kulOdunModeli != null) kulOdunModeli.SetActive(false);
 
-        // Campfire mesh görünsün
+        // Campfire mesh görününsün
         if (odunObjeleri != null)
             foreach (GameObject odun in odunObjeleri)
                 if (odun != null) odun.SetActive(true);
@@ -108,9 +92,7 @@ public class AtesSistemi : MonoBehaviour
         if (atesParticle != null)
         {
             atesParticle.SetActive(true);
-
             ParticleSystem[] particles = atesParticle.GetComponentsInChildren<ParticleSystem>(true);
-
             foreach (ParticleSystem ps in particles)
             {
                 ps.gameObject.SetActive(true);
@@ -124,7 +106,14 @@ public class AtesSistemi : MonoBehaviour
 
         if (sicaklikSistemi != null) sicaklikSistemi.AtesAktif(true);
         if (enerjiKontrol != null) enerjiKontrol.AtesAktif(true);
+
+        // SES BURADA BAÞLAR: Ateþ gerçekten yandýðý an ses devreye girer
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Play("Ates_Sesi");
+        }
     }
+
     void OdunEkle()
     {
         if (inventory == null || odunItemSO == null) return;
@@ -148,16 +137,12 @@ public class AtesSistemi : MonoBehaviour
                 mevcutOdun += eklenecek;
                 kalanSure += eklenecek * odunBasinaYanmaSuresi;
 
-                Debug.Log(eklenecek + " odun eklendi. Kalan sure: "
-                          + Mathf.Round(kalanSure) + " sn");
+                Debug.Log(eklenecek + " odun eklendi. Kalan sure: " + Mathf.Round(kalanSure) + " sn");
                 return;
             }
         }
         Debug.Log("Envanterde odun yok!");
     }
-
-    [Header("Odun Gorselleri")]
-    public GameObject[] odunObjeleri; // Inspector'dan odun child objelerini sur
 
     void AtesSon()
     {
@@ -175,11 +160,6 @@ public class AtesSistemi : MonoBehaviour
         if (atesParticle != null) atesParticle.SetActive(false);
         if (atesIsigi != null) atesIsigi.enabled = false;
 
-        // Odun görsellerini gizle
-        if (odunObjeleri != null)
-            foreach (GameObject odun in odunObjeleri)
-                if (odun != null) odun.SetActive(false);
-
         if (sicaklikSistemi != null) sicaklikSistemi.AtesAktif(false);
         if (enerjiKontrol != null) enerjiKontrol.AtesAktif(false);
 
@@ -187,11 +167,17 @@ public class AtesSistemi : MonoBehaviour
         if (kulPrefab != null)
             Instantiate(kulPrefab, transform.position, Quaternion.identity);
 
-        Debug.Log("Ates sondü. Kul biraktirildi.");
+        Debug.Log("Ates sondu. Kul biraktirildi.");
 
-        // Duman tekrar baþlat
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.Stop("Ates_Sesi");
+        }
+
         if (atesNoktasi != null)
-            atesNoktasi.DumanBaslat();
+        {
+            atesNoktasi.AtesSondu();
+        }
     }
 
     public bool YaniyorMu() { return yaniyor; }

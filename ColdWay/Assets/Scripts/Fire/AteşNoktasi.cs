@@ -20,7 +20,6 @@ public class AteşNoktasi : MonoBehaviour
 
     private bool oyuncuYakinda = false;
 
-
     void Start()
     {
         dumanPS = dumanParticle != null
@@ -36,8 +35,7 @@ public class AteşNoktasi : MonoBehaviour
 
         dumanParticle.SetActive(true);
 
-        ParticleSystem[] tumPS = dumanParticle
-            .GetComponentsInChildren<ParticleSystem>(true);
+        ParticleSystem[] tumPS = dumanParticle.GetComponentsInChildren<ParticleSystem>(true);
         foreach (ParticleSystem p in tumPS)
         {
             p.gameObject.SetActive(true);
@@ -56,7 +54,6 @@ public class AteşNoktasi : MonoBehaviour
 
     void Update()
     {
-
         if (!oyuncuYakinda) return;
         if (atesSistemi != null && atesSistemi.YaniyorMu()) return;
 
@@ -93,13 +90,14 @@ public class AteşNoktasi : MonoBehaviour
         IpucuYoneticisi.Instance.MesajGizle("ates");
     }
 
-    void GuncelleMesaj()
+    public void GuncelleMesaj()
     {
         if (atesSistemi != null && atesSistemi.YaniyorMu())
         {
             IpucuYoneticisi.Instance.MesajGoster("ates", "E — Odun Ekle");
             return;
         }
+
 
         if (!OdunVarMi())
             IpucuYoneticisi.Instance.MesajGoster("ates", gerekliOdun + " odun gerekli");
@@ -114,34 +112,19 @@ public class AteşNoktasi : MonoBehaviour
         OdunuKaldir(gerekliOdun);
         KibritiKullan();
 
+        // Dumanı durdur
+        DumanDurdur();
+
+        // Ateş sistemini ateşle (Ses artık AtesBas fonksiyonunun içinde çalacak)
         if (atesSistemi != null)
             atesSistemi.AtesBas(gerekliOdun);
-
-        if (dumanParticle != null)
-        {
-            ParticleSystem[] tumPS = dumanParticle
-                .GetComponentsInChildren<ParticleSystem>(true);
-            foreach (ParticleSystem p in tumPS)
-                p.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            dumanParticle.SetActive(false);
-        }
-
-        if (AudioManager.instance != null)
-        {
-            AudioManager.instance.Play("Ates_Sesi");
-        }
 
         GuncelleMesaj();
     }
 
-    // Ateş sönünce AtesSistemi buraya çağırır
+    // Ateş sönünce AtesSistemi burayı çağırır
     public void AtesSondu()
     {
-        if (AudioManager.instance != null)
-        {
-            AudioManager.instance.Stop("Ates_Sesi");
-        }
-
         DumanBaslat();
         GuncelleMesaj();
     }

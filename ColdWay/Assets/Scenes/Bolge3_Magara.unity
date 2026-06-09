@@ -841,6 +841,72 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &18069473
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 18069476}
+  - component: {fileID: 18069475}
+  - component: {fileID: 18069474}
+  m_Layer: 0
+  m_Name: MagaraGirisTetikleyici
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &18069474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18069473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d089f1f57f604d14785f9ebe06605069, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &18069475
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18069473}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 123.4, y: 53.4, z: 305.7}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &18069476
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18069473}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.06386455, z: -0, w: 0.9979586}
+  m_LocalPosition: {x: -277, y: 36.4, z: 214}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -7.323, z: 0}
 --- !u!1 &25751355
 GameObject:
   m_ObjectHideFlags: 0
@@ -17829,6 +17895,62 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1073307397}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1074948563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1074948565}
+  - component: {fileID: 1074948564}
+  m_Layer: 0
+  m_Name: Audio Reverb Zone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!167 &1074948564
+AudioReverbZone:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074948563}
+  m_Enabled: 1
+  m_MinDistance: 180
+  m_MaxDistance: 190
+  m_ReverbPreset: 14
+  m_Room: -1000
+  m_RoomHF: -237
+  m_DecayTime: 2.7
+  m_DecayHFRatio: 0.79
+  m_Reflections: -1214
+  m_ReflectionsDelay: 0.013
+  m_Reverb: 395
+  m_ReverbDelay: 0.02
+  m_HFReference: 5000
+  m_Diffusion: 100
+  m_Density: 100
+  m_LFReference: 250
+  m_RoomLF: 0
+--- !u!4 &1074948565
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074948563}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -271, y: 15.9, z: 204}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1075761360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37038,7 +37160,7 @@ MonoBehaviour:
   autoRepaint: 0
   terrainListeners: []
   bounds:
-    m_Center: {x: -200, y: 50, z: 200}
+    m_Center: {x: -200.00003, y: 50, z: 200}
     m_Extent: {x: 200, y: 50, z: 200}
   filterShader: {fileID: 4800000, guid: 0f44df78e3d64d9cb2616cac3d84cb77, type: 3}
 --- !u!1 &1546254291
@@ -54231,6 +54353,7 @@ MonoBehaviour:
   aksamCarpani: 1.5
   geceCarpani: 2
   MaksimumSesSiniri: 1
+  aksamPitchTonu: 0.75
 --- !u!114 &7584883176105909295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55058,7 +55181,6 @@ SceneRoots:
   - {fileID: 1577432621}
   - {fileID: 847238153}
   - {fileID: 4585932}
-  - {fileID: 312011022}
   - {fileID: 1522902021}
   - {fileID: 1939773603}
   - {fileID: 1853884036}
@@ -55111,4 +55233,7 @@ SceneRoots:
   - {fileID: 823026842}
   - {fileID: 1082829504}
   - {fileID: 401645551}
+  - {fileID: 312011022}
+  - {fileID: 18069476}
+  - {fileID: 1074948565}
   - {fileID: 188905580}

@@ -291,18 +291,32 @@ public class GecGunduzSistemi : MonoBehaviour
     void KarZamanGuncelle()
     {
         float karC, ruzgarC;
+        RuzgarSistemi.GununVakti secilenVakit;
+
         if (mevcutSaat >= 6f && mevcutSaat < 16f)
-        { karC = gunduzKar; ruzgarC = 1f; }
+        {
+            karC = gunduzKar;
+            ruzgarC = 1f;
+            secilenVakit = RuzgarSistemi.GununVakti.SabahOglen;
+        }
         else if (mevcutSaat >= 16f && mevcutSaat < 20f)
         {
             float t = (mevcutSaat - 16f) / 4f;
             karC = Mathf.Lerp(gunduzKar, geceKar, t);
             ruzgarC = Mathf.Lerp(1f, 2f, t);
+            secilenVakit = RuzgarSistemi.GununVakti.Aksam;
         }
-        else { karC = geceKar; ruzgarC = 2f; }
+        else
+        {
+            karC = geceKar;
+            ruzgarC = 2f;
+            secilenVakit = RuzgarSistemi.GununVakti.Gece;
+        }
 
         karSistemi?.ZamanCarpaniGuncelle(karC);
-        ruzgarSistemi?.ZamanCarpaniGuncelle(ruzgarC);
+
+        // Rüzgar sistemine hem yeni rüzgar gücünü hem de günün vaktini gönderiyoruz
+        ruzgarSistemi?.ZamanCarpaniGuncelle(ruzgarC, secilenVakit);
     }
 
     void UIGuncelle()
@@ -348,6 +362,9 @@ public class GecGunduzSistemi : MonoBehaviour
         RenderSettings.fogColor = gunduzFog;
         RenderSettings.fogDensity = gunduzFogYog;
         if (gunes) { gunes.color = gunduzIsigiRengi; gunes.intensity = gunduzYogunluk; }
+
+        ruzgarSistemi?.ZamanCarpaniGuncelle(1f, RuzgarSistemi.GununVakti.SabahOglen);
+
         DynamicGI.UpdateEnvironment();
     }
 }
