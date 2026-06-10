@@ -1,5 +1,6 @@
 using StarterAssets;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AtesSistemi : MonoBehaviour
@@ -10,7 +11,6 @@ public class AtesSistemi : MonoBehaviour
 
     [Header("Odun Modelleri")]
     public GameObject yanmamisOdunModeli;
-    public GameObject kulOdunModeli;
 
     [Header("Particle ve Isik")]
     public GameObject atesParticle;
@@ -40,6 +40,18 @@ public class AtesSistemi : MonoBehaviour
     [Header("Odun Gorselleri")]
     public GameObject[] odunObjeleri;
 
+    [Header("Odun Erime Ayarlari")]
+    public float minOdunBoyu = 0.7f;
+    public float odunKuculmeBaslangic = 0.8f;
+    public float odunKuculmeBitis = 0.5f;
+
+    [Header("Odun Materyal Gecisi")]
+    public Material kulMaterial;
+
+    private Color[] odunOrijinalRenkler;
+    private Color kulRengi;
+    private Material[][] odunMateryalleri; // cached instances
+
     private float kalanSure = 0f;
     private bool yaniyor = false;
     private int mevcutOdun = 0;
@@ -47,11 +59,14 @@ public class AtesSistemi : MonoBehaviour
     private int[] baslangicIndexleri = { 3, 4, 6 };
     private int[] ekstraIndexler = { 0, 1, 2, 5, 7 };
 
-    // Alpha ve Add cached referanslar
     private Transform fireAlpha;
     private Transform fireAdd;
     private Vector3 alphaBaseScale = Vector3.one * 0.5f;
     private Vector3 addBaseScale = Vector3.one * 0.5f;
+    private float mevcutKuculmeFaktoru = 1f;
+
+    private Vector3[] odunOrijinalScales;
+    private Vector3[] odunOrijinalPozlar;
 
     void Start()
     {
@@ -60,7 +75,6 @@ public class AtesSistemi : MonoBehaviour
                 if (odun != null) odun.SetActive(false);
 
         if (yanmamisOdunModeli != null) yanmamisOdunModeli.SetActive(true);
-        if (kulOdunModeli != null) kulOdunModeli.SetActive(false);
     }
 
     void Update()
@@ -76,7 +90,8 @@ public class AtesSistemi : MonoBehaviour
             ? 1f
             : Mathf.Lerp(minAtesBoyu, 1f, oran / kuculmeBaslangicYuzdesi);
 
-        // Iþýk
+        mevcutKuculmeFaktoru = kuculmeFaktoru;
+
         if (atesIsigi != null)
         {
             float titreme = Mathf.Sin(Time.time * 8f) * 0.3f;
@@ -84,15 +99,64 @@ public class AtesSistemi : MonoBehaviour
             atesIsigi.intensity = hedefYogunluk + titreme * kuculmeFaktoru;
         }
 
-        // Alpha ve Add üzerinden küçült
         if (fireAlpha != null)
             fireAlpha.localScale = alphaBaseScale * kuculmeFaktoru;
         if (fireAdd != null)
             fireAdd.localScale = addBaseScale * kuculmeFaktoru;
 
+        if (odunObjeleri != null && odunOrijinalScales != null && odunOrijinalPozlar != null)
+        {
+            float odunFaktoru;
+            if (oran > odunKuculmeBaslangic)
+                odunFaktoru = 1f;
+            else if (oran <= odunKuculmeBitis)
+                odunFaktoru = minOdunBoyu;
+            else
+                odunFaktoru = Mathf.Lerp(
+                    minOdunBoyu, 1f,
+                    (oran - odunKuculmeBitis) /
+                    (odunKuculmeBaslangic - odunKuculmeBitis));
+
+            float hiz = Time.deltaTime * 0.3f;
+
+            for (int i = 0; i < odunObjeleri.Length; i++)
+            {
+                if (odunObjeleri[i] == null || !odunObjeleri[i].activeSelf)
+                    continue;
+
+                // Scale
+                odunObjeleri[i].transform.localScale = Vector3.Lerp(
+                    odunObjeleri[i].transform.localScale,
+                    odunOrijinalScales[i] * odunFaktoru,
+                    hiz);
+
+                // Pozisyon
+                Vector3 hedefPoz = Vector3.Lerp(
+                    odunOrijinalPozlar[i], Vector3.zero, 1f - odunFaktoru);
+                odunObjeleri[i].transform.localPosition = Vector3.Lerp(
+                    odunObjeleri[i].transform.localPosition, hedefPoz, hiz);
+
+                // Renk — cached materyaller üzerinden
+                if (odunFaktoru < 1f && odunOrijinalRenkler != null
+                    && odunMateryalleri != null
+                    && i < odunMateryalleri.Length
+                    && odunMateryalleri[i] != null)
+                {
+                    Color hedefRenk = Color.Lerp(
+                        kulRengi, odunOrijinalRenkler[i], odunFaktoru);
+
+                    foreach (Material m in odunMateryalleri[i])
+                        if (m != null && m.HasProperty("_BaseColor"))
+                            m.SetColor("_BaseColor", Color.Lerp(
+                                m.GetColor("_BaseColor"),
+                                hedefRenk,
+                                Time.deltaTime * 0.5f));
+                }
+            }
+        }
+
         if (kalanSure <= 0f)
         {
-            // Scale tamamen 0'a insin
             if (fireAlpha != null) fireAlpha.localScale = Vector3.zero;
             if (fireAdd != null) fireAdd.localScale = Vector3.zero;
             AtesSon();
@@ -105,24 +169,70 @@ public class AtesSistemi : MonoBehaviour
         kalanSure = mevcutOdun * odunBasinaYanmaSuresi;
         yaniyor = true;
 
+        if (odunObjeleri != null)
+        {
+            odunOrijinalRenkler = new Color[odunObjeleri.Length];
+            odunOrijinalScales = new Vector3[odunObjeleri.Length];
+            odunOrijinalPozlar = new Vector3[odunObjeleri.Length];
+            odunMateryalleri = new Material[odunObjeleri.Length][];
+
+            for (int i = 0; i < odunObjeleri.Length; i++)
+            {
+                if (odunObjeleri[i] == null) continue;
+
+                // Orijinal renk
+                Renderer rend = odunObjeleri[i]
+                    .GetComponentInChildren<Renderer>(true);
+                if (rend != null && rend.sharedMaterial != null
+                    && rend.sharedMaterial.HasProperty("_BaseColor"))
+                {
+                    odunOrijinalRenkler[i] = rend.sharedMaterial.GetColor("_BaseColor");
+                    Debug.Log($"Odun {i}: {rend.sharedMaterial.name}" +
+          $" | _BaseColor: {rend.sharedMaterial.HasProperty("_BaseColor")}" +
+          $" | _Color: {rend.sharedMaterial.HasProperty("_Color")}");
+                }
+                else
+                {
+                    odunOrijinalRenkler[i] = Color.white;
+                    Debug.Log($"Odun {i}: Renderer veya material bulunamadý!");
+
+                }
+
+                // Material instance'larýný cache'le
+                var renderers = odunObjeleri[i]
+                    .GetComponentsInChildren<Renderer>(true);
+                var matList = new List<Material>();
+                foreach (var r in renderers)
+                    matList.AddRange(r.materials); // instance oluþturur
+                odunMateryalleri[i] = matList.ToArray();
+
+                odunOrijinalScales[i] = odunObjeleri[i].transform.localScale;
+                odunOrijinalPozlar[i] = odunObjeleri[i].transform.localPosition;
+                odunObjeleri[i].SetActive(false);
+            }
+
+            if (kulMaterial != null && kulMaterial.HasProperty("_BaseColor"))
+                kulRengi = kulMaterial.GetColor("_BaseColor");
+            else
+                kulRengi = new Color(0.15f, 0.15f, 0.15f, 1f);
+        }
+
         if (yanmamisOdunModeli != null)
             StartCoroutine(FadeOut(yanmamisOdunModeli));
-        if (kulOdunModeli != null) kulOdunModeli.SetActive(false);
 
         for (int i = 0; i < mevcutOdun && i < baslangicIndexleri.Length; i++)
         {
             int idx = baslangicIndexleri[i];
             if (idx < odunObjeleri.Length && odunObjeleri[idx] != null)
-                StartCoroutine(FadeIn(odunObjeleri[idx]));
+                StartCoroutine(FadeIn(odunObjeleri[idx], idx));
         }
 
         if (atesParticle != null)
         {
-            // Cache et ve sýfýrla
             fireAlpha = atesParticle.transform.Find("PS_Fire_Alpha");
             fireAdd = atesParticle.transform.Find("PS_Fire_Add");
-            alphaBaseScale = Vector3.one * 0.5f;
-            addBaseScale = Vector3.one * 0.5f;
+            alphaBaseScale = new Vector3(0.4f, 0.3f, 0.4f);
+            addBaseScale = new Vector3(0.4f, 0.3f, 0.4f);
             if (fireAlpha != null) fireAlpha.localScale = alphaBaseScale;
             if (fireAdd != null) fireAdd.localScale = addBaseScale;
 
@@ -167,7 +277,6 @@ public class AtesSistemi : MonoBehaviour
                 mevcutOdun++;
                 kalanSure += odunBasinaYanmaSuresi;
 
-                // Yeni odun modelini göster
                 int newIndex = -1;
                 if (mevcutOdun <= baslangicIndexleri.Length)
                     newIndex = baslangicIndexleri[mevcutOdun - 1];
@@ -180,11 +289,30 @@ public class AtesSistemi : MonoBehaviour
 
                 if (newIndex >= 0 && newIndex < odunObjeleri.Length
                     && odunObjeleri[newIndex] != null)
-                    StartCoroutine(FadeIn(odunObjeleri[newIndex]));
+                {
+                    StartCoroutine(FadeIn(odunObjeleri[newIndex], newIndex));
 
-                // Base scale'i artýr ve uygula
-                alphaBaseScale += Vector3.one * 0.2f;
-                addBaseScale += Vector3.one * 0.2f;
+                    if (odunOrijinalScales != null && newIndex < odunOrijinalScales.Length)
+                        odunOrijinalScales[newIndex] =
+                            odunObjeleri[newIndex].transform.localScale;
+                    if (odunOrijinalPozlar != null && newIndex < odunOrijinalPozlar.Length)
+                        odunOrijinalPozlar[newIndex] =
+                            odunObjeleri[newIndex].transform.localPosition;
+
+                    // Yeni odunun materyallerini cache'le
+                    if (odunMateryalleri != null && newIndex < odunMateryalleri.Length)
+                    {
+                        var renderers = odunObjeleri[newIndex]
+                            .GetComponentsInChildren<Renderer>(true);
+                        var matList = new List<Material>();
+                        foreach (var r in renderers)
+                            matList.AddRange(r.materials);
+                        odunMateryalleri[newIndex] = matList.ToArray();
+                    }
+                }
+
+                alphaBaseScale += Vector3.one * 0.1f;
+                addBaseScale += Vector3.one * 0.1f;
                 if (fireAlpha != null) fireAlpha.localScale = alphaBaseScale;
                 if (fireAdd != null) fireAdd.localScale = addBaseScale;
 
@@ -200,18 +328,10 @@ public class AtesSistemi : MonoBehaviour
         yaniyor = false;
         mevcutOdun = 0;
 
-        // Scale sýfýrla
         alphaBaseScale = Vector3.zero;
         addBaseScale = Vector3.zero;
         if (fireAlpha != null) fireAlpha.localScale = Vector3.zero;
         if (fireAdd != null) fireAdd.localScale = Vector3.zero;
-
-        if (odunObjeleri != null)
-            foreach (GameObject odun in odunObjeleri)
-                if (odun != null && odun.activeSelf)
-                    StartCoroutine(FadeOut(odun));
-
-        if (kulOdunModeli != null) StartCoroutine(FadeIn(kulOdunModeli));
 
         if (atesParticle != null) atesParticle.SetActive(false);
         if (atesIsigi != null) atesIsigi.enabled = false;
@@ -256,33 +376,52 @@ public class AtesSistemi : MonoBehaviour
                 }
     }
 
-    IEnumerator FadeIn(GameObject obj)
+    IEnumerator FadeIn(GameObject obj, int index = -1)
     {
         if (obj == null) yield break;
         obj.SetActive(true);
         Renderer[] rends = obj.GetComponentsInChildren<Renderer>();
+
+        // Önce instance oluþtur
+        var matList = new System.Collections.Generic.List<Material>();
         foreach (Renderer r in rends)
-            foreach (Material m in r.materials)
-                if (m.HasProperty("_BaseColor"))
-                {
-                    Color c = m.GetColor("_BaseColor");
-                    c.a = 0f;
-                    m.SetColor("_BaseColor", c);
-                }
+            matList.AddRange(r.materials); // instance oluþturur
+
+        // Cache'e kaydet
+        if (index >= 0 && odunMateryalleri != null
+            && index < odunMateryalleri.Length)
+            odunMateryalleri[index] = matList.ToArray();
+
+        // Fade in
+        foreach (Material m in matList)
+            if (m.HasProperty("_BaseColor"))
+            {
+                Color c = m.GetColor("_BaseColor");
+                c.a = 0f;
+                m.SetColor("_BaseColor", c);
+            }
+
         float t = 0f;
         while (t < 1f)
         {
             t += Time.deltaTime * gecisHizi;
-            foreach (Renderer r in rends)
-                foreach (Material m in r.materials)
-                    if (m.HasProperty("_BaseColor"))
-                    {
-                        Color c = m.GetColor("_BaseColor");
-                        c.a = Mathf.Clamp01(t);
-                        m.SetColor("_BaseColor", c);
-                    }
+            foreach (Material m in matList)
+                if (m.HasProperty("_BaseColor"))
+                {
+                    Color c = m.GetColor("_BaseColor");
+                    c.a = Mathf.Clamp01(t);
+                    m.SetColor("_BaseColor", c);
+                }
             yield return null;
         }
+    }
+
+    public float AtesYogunlugu()
+    {
+        if (!yaniyor) return 0f;
+        float maxY = 0.3f + (maxOdun - 2) * 0.1f;
+        float scaleOrani = Mathf.Clamp01(alphaBaseScale.y / maxY);
+        return scaleOrani * mevcutKuculmeFaktoru;
     }
 
     public bool YaniyorMu() { return yaniyor; }

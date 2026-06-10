@@ -40,6 +40,14 @@ public class SicaklikSistemi : MonoBehaviour
     private float islaklıkZamani = 0f;
     public float maxIslaklıkSuresi = 120f;
 
+    [Header("Ates Isinma Oranlari")]
+    public float minAtesIsinmaOrani = 0.3f;
+    public float maxAtesIsinmaOrani = 1.0f;
+
+    [Header("Ates Etki Mesafesi")]
+    public float minAtesMesafesi = 2f;
+    public float maxAtesMesafesi = 6f;
+
     [Header("UI")]
     public Slider sicaklikSlider;
     public Image sliderDolgu;
@@ -50,11 +58,7 @@ public class SicaklikSistemi : MonoBehaviour
 
     private float dususHizi;
     private bool oldu = false;
-
-    [Header("Ates Isınma")]
-    public float atesEtkiMesafesi = 5f;
     private AtesSistemi[] tumAtesler;
-
 
     void Start()
     {
@@ -77,7 +81,6 @@ public class SicaklikSistemi : MonoBehaviour
 
     void HizBelirle()
     {
-        // Her karede BASE degerden baslat, uzerine ekle
         float baseDusus;
         switch (mevcutBolge)
         {
@@ -87,7 +90,6 @@ public class SicaklikSistemi : MonoBehaviour
             default: baseDusus = bolge1Hiz; break;
         }
 
-        // Gun carpanini sadece bir kez uygula
         float gunCarpani = GunSayaci.Instance != null ?
                            GunSayaci.Instance.ZorlukCarpani : 1f;
 
@@ -101,18 +103,38 @@ public class SicaklikSistemi : MonoBehaviour
 
     void SicaklikGuncelle()
     {
-        if (mevcutSicaklik < 10f)
-            Debug.Log($"Dusuk isi! {mevcutSicaklik:F1} | dususHizi: {dususHizi:F4} | gece: {geceBonusu}");
-        
         if (atesBasinda)
         {
+            // Ateş yoğunluğunu bul
+            float yogunluk = 1f;
+            if (tumAtesler != null)
+            {
+                foreach (AtesSistemi ates in tumAtesler)
+                {
+                    if (ates == null || !ates.YaniyorMu()) continue;
+                    float mesafe = Vector3.Distance(
+                        transform.position, ates.transform.position);
+                    float dinamikMesafe = Mathf.Lerp(
+                        minAtesMesafesi, maxAtesMesafesi, ates.AtesYogunlugu());
+                    if (mesafe <= dinamikMesafe)
+                    {
+                        yogunluk = ates.AtesYogunlugu();
+                        break;
+                    }
+                }
+            }
+
+            float isiOrani = Mathf.Lerp(
+                minAtesIsinmaOrani, maxAtesIsinmaOrani, yogunluk);
+
+            mevcutSicaklik += atesIyilesmeHizi * isiOrani * Time.deltaTime;
+
             if (ayakIslak)
             {
                 islaklıkZamani += Time.deltaTime * 3f;
                 if (islaklıkZamani >= maxIslaklıkSuresi)
                 { ayakIslak = false; islaklıkZamani = 0f; }
             }
-            mevcutSicaklik += atesIyilesmeHizi * Time.deltaTime;
         }
         else
         {
@@ -130,13 +152,41 @@ public class SicaklikSistemi : MonoBehaviour
         mevcutSicaklik = Mathf.Clamp(mevcutSicaklik, 0f, maxSicaklik);
     }
 
-    // Uyku sonrasi isiy toparlama
+    void AtesYakinlikKontrol()
+    {
+        if (tumAtesler == null || tumAtesler.Length == 0)
+        {
+            tumAtesler = FindObjectsOfType<AtesSistemi>();
+            return;
+        }
+
+        bool yakinAtes = false;
+        foreach (AtesSistemi ates in tumAtesler)
+        {
+            if (ates == null || !ates.YaniyorMu()) continue;
+
+            float yogunluk = ates.AtesYogunlugu();
+            float dinamikMesafe = Mathf.Lerp(
+                minAtesMesafesi, maxAtesMesafesi, yogunluk);
+
+            float mesafe = Vector3.Distance(
+                transform.position, ates.transform.position);
+
+            if (mesafe <= dinamikMesafe)
+            {
+                yakinAtes = true;
+                break;
+            }
+        }
+
+        atesBasinda = yakinAtes;
+    }
+
     public void UykuSonrasiIsi(bool atesVarMiydi)
     {
         float azalisOrani = atesVarMiydi ? 0.10f : 0.15f;
         float azalis = mevcutSicaklik * azalisOrani;
         mevcutSicaklik = Mathf.Max(10f, mevcutSicaklik - azalis);
-        Debug.Log($"Uyku sonrası ısı -{azalis:F1}. Mevcut: {mevcutSicaklik:F1}");
     }
 
     public void BolgeGuncelle(int bolgeNo)
@@ -183,13 +233,9 @@ public class SicaklikSistemi : MonoBehaviour
 
     void PostProcessGuncelle()
     {
-            float oran = mevcutSicaklik / maxSicaklik;
-
-            if (PostProsses.Instance != null)
-            {
+        float oran = mevcutSicaklik / maxSicaklik;
+        if (PostProsses.Instance != null)
             PostProsses.Instance.SicaklikEfektiGuncelle(oran);
-            }
-
     }
 
     void OlumKontrol()
@@ -198,53 +244,23 @@ public class SicaklikSistemi : MonoBehaviour
         if (mevcutSicaklik <= 0f)
         {
             oldu = true;
-            // Nedeni belirt
             CheckpointSistemi.Instance?.OlumGerceklesti(
                 CheckpointSistemi.OlumNedeni.Sicaklik);
         }
     }
-    // Flag sıfırlama — sadece oldu bayrağı
+
     public void OlduFlagSifirla() { oldu = false; }
 
-    // Oldu_Sifirla sadece sıcaklığı düşük başlatır
     public void Oldu_Sifirla()
     {
         oldu = false;
-        mevcutSicaklik = 15f; // Kritik ama ölü değil
+        mevcutSicaklik = 15f;
         PostProcessGuncelle();
     }
-
-    void AtesYakinlikKontrol()
-    {
-        if (tumAtesler == null || tumAtesler.Length == 0)
-        {
-            tumAtesler = FindObjectsOfType<AtesSistemi>();
-            return;
-        }
-
-        bool yakinAtes = false;
-        foreach (AtesSistemi ates in tumAtesler)
-        {
-            if (ates == null || !ates.YaniyorMu()) continue;
-
-            float mesafe = Vector3.Distance(
-                transform.position, ates.transform.position);
-
-            if (mesafe <= atesEtkiMesafesi)
-            {
-                yakinAtes = true;
-                break;
-            }
-        }
-
-        atesBasinda = yakinAtes;
-    }
-
-
 
     public void GoleteGirdi() { if (mevcutBolge == 2) ayakIslak = true; }
     public void Kurudu() { ayakIslak = false; }
     public void AyakIslandi() { if (islaklıkAktif) ayakIslak = true; }
-    public void AtesAktif(bool d) { } // mesafe ile kontrol ediliyor
+    public void AtesAktif(bool d) { }
     public void BolgeGecis(int b) { BolgeGuncelle(b); }
 }
