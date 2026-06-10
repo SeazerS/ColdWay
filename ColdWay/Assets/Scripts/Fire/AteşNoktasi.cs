@@ -55,22 +55,31 @@ public class AteşNoktasi : MonoBehaviour
     void Update()
     {
         if (!oyuncuYakinda) return;
-        if (atesSistemi != null && atesSistemi.YaniyorMu()) return;
 
         if (Input.GetKeyDown(KeyCode.E))
         {
+            // Ateş yanıyorsa odun ekle
+            if (atesSistemi != null && atesSistemi.YaniyorMu())
+            {
+                // Yeni yakıldıysa bu frame'i atla
+                //if (atesSistemi.YeniYakilan()) return;
+                atesSistemi.OdunEkle();
+                return;
+            }
+
+            // Ateş yanmıyorsa yak
             if (!OdunVarMi())
             {
-                IpucuYoneticisi.Instance.MesajGoster("ates", gerekliOdun + " odun gerekli!");
+                IpucuYoneticisi.Instance.MesajGoster(
+                    "ates", gerekliOdun + " odun gerekli!");
                 return;
             }
-
             if (!KibritVarMi())
             {
-                IpucuYoneticisi.Instance.MesajGoster("ates", "Kibrit gerekli!");
+                IpucuYoneticisi.Instance.MesajGoster(
+                    "ates", "Kibrit gerekli!");
                 return;
             }
-
             if (kibritMinigame != null)
                 kibritMinigame.Baslat(this);
         }
