@@ -134,7 +134,7 @@ public class AteşNoktasi : MonoBehaviour
     // Ateş sönünce AtesSistemi burayı çağırır
     public void AtesSondu()
     {
-        DumanBaslat();
+        DumanYogunlukAyarla(1f);
         GuncelleMesaj();
     }
 
@@ -197,5 +197,24 @@ public class AteşNoktasi : MonoBehaviour
             if (slot.HasItem() && slot.GetItem() == kibritItemSO)
                 return true;
         return false;
+    }
+
+    public void DumanYogunlukAyarla(float oran)
+    {
+        if (dumanParticle == null) return;
+
+        if (!dumanParticle.activeSelf)
+            dumanParticle.SetActive(true);
+
+        ParticleSystem[] tumPS = dumanParticle
+            .GetComponentsInChildren<ParticleSystem>(true);
+        foreach (ParticleSystem ps in tumPS)
+        {
+            if (!ps.isPlaying) ps.Play();
+            var emission = ps.emission;
+            var rate = emission.rateOverTime;
+            rate.constant = Mathf.Lerp(0f, 10f, oran);
+            emission.rateOverTime = rate;
+        }
     }
 }
