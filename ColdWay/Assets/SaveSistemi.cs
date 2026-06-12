@@ -29,11 +29,25 @@ public class SaveSistemi : MonoBehaviour
         else Destroy(gameObject);
     }
 
+
     // ??? KAYDET ???????????????????????????????????????????????????????????
 
     public void Kaydet()
     {
         SaveData data = new SaveData();
+
+        // Mevcut kayýt adýný koru
+        if (File.Exists(savePath))
+        {
+            string eskiJson = File.ReadAllText(savePath);
+            SaveData eskiData = JsonUtility.FromJson<SaveData>(eskiJson);
+            data.kayitAdi = eskiData.kayitAdi;
+        }
+        else
+        {
+            data.kayitAdi = "Kayit Dosyasi 1";
+        }
+
 
         // Pozisyon
         data.pozX = oyuncu.position.x;
@@ -238,4 +252,18 @@ public class SaveSistemi : MonoBehaviour
         Debug.LogWarning("Item bulunamadý: " + itemAdi);
         return null;
     }
+
+    public void KaydetIsimle(string isim)
+{
+    Kaydet();
+    // Kaydedilen dosyayý tekrar okuyup ismi güncelle
+    if (System.IO.File.Exists(savePath))
+    {
+        string json = System.IO.File.ReadAllText(savePath);
+        SaveData data = JsonUtility.FromJson<SaveData>(json);
+        data.kayitAdi = isim;
+        json = JsonUtility.ToJson(data, true);
+        System.IO.File.WriteAllText(savePath, json);
+    }
+}
 }

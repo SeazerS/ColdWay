@@ -37,19 +37,17 @@ public class BolgeYoneticisi : MonoBehaviour
         if (yeniBolgeNo == mevcutBolge) return;
         mevcutBolge = yeniBolgeNo;
 
-        Debug.Log("Bolge " + mevcutBolge + "'e gecildi.");
+        // Geçilen tüm bölgeler aktif kalýr, sadece ileriki kapalý
+        for (int i = 0; i < bolgeSinirlari.Length; i++)
+        {
+            if (bolgeSinirlari[i] != null)
+                bolgeSinirlari[i].gameObject
+                    .SetActive(i <= mevcutBolge - 1);
+        }
 
         enerjiKontrol?.BolgeGuncelle(mevcutBolge);
         sicaklikSistemi?.BolgeGuncelle(mevcutBolge);
         karSistemi?.BolgeGuncelle(mevcutBolge);
         ruzgarSistemi?.BolgeGuncelle(mevcutBolge);
-
-        // Aktif bölge sýnýrýný deðiþtir
-        for (int i = 0; i < bolgeSinirlari.Length; i++)
-        {
-            if (bolgeSinirlari[i] != null)
-                bolgeSinirlari[i].gameObject
-                    .SetActive(i == mevcutBolge - 1);
-        }
     }
 }

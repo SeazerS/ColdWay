@@ -45,20 +45,29 @@ public class BolgeSinirSistemi : MonoBehaviour
     {
         if (oyuncu == null) return;
 
-        // Önce içeride mi dýþarýda mý kontrol et
-        bool icerde = bolgeCollider != null
-            ? bolgeCollider.bounds.Contains(oyuncu.position)
-            : !bolgeDisinda;
+        // Herhangi bir aktif bölgede mi?
+        bool icerde = OyuncuHerhangibirBolgedeMi();
 
-        // Sadece içerideyken pozisyon kaydet
         if (icerde)
             sonGuvenliPozisyon = oyuncu.position;
 
-        // Durum deðiþikliklerini iþle
         if (!icerde && !bolgeDisinda && !olumSonrasiKoruma)
             BolgedenCikti();
         else if (icerde && bolgeDisinda)
             BolgeyeDondu();
+    }
+
+    bool OyuncuHerhangibirBolgedeMi()
+    {
+        BolgeSinirSistemi[] tumSinirlar =
+            FindObjectsOfType<BolgeSinirSistemi>();
+        foreach (var sinir in tumSinirlar)
+        {
+            if (sinir.bolgeCollider != null &&
+                sinir.bolgeCollider.bounds.Contains(oyuncu.position))
+                return true;
+        }
+        return false;
     }
 
     void OnTriggerExit(Collider other)

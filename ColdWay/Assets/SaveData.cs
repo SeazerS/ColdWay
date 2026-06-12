@@ -25,6 +25,9 @@ public class SaveData
 
     // Kayýt zamaný
     public string kayitZamani;
+
+    public string kayitAdi = "Kayit Dosyasi 1";
+
 }
 
 [Serializable]

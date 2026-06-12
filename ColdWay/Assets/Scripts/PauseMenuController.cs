@@ -9,6 +9,9 @@ public class PauseMenuController : MonoBehaviour
     public GameObject menuButtonsContainer; // Menu_Container
     public GameObject optionsPanel;         // Options_Panel
 
+    public GameObject kayitIsimPanel;
+    public TMPro.TMP_InputField isimInput;
+
     private bool isPaused = false;
 
     void Update()
@@ -60,6 +63,46 @@ public class PauseMenuController : MonoBehaviour
     {
         optionsPanel.SetActive(false);          // Ayarlar panelini gizle
         menuButtonsContainer.SetActive(true);  // Ana butonlarý geri getir
+    }
+
+    public void OyunuKaydet()
+    {
+        menuButtonsContainer.SetActive(false);
+        kayitIsimPanel.SetActive(true);
+
+        // Mevcut kayýt adýný input'a doldur
+        if (SaveSistemi.Instance != null && SaveSistemi.Instance.SaveVar())
+        {
+            string mevcutIsim = SaveSistemi.Instance.KayitZamaniAl();
+            // Mevcut kayýt adýný oku
+            string json = System.IO.File.ReadAllText(
+                Application.persistentDataPath + "/save.json");
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+            if (isimInput != null) isimInput.text = data.kayitAdi;
+        }
+        else
+        {
+            if (isimInput != null) isimInput.text = "";
+        }
+    }
+
+    public void KayitOnayla()
+    {
+        string isim = isimInput.text.Trim();
+        if (string.IsNullOrEmpty(isim))
+            isim = "Kayit Dosyasi 1";
+
+        if (SaveSistemi.Instance != null)
+            SaveSistemi.Instance.KaydetIsimle(isim);
+
+        kayitIsimPanel.SetActive(false);
+        menuButtonsContainer.SetActive(true);
+    }
+
+    public void KayitIptal()
+    {
+        kayitIsimPanel.SetActive(false);
+        menuButtonsContainer.SetActive(true);
     }
 
     public void QuitGame()

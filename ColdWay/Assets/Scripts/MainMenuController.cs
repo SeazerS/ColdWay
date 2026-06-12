@@ -14,11 +14,9 @@ public class MainMenuController : MonoBehaviour
 
     public void NewGame()
     {
-        Debug.Log("Oyun yükleniyor...");
-        // normal akýþýna döndür
+        PlayerPrefs.SetInt("YeniOyun", 1);
+        PlayerPrefs.SetInt("SaveYukle", 0);
         Time.timeScale = 1f;
-
-
         SceneManager.LoadScene(gameplaySceneName);
     }
 

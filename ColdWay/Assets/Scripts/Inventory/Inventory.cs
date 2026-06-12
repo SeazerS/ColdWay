@@ -50,9 +50,13 @@ public class Inventory : MonoBehaviour
         allSlots.AddRange(hotbarSlots);
     }
 
-    private void Start()
+    void Start()
     {
-        AddItem(cadirItem, 1);
+        if (PlayerPrefs.GetInt("YeniOyun", 0) == 1)
+        {
+            PlayerPrefs.SetInt("YeniOyun", 0);
+            AddItem(cadirItem, 1);
+        }
     }
 
     void Update()
