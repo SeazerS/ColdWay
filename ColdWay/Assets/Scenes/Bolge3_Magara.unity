@@ -920,8 +920,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 123.4, y: 53.4, z: 305.7}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 102.34572, y: 53.4, z: 305.7}
+  m_Center: {x: 14.363594, y: 0, z: -0.000000019562336}
 --- !u!4 &18069476
 Transform:
   m_ObjectHideFlags: 0
@@ -931,7 +931,7 @@ Transform:
   m_GameObject: {fileID: 18069473}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.06386455, z: -0, w: 0.9979586}
-  m_LocalPosition: {x: -277, y: 36.4, z: 214}
+  m_LocalPosition: {x: -297.9, y: 36.4, z: 211.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3494,9 +3494,9 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
     originalVolume: 0
-  - audioName: Somine_Atesi
-    clip: {fileID: 8300000, guid: b4abdbf5f1c01a741ba69ca31571b938, type: 3}
-    volume: 0.7
+  - audioName: Magara_Yurume_Sesi
+    clip: {fileID: 8300000, guid: 551d550ab98e3cc4bb7793e752fe8628, type: 3}
+    volume: 0.2
     pitch: 1
     loop: 1
     source: {fileID: 0}
@@ -11215,17 +11215,17 @@ PrefabInstance:
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 544.94
+      value: -193.1
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 84.41
+      value: 26.9
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 211.84
+      value: 315.1
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
@@ -15574,6 +15574,72 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 833948266}
   m_CullTransparentMesh: 1
+--- !u!1 &834742272
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 834742275}
+  - component: {fileID: 834742274}
+  - component: {fileID: 834742273}
+  m_Layer: 0
+  m_Name: MagaraGirisTetikleyici (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &834742273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834742272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d089f1f57f604d14785f9ebe06605069, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &834742274
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834742272}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 85.45223, y: 53.4, z: 24.592823}
+  m_Center: {x: 27.115181, y: 0, z: -80.75218}
+--- !u!4 &834742275
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834742272}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.06386455, z: -0, w: 0.9979586}
+  m_LocalPosition: {x: -290, y: 36.4, z: 382.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -7.323, z: 0}
 --- !u!1 &837293841
 GameObject:
   m_ObjectHideFlags: 0
@@ -21520,7 +21586,7 @@ AudioReverbZone:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1074948563}
   m_Enabled: 1
-  m_MinDistance: 180
+  m_MinDistance: 153.3
   m_MaxDistance: 190
   m_ReverbPreset: 14
   m_Room: -1000
@@ -21545,7 +21611,7 @@ Transform:
   m_GameObject: {fileID: 1074948563}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -271, y: 15.9, z: 204}
+  m_LocalPosition: {x: -335, y: 15.9, z: 217}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -43822,6 +43888,72 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1749189739}
   m_CullTransparentMesh: 1
+--- !u!1 &1749258382
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1749258385}
+  - component: {fileID: 1749258384}
+  - component: {fileID: 1749258383}
+  m_Layer: 0
+  m_Name: MagaraGirisTetikleyici (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1749258383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749258382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d089f1f57f604d14785f9ebe06605069, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &1749258384
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749258382}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 123.40108, y: 53.4, z: 59.951553}
+  m_Center: {x: 0.000138172, y: 0, z: -83.89017}
+--- !u!4 &1749258385
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749258382}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.06386455, z: -0, w: 0.9979586}
+  m_LocalPosition: {x: -268.5, y: 36.4, z: 215.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -7.323, z: 0}
 --- !u!1001 &1754046828
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56805,6 +56937,8 @@ SceneRoots:
   - {fileID: 401645551}
   - {fileID: 312011022}
   - {fileID: 18069476}
+  - {fileID: 1749258385}
+  - {fileID: 834742275}
   - {fileID: 1074948565}
   - {fileID: 188905580}
   - {fileID: 961733057}

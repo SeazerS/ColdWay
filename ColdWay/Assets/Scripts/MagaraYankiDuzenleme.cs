@@ -1,4 +1,5 @@
 using UnityEngine;
+using StarterAssets;
 
 public class MagaraYankiDuzenleme : MonoBehaviour
 {
@@ -18,22 +19,37 @@ public class MagaraYankiDuzenleme : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && yankiBolgesi != null)
+        if (other.CompareTag("Player"))
         {
-            yankiBolgesi.room = -1000; 
-            yankiBolgesi.roomHF = -237;
+            if (yankiBolgesi != null)
+            {
+                yankiBolgesi.room = -1000;
+                yankiBolgesi.roomHF = -237;
+            }
 
-            Debug.Log("[MAÐARA] Yanký Gücü Açýldý: Sesi bozmadan geçiþ yapýldý.");
+            if (FirstPersonController.Instance != null)
+            {
+                if (AudioManager.instance != null) AudioManager.instance.Stop(FirstPersonController.Instance.currentFootstepSound);
+                FirstPersonController.Instance.currentFootstepSound = "Magara_Yurume_Sesi";
+            }
+
+            Debug.Log("[MAÐARA] Maðara yürüme sesine geçildi ve Yanký açýldý.");
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && yankiBolgesi != null)
+        if (other.CompareTag("Player"))
         {
             YankiyiKapat();
 
-            Debug.Log("[MAÐARA] Yanký Gücü Kapatýldý: Normal yürüme sesi korunuyor.");
+            if (FirstPersonController.Instance != null)
+            {
+                if (AudioManager.instance != null) AudioManager.instance.Stop(FirstPersonController.Instance.currentFootstepSound);
+                FirstPersonController.Instance.currentFootstepSound = "Yurume_Sesi";
+            }
+
+            Debug.Log("[MAÐARA] Normal yürüme sesine geçildi ve Yanký kapatýldý.");
         }
     }
 
