@@ -74,6 +74,11 @@ public class Inventory : MonoBehaviour
             {
                 StarterAssets.FirstPersonController.Instance.CanLook = !isActive;
             }
+
+            if (StarterAssets.AudioManager.instance != null)
+            {
+                StarterAssets.AudioManager.instance.Play("Canta_Acma");
+            }
         }
 
 

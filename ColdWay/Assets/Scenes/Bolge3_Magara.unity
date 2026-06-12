@@ -4036,6 +4036,13 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
     originalVolume: 0
+  - audioName: Canta_Acma
+    clip: {fileID: 8300000, guid: 5015d2798181ba444aa06b05865f61f0, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+    originalVolume: 0
 --- !u!4 &188905580
 Transform:
   m_ObjectHideFlags: 0
