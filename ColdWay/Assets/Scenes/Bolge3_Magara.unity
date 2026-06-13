@@ -7617,8 +7617,8 @@ MonoBehaviour:
   blendMode: 0
   opacity: 100
   passIndex: 5
-  xAngle: 36.4
-  yAngle: 72
+  xAngle: 45.4
+  yAngle: 0
   addSunDirection: 0
   levels: {x: 0.036585364, y: 1}
 --- !u!1001 &363882969
@@ -10824,7 +10824,7 @@ MonoBehaviour:
   passIndex: 0
   min: 0
   minFalloff: 1
-  max: 19.7
+  max: 49.8
   maxFalloff: 81.26
 --- !u!1001 &534932160
 PrefabInstance:
@@ -14038,6 +14038,7 @@ GameObject:
   - component: {fileID: 695557052}
   - component: {fileID: 695557051}
   - component: {fileID: 695557050}
+  - component: {fileID: 695557053}
   m_Layer: 0
   m_Name: Terrain_(-800.00, 0.00, 0.00)
   m_TagString: Untagged
@@ -14119,6 +14120,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &695557053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695557049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6af2d410bf489d842a543a60d605af5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrains:
+  - {fileID: 695557051}
+  splatmapResolution: 256
+  colorMapResolution: 256
+  layerSettings:
+  - enabled: 1
+    layer: {fileID: 8574412962073106934, guid: 59b98ca43f27d8c4a89d4058d2a962e5, type: 2}
+    modifierStack:
+    - {fileID: 1394806244}
+  - enabled: 1
+    layer: {fileID: 8574412962073106934, guid: eb742adf8ec7a8b4684109a139de6019, type: 2}
+    modifierStack: []
+  autoRepaint: 0
+  terrainListeners: []
+  bounds:
+    m_Center: {x: -600, y: 50, z: 200}
+    m_Extent: {x: 200, y: 50, z: 200}
+  filterShader: {fileID: 4800000, guid: 0f44df78e3d64d9cb2616cac3d84cb77, type: 3}
 --- !u!1001 &703698948
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20377,6 +20408,7 @@ GameObject:
   - component: {fileID: 967450873}
   - component: {fileID: 967450872}
   - component: {fileID: 967450871}
+  - component: {fileID: 967450874}
   m_Layer: 0
   m_Name: Terrain_(-400.00, 0.00, 400.00)
   m_TagString: Untagged
@@ -20458,6 +20490,40 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1728502153}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &967450874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967450870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6af2d410bf489d842a543a60d605af5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrains:
+  - {fileID: 967450872}
+  splatmapResolution: 256
+  colorMapResolution: 256
+  layerSettings:
+  - enabled: 1
+    layer: {fileID: 8574412962073106934, guid: 59b98ca43f27d8c4a89d4058d2a962e5, type: 2}
+    modifierStack:
+    - {fileID: 1068960602}
+  - enabled: 1
+    layer: {fileID: 8574412962073106934, guid: eb742adf8ec7a8b4684109a139de6019, type: 2}
+    modifierStack:
+    - {fileID: 1115019822}
+  - enabled: 1
+    layer: {fileID: 8574412962073106934, guid: 091511b8c4f042c4082a4d5af73e92c7, type: 2}
+    modifierStack: []
+  autoRepaint: 0
+  terrainListeners: []
+  bounds:
+    m_Center: {x: -200.00003, y: 50, z: 600}
+    m_Extent: {x: 200, y: 50, z: 200}
+  filterShader: {fileID: 4800000, guid: 0f44df78e3d64d9cb2616cac3d84cb77, type: 3}
 --- !u!1001 &971103958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22055,7 +22121,8 @@ MonoBehaviour:
     - {fileID: 1242435945}
   - enabled: 1
     layer: {fileID: 8574412962073106934, guid: eb742adf8ec7a8b4684109a139de6019, type: 2}
-    modifierStack: []
+    modifierStack:
+    - {fileID: 1518739002}
   - enabled: 1
     layer: {fileID: 8574412962073106934, guid: d25c8def728088547ae6a1024dd9b481, type: 2}
     modifierStack: []
@@ -22725,6 +22792,27 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 461697f962abb7146b1a2b5fa0a09671, type: 3}
+--- !u!114 &1068960602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e07d49e90874d70b9937cb753327a2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabled: 1
+  label: Noise
+  blendMode: 0
+  opacity: 100
+  passIndex: 4
+  noiseType: 1
+  noiseScale: 67.1
+  noiseOffset: {x: 5.1, y: 0}
+  levels: {x: 0.042682916, y: 1}
 --- !u!1001 &1070741445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23950,7 +24038,7 @@ MonoBehaviour:
   autoRepaint: 0
   terrainListeners: []
   bounds:
-    m_Center: {x: 600, y: 50, z: -200}
+    m_Center: {x: 600, y: 50, z: -199.99997}
     m_Extent: {x: 200, y: 50, z: 200}
   filterShader: {fileID: 4800000, guid: 0f44df78e3d64d9cb2616cac3d84cb77, type: 3}
 --- !u!154 &1096220146
@@ -24257,6 +24345,26 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e1be17de5bb85442a5ec6377a730e33, type: 3}
+--- !u!114 &1115019822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2562637f396e4c10acd3fa9926b53a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabled: 1
+  label: Slope
+  blendMode: 0
+  opacity: 100
+  passIndex: 1
+  minMax: {x: 0, y: 90}
+  minFalloff: 11.8
+  maxFalloff: 10
 --- !u!1 &1118307155
 GameObject:
   m_ObjectHideFlags: 0
@@ -32026,8 +32134,8 @@ MonoBehaviour:
   passIndex: 0
   min: 0
   minFalloff: 1
-  max: 10.18
-  maxFalloff: 100.9
+  max: 34.6
+  maxFalloff: 90.89
 --- !u!1001 &1249057647
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35102,6 +35210,27 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b318f4c88d1521747a1d2881d1d80ee5, type: 3}
+--- !u!114 &1394806244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a035df583564519a95ec430b2620ba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabled: 1
+  label: Direction
+  blendMode: 0
+  opacity: 100
+  passIndex: 5
+  xAngle: 28.6
+  yAngle: 0
+  addSunDirection: 0
+  levels: {x: 0, y: 0}
 --- !u!1001 &1394864894
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41794,6 +41923,27 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1516896625}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1518739002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e07d49e90874d70b9937cb753327a2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabled: 1
+  label: Noise
+  blendMode: 0
+  opacity: 100
+  passIndex: 4
+  noiseType: 0
+  noiseScale: 50
+  noiseOffset: {x: 0, y: 0}
+  levels: {x: 0.6768293, y: 1}
 --- !u!1001 &1519317129
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51821,12 +51971,15 @@ MonoBehaviour:
     modifierStack:
     - {fileID: 347759466}
   - enabled: 1
+    layer: {fileID: 8574412962073106934, guid: a579e897aa6ba004ab0e04fa3053263a, type: 2}
+    modifierStack: []
+  - enabled: 1
     layer: {fileID: 8574412962073106934, guid: eb742adf8ec7a8b4684109a139de6019, type: 2}
     modifierStack: []
   autoRepaint: 0
   terrainListeners: []
   bounds:
-    m_Center: {x: 200, y: 50, z: -200}
+    m_Center: {x: 200, y: 50, z: -199.99997}
     m_Extent: {x: 200, y: 50, z: 200}
   filterShader: {fileID: 4800000, guid: 0f44df78e3d64d9cb2616cac3d84cb77, type: 3}
 --- !u!154 &2023802020
