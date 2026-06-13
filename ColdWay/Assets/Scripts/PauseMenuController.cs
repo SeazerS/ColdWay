@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PauseMenuController : MonoBehaviour
 {
-    // Unity içinden Pause_Panel'i buraya sürükle
     public GameObject pausePanel;
     public GameObject menuButtonsContainer; // Menu_Container
     public GameObject optionsPanel;         // Options_Panel
@@ -36,19 +35,35 @@ public class PauseMenuController : MonoBehaviour
         pausePanel.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
-        Cursor.lockState = CursorLockMode.None; // Fareyi serbest býrak
-        Cursor.visible = true;                  // Fareyi görünür yap
+
+        // DÜZELTME: Oyuna dönüldüðünde fare gizlenmeli ve kilitlenmeli
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        // StarterAssets kullanýyorsan oyuncunun etrafa bakabilmesini tekrar açýyoruz
+        if (StarterAssets.FirstPersonController.Instance != null)
+        {
+            StarterAssets.FirstPersonController.Instance.CanLook = true;
+        }
     }
 
     void PauseGame()
     {
         pausePanel.SetActive(true);
-        menuButtonsContainer.SetActive(true);   // Menü her açýldýðýnda ilk baþta butonlar görünsün, ayarlar paneli gizli olsun
+        menuButtonsContainer.SetActive(true);   // Menü her açýldýðýnda ilk baþta butonlar görünsün
         optionsPanel.SetActive(false);
         Time.timeScale = 0f;
         isPaused = true;
-        Cursor.lockState = CursorLockMode.None; // Menü açýldýðýnda fare kilitliyse çözülsün
-        Cursor.visible = true;                  // Fare ekranda görünsün
+
+        // Menü açýldýðýnda fare serbest kalsýn ve görünsün
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // Oyunu durdurunca oyuncu kamerayý çeviremesin
+        if (StarterAssets.FirstPersonController.Instance != null)
+        {
+            StarterAssets.FirstPersonController.Instance.CanLook = false;
+        }
     }
 
     // AYARLAR butonuna basýlýnca çalýþacak fonksiyon
@@ -56,13 +71,6 @@ public class PauseMenuController : MonoBehaviour
     {
         menuButtonsContainer.SetActive(false); // Ana butonlarý gizle
         optionsPanel.SetActive(true);          // Ayarlar panelini göster
-    }
-
-    // GERÝ butonuna basýlýnca çalýþacak fonksiyon
-    public void CloseOptions()
-    {
-        optionsPanel.SetActive(false);          // Ayarlar panelini gizle
-        menuButtonsContainer.SetActive(true);  // Ana butonlarý geri getir
     }
 
     public void OyunuKaydet()
@@ -73,10 +81,8 @@ public class PauseMenuController : MonoBehaviour
         // Mevcut kayýt adýný input'a doldur
         if (SaveSistemi.Instance != null && SaveSistemi.Instance.SaveVar())
         {
-            string mevcutIsim = SaveSistemi.Instance.KayitZamaniAl();
             // Mevcut kayýt adýný oku
-            string json = System.IO.File.ReadAllText(
-                Application.persistentDataPath + "/save.json");
+            string json = System.IO.File.ReadAllText(Application.persistentDataPath + "/save.json");
             SaveData data = JsonUtility.FromJson<SaveData>(json);
             if (isimInput != null) isimInput.text = data.kayitAdi;
         }

@@ -7,8 +7,16 @@ using TMPro;
 
 public class SettingsManager : MonoBehaviour
 {
-    // Singleton yapýsý (Diðer scriptlerden kolayca eriþmek için)
     public static SettingsManager Instance { get; private set; }
+
+    [Header("Menu Navigation")]
+    public GameObject optionsPanel;
+    public GameObject menuArea;
+
+    [Header("Tab Panels")]
+    public GameObject graphicsPanel;
+    public GameObject audioPanel;
+    public GameObject keysPanel;
 
     [Header("Audio")]
     public AudioMixer audioMixer;
@@ -35,15 +43,18 @@ public class SettingsManager : MonoBehaviour
     private Dictionary<string, KeyCode> keys = new Dictionary<string, KeyCode>();
     private string waitingForKey = "";
 
+    // Hangi sekmede olduðumuzu takip etmek için yeni deðiþken
+    private int currentTabIndex = 0;
+
     void Awake()
     {
-        if (Instance == null) { Instance = this; DontDestroyOnLoad(gameObject); }
-        else { Destroy(gameObject); }
+        Instance = this; // DontDestroyOnLoad kaldýrýldý ki sahnelerde sorun çýkmasýn
     }
 
     void Start()
     {
         LoadSettings();
+        SwitchTab(0);
     }
 
     void Update()
@@ -54,14 +65,10 @@ public class SettingsManager : MonoBehaviour
             {
                 foreach (KeyCode kcode in System.Enum.GetValues(typeof(KeyCode)))
                 {
-                    // Fare týklamalarýný tuþ atamasý olarak algýlamasýn diye filtreliyoruz
                     if (Input.GetKeyDown(kcode) && kcode != KeyCode.Mouse0 && kcode != KeyCode.Mouse1)
                     {
                         keys[waitingForKey] = kcode;
-                        PlayerPrefs.SetString(waitingForKey, kcode.ToString());
-
-                        UpdateUI_Text(waitingForKey, kcode.ToString());
-
+                        UpdateUI_Text(waitingForKey, kcode.ToString()); // Sadece arayüzde gösterir, henüz KAYDETMEZ
                         waitingForKey = "";
                         break;
                     }
@@ -70,6 +77,83 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
+    #region TAB MANAGEMENT
+    public void SwitchTab(int tabIndex)
+    {
+        currentTabIndex = tabIndex; // Açýk olan sekmeyi hafýzaya al
+
+        graphicsPanel.SetActive(tabIndex == 0);
+        audioPanel.SetActive(tabIndex == 1);
+        keysPanel.SetActive(tabIndex == 2);
+    }
+    #endregion
+
+    #region SAVE, RESET & CLOSE
+    public void SaveSettings()
+    {
+        // "KAYDET" BUTONUNA BASILINCA TÜM DEÐERLERÝ UI'DAN ALIP HAFIZAYA YAZIYORUZ
+        PlayerPrefs.SetFloat("MasterVolume", masterSlider.value);
+        PlayerPrefs.SetFloat("SFXVolume", sfxSlider.value);
+
+        PlayerPrefs.SetInt("GraphicsQuality", graphicsDropdown.value);
+        PlayerPrefs.SetInt("DisplayMode", displayDropdown.value);
+
+        PlayerPrefs.SetFloat("MouseSensitivity", sensitivitySlider.value);
+
+        string[] keyNames = { "Ileri", "Geri", "Sol", "Sag", "Ziplama", "Kosma", "Canta_Acma", "Interaksiyon" };
+        foreach (string k in keyNames)
+        {
+            if (keys.ContainsKey(k))
+                PlayerPrefs.SetString(k, keys[k].ToString());
+        }
+
+        PlayerPrefs.Save();
+        Debug.Log("Ayarlar baþarýyla kalýcý olarak kaydedildi!");
+    }
+
+    public void CloseSettings()
+    {
+        // EÐER KAYDETMEDEN ÇIKILDIYSA, ESKÝ AYARLARI GERÝ YÜKLE (Ýptal etme mantýðý)
+        LoadSettings();
+
+        if (optionsPanel != null) optionsPanel.SetActive(false);
+        if (menuArea != null) menuArea.SetActive(true);
+
+        SwitchTab(0);
+    }
+
+    public void ResetToDefaults()
+    {
+        // SADECE AKTÝF OLAN SEKMEYÝ SIFIRLA
+        if (currentTabIndex == 0) // Grafik
+        {
+            graphicsDropdown.value = 2; SetGraphicsQuality(2); // Yüksek
+            displayDropdown.value = 0; SetDisplayMode(0);     // Tam Ekran
+        }
+        else if (currentTabIndex == 1) // Ses
+        {
+            masterSlider.value = 0.75f; SetMasterVolume(0.75f);
+            sfxSlider.value = 0.75f; SetSFXVolume(0.75f);
+        }
+        else if (currentTabIndex == 2) // Kontroller
+        {
+            sensitivitySlider.value = 2.0f; SetSensitivity(2.0f);
+
+            string[] keyNames = { "Ileri", "Geri", "Sol", "Sag", "Ziplama", "Kosma", "Canta_Acma", "Interaksiyon" };
+            string[] defaultValues = { "W", "S", "A", "D", "Space", "LeftShift", "Tab", "E" };
+
+            for (int i = 0; i < keyNames.Length; i++)
+            {
+                keys[keyNames[i]] = (KeyCode)System.Enum.Parse(typeof(KeyCode), defaultValues[i]);
+                UpdateUI_Text(keyNames[i], defaultValues[i]);
+            }
+        }
+
+        // Not: Sýfýrladýðýnda hemen kaydetmez. Oyuncunun önizlemesi içindir, isterse "Kaydet" butonuna basar.
+    }
+    #endregion
+
+    #region SETTING ACTIONS (Oyun Ýçi Etkiler)
     private void UpdateUI_Text(string keyName, string value)
     {
         if (keyName == "Ileri") forwardText.text = value;
@@ -82,37 +166,33 @@ public class SettingsManager : MonoBehaviour
         if (keyName == "Interaksiyon") interactText.text = value;
     }
 
-    public void ChangeKey(string keyName)
+    public void ChangeKey(string keyName) { waitingForKey = keyName; UpdateUI_Text(keyName, "..."); }
+    public KeyCode GetKey(string keyName) { return keys.ContainsKey(keyName) ? keys[keyName] : KeyCode.None; }
+
+    // Bu fonksiyonlar artýk PlayerPrefs'e anýnda KAYDETMÝYOR, sadece oyunu anlýk güncelliyor (Önizleme için)
+    public void SetMasterVolume(float volume) { audioMixer.SetFloat("MasterVol", Mathf.Log10(Mathf.Max(0.0001f, volume)) * 20); }
+    public void SetSFXVolume(float volume) { audioMixer.SetFloat("SFXVol", Mathf.Log10(Mathf.Max(0.0001f, volume)) * 20); }
+    public void SetGraphicsQuality(int index) { QualitySettings.SetQualityLevel(index); }
+    public void SetDisplayMode(int index) { Screen.fullScreenMode = (index == 0) ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed; }
+
+    public void SetSensitivity(float value)
     {
-        waitingForKey = keyName;
-        UpdateUI_Text(keyName, "...");
+        if (StarterAssets.FirstPersonController.Instance != null)
+        {
+            StarterAssets.FirstPersonController.Instance.RotationSpeed = value;
+        }
     }
+    #endregion
 
-    public KeyCode GetKey(string keyName)
-    {
-        if (keys.ContainsKey(keyName))
-            return keys[keyName];
-
-        return KeyCode.None;
-    }
-
-    // --- DÝÐER AYAR FONKSÝYONLARI (SES, GRAFÝK VS.) ---
-    public void SetMasterVolume(float volume) { audioMixer.SetFloat("MasterVol", Mathf.Log10(Mathf.Max(0.0001f, volume)) * 20); PlayerPrefs.SetFloat("MasterVolume", volume); }
-    public void SetSFXVolume(float volume) { audioMixer.SetFloat("SFXVol", Mathf.Log10(Mathf.Max(0.0001f, volume)) * 20); PlayerPrefs.SetFloat("SFXVolume", volume); }
-    public void SetGraphicsQuality(int index) { QualitySettings.SetQualityLevel(index); PlayerPrefs.SetInt("GraphicsQuality", index); }
-    public void SetDisplayMode(int index) { Screen.fullScreenMode = (index == 0) ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed; PlayerPrefs.SetInt("DisplayMode", index); }
-    public void SetSensitivity(float value) { PlayerPrefs.SetFloat("MouseSensitivity", value); }
-
+    #region LOAD SETTINGS
     private void LoadSettings()
     {
-        // Ses, Grafik yüklemeleri...
         masterSlider.value = PlayerPrefs.GetFloat("MasterVolume", 0.75f); SetMasterVolume(masterSlider.value);
         sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume", 0.75f); SetSFXVolume(sfxSlider.value);
         graphicsDropdown.value = PlayerPrefs.GetInt("GraphicsQuality", 2); SetGraphicsQuality(graphicsDropdown.value);
         displayDropdown.value = PlayerPrefs.GetInt("DisplayMode", 0); SetDisplayMode(displayDropdown.value);
-        sensitivitySlider.value = PlayerPrefs.GetFloat("MouseSensitivity", 2.0f);
+        sensitivitySlider.value = PlayerPrefs.GetFloat("MouseSensitivity", 2.0f); SetSensitivity(sensitivitySlider.value);
 
-        // Tuþlarý Hafýzadan Yükle (Eðer yoksa varsayýlan deðerleri ata)
         string[] keyNames = { "Ileri", "Geri", "Sol", "Sag", "Ziplama", "Kosma", "Canta_Acma", "Interaksiyon" };
         string[] defaultValues = { "W", "S", "A", "D", "Space", "LeftShift", "Tab", "E" };
 
@@ -123,4 +203,5 @@ public class SettingsManager : MonoBehaviour
             UpdateUI_Text(keyNames[i], savedKey);
         }
     }
+    #endregion
 }
