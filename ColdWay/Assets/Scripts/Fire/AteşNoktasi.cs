@@ -193,10 +193,8 @@ public class AteşNoktasi : MonoBehaviour
     bool KibritVarMi()
     {
         if (inventory == null || kibritItemSO == null) return false;
-        foreach (Slot slot in inventory.allSlots)
-            if (slot.HasItem() && slot.GetItem() == kibritItemSO)
-                return true;
-        return false;
+        Slot secilenSlot = inventory.hotbarSlots[inventory.equippedHotbarIndex];
+        return secilenSlot.HasItem() && secilenSlot.GetItem() == kibritItemSO;
     }
 
     public void DumanYogunlukAyarla(float oran)

@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: KibritItem
   icon: {fileID: 21300000, guid: 8048b87b2950ebd47819222cf33409b3, type: 3}
+  iconTwo: {fileID: 21300000, guid: c045317f67b48df47a7c71e549966503, type: 3}
+  iconFull: {fileID: 21300000, guid: 54fa267ed022e4b46bd62a213271d967, type: 3}
   maxStackSize: 3
   itemPrefab: {fileID: 8255703924160496010, guid: bb6099a62b7fbac4f87af3b3dd80cb35,
     type: 3}

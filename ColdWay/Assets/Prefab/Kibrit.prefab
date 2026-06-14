@@ -1199,3 +1199,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 1b7311a16164c8548bef2e6f5891a8f2, type: 2}
   amount: 1
+  kibritKutusumu: 0
+  minKibrit: 1
+  maxKibrit: 3

@@ -308,9 +308,10 @@ public class AtesSistemi : MonoBehaviour
             return;
         }
 
-        foreach (Slot slot in inventory.allSlots)
+        Slot secilenSlot = inventory.hotbarSlots[inventory.equippedHotbarIndex];
+        if (secilenSlot.HasItem() && secilenSlot.GetItem() == odunItemSO)
         {
-            if (slot.HasItem() && slot.GetItem() == odunItemSO)
+            Slot slot = secilenSlot;
             {
                 int miktar = slot.GetAmount();
                 slot.SetItem(odunItemSO, miktar - 1);
@@ -351,7 +352,7 @@ public class AtesSistemi : MonoBehaviour
                 return;
             }
         }
-        IpucuYoneticisi.Instance?.MesajGoster("ates", "Odun yok!");
+        IpucuYoneticisi.Instance?.MesajGoster("ates", "Odunu eline al!");
     }
 
     void AtesSon()

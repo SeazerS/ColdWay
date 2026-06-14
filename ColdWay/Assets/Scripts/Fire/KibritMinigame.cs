@@ -31,6 +31,10 @@ public class KibritMinigame : MonoBehaviour
     [Header("Gece Ayarlari")]
     public float geceZorluCarpani = 2.5f;
 
+    [Header("Envanter")]
+    public Inventory inventory;
+    public ItemSO kibritItemSO;
+
     public KivilcimSistemi kivilcimSistemi;
 
     private AteþNoktasi aktifAtesNoktasi;
@@ -69,7 +73,10 @@ public class KibritMinigame : MonoBehaviour
     public void Baslat(AteþNoktasi atestNoktasi)
     {
         aktifAtesNoktasi = atestNoktasi;
-        kalanKibrit = kibritBasinaKullanim;
+        Slot secilenSlot = inventory.hotbarSlots[inventory.equippedHotbarIndex];
+        kalanKibrit = (secilenSlot.HasItem() && secilenSlot.GetItem() == kibritItemSO)
+            ? secilenSlot.GetAmount()
+            : 0;
         aktif = true;
         bar = 0f;
         basiliMi = false;
@@ -229,7 +236,12 @@ public class KibritMinigame : MonoBehaviour
 
     void KibritiKir()
     {
+
         kalanKibrit--;
+        Slot secilenSlot = inventory.hotbarSlots[inventory.equippedHotbarIndex];
+        if (secilenSlot.HasItem() && secilenSlot.GetItem() == kibritItemSO)
+            secilenSlot.RemoveAmount(1);
+
         kibritKirildi = true;
         kirilmaZamanlayici = 0f;
         bar = 0f;
@@ -237,7 +249,7 @@ public class KibritMinigame : MonoBehaviour
         SayacGuncelle();
 
         if (kalanKibrit <= 0)
-            IpucuGuncelle("kibrit kutusu bitti!");
+            IpucuGuncelle("kibrit bitti!");
         else
             IpucuGuncelle("kibrit söndü! " + kalanKibrit + " kibrit kaldý...");
     }
@@ -264,8 +276,7 @@ public class KibritMinigame : MonoBehaviour
     void SayacGuncelle()
     {
         if (kibritSayacText != null)
-            kibritSayacText.text = "Kibrit: " + kalanKibrit
-                                 + " / " + kibritBasinaKullanim;
+            kibritSayacText.text = "Kibrit: " + kalanKibrit;
     }
 
     void IpucuGuncelle(string mesaj)

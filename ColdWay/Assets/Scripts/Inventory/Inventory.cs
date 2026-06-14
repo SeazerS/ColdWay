@@ -345,5 +345,14 @@ public class Inventory : MonoBehaviour
             }
         }
     }
+
+    public int GetItemCount(ItemSO item)
+    {
+        int toplam = 0;
+        foreach (Slot slot in allSlots)
+            if (slot.HasItem() && slot.GetItem() == item)
+                toplam += slot.GetAmount();
+        return toplam;
+    }
 }
 

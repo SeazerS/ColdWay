@@ -30867,17 +30867,17 @@ PrefabInstance:
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -261.02765
+      value: 568.6
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.71
+      value: 31.3
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -219.29852
+      value: 146.2
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
@@ -56010,6 +56010,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1917656739322298272, guid: bb6099a62b7fbac4f87af3b3dd80cb35,
+        type: 3}
+      propertyPath: maxKibrit
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1917656739322298272, guid: bb6099a62b7fbac4f87af3b3dd80cb35,
+        type: 3}
+      propertyPath: minKibrit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1917656739322298272, guid: bb6099a62b7fbac4f87af3b3dd80cb35,
+        type: 3}
+      propertyPath: kibritKutusumu
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6632200934386903249, guid: bb6099a62b7fbac4f87af3b3dd80cb35,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -105247,6 +105262,8 @@ MonoBehaviour:
   kibritBasinaKullanim: 3
   sicaklikSistemi: {fileID: 1030150354}
   geceZorluCarpani: 2.5
+  inventory: {fileID: 8664859640283797385}
+  kibritItemSO: {fileID: 11400000, guid: 1b7311a16164c8548bef2e6f5891a8f2, type: 2}
   kivilcimSistemi: {fileID: 7152121866568447016}
   atesSimgesi: {fileID: 917704085}
   atesSimgesiGosterSuresi: 0.5
