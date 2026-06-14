@@ -39,21 +39,23 @@ public class SettingsManager : MonoBehaviour
     public TMP_Text sprintText;
     public TMP_Text inventoryText;
     public TMP_Text interactText;
+    public TMP_Text sleepText;
+
 
     private Dictionary<string, KeyCode> keys = new Dictionary<string, KeyCode>();
     private string waitingForKey = "";
 
-    // Hangi sekmede olduðumuzu takip etmek için yeni deðiþken
     private int currentTabIndex = 0;
 
     void Awake()
     {
-        Instance = this; // DontDestroyOnLoad kaldýrýldý ki sahnelerde sorun çýkmasýn
+        Instance = this;
+        LoadSettings();
+
     }
 
     void Start()
     {
-        LoadSettings();
         SwitchTab(0);
     }
 
@@ -100,7 +102,8 @@ public class SettingsManager : MonoBehaviour
 
         PlayerPrefs.SetFloat("MouseSensitivity", sensitivitySlider.value);
 
-        string[] keyNames = { "Ileri", "Geri", "Sol", "Sag", "Ziplama", "Kosma", "Canta_Acma", "Interaksiyon" };
+        string[] keyNames = { "Ileri", "Geri", "Sol", "Sag", "Ziplama", "Kosma", "Canta_Acma", "Interaksiyon", "Uyuma" };
+
         foreach (string k in keyNames)
         {
             if (keys.ContainsKey(k))
@@ -109,6 +112,10 @@ public class SettingsManager : MonoBehaviour
 
         PlayerPrefs.Save();
         Debug.Log("Ayarlar baþarýyla kalýcý olarak kaydedildi!");
+        if (StarterAssets.FirstPersonController.Instance != null)
+        {
+            StarterAssets.FirstPersonController.Instance.LoadKeys();
+        }
     }
 
     public void CloseSettings()
@@ -139,8 +146,8 @@ public class SettingsManager : MonoBehaviour
         {
             sensitivitySlider.value = 2.0f; SetSensitivity(2.0f);
 
-            string[] keyNames = { "Ileri", "Geri", "Sol", "Sag", "Ziplama", "Kosma", "Canta_Acma", "Interaksiyon" };
-            string[] defaultValues = { "W", "S", "A", "D", "Space", "LeftShift", "Tab", "E" };
+            string[] keyNames = { "Ileri", "Geri", "Sol", "Sag", "Ziplama", "Kosma", "Canta_Acma", "Interaksiyon", "Uyuma" };
+            string[] defaultValues = { "W", "S", "A", "D", "Space", "LeftShift", "Tab", "E", "T" };
 
             for (int i = 0; i < keyNames.Length; i++)
             {
@@ -164,6 +171,8 @@ public class SettingsManager : MonoBehaviour
         if (keyName == "Kosma") sprintText.text = value;
         if (keyName == "Canta_Acma") inventoryText.text = value;
         if (keyName == "Interaksiyon") interactText.text = value;
+        if (keyName == "Uyuma") sleepText.text = value;
+
     }
 
     public void ChangeKey(string keyName) { waitingForKey = keyName; UpdateUI_Text(keyName, "..."); }
@@ -193,8 +202,8 @@ public class SettingsManager : MonoBehaviour
         displayDropdown.value = PlayerPrefs.GetInt("DisplayMode", 0); SetDisplayMode(displayDropdown.value);
         sensitivitySlider.value = PlayerPrefs.GetFloat("MouseSensitivity", 2.0f); SetSensitivity(sensitivitySlider.value);
 
-        string[] keyNames = { "Ileri", "Geri", "Sol", "Sag", "Ziplama", "Kosma", "Canta_Acma", "Interaksiyon" };
-        string[] defaultValues = { "W", "S", "A", "D", "Space", "LeftShift", "Tab", "E" };
+        string[] keyNames = { "Ileri", "Geri", "Sol", "Sag", "Ziplama", "Kosma", "Canta_Acma", "Interaksiyon", "Uyuma" };
+        string[] defaultValues = { "W", "S", "A", "D", "Space", "LeftShift", "Tab", "E", "T" };
 
         for (int i = 0; i < keyNames.Length; i++)
         {

@@ -56,7 +56,9 @@ public class AteşNoktasi : MonoBehaviour
     {
         if (!oyuncuYakinda) return;
 
-        if (Input.GetKeyDown(KeyCode.E))
+        KeyCode etkilesimTusu = SettingsManager.Instance.GetKey("Interaksiyon");
+
+        if (Input.GetKeyDown(etkilesimTusu))
         {
             // Ateş yanıyorsa odun ekle
             if (atesSistemi != null && atesSistemi.YaniyorMu())
@@ -101,19 +103,20 @@ public class AteşNoktasi : MonoBehaviour
 
     public void GuncelleMesaj()
     {
+        string tusAdi = SettingsManager.Instance.GetKey("Interaksiyon").ToString();
+
         if (atesSistemi != null && atesSistemi.YaniyorMu())
         {
-            IpucuYoneticisi.Instance.MesajGoster("ates", "E — Odun Ekle");
+            IpucuYoneticisi.Instance.MesajGoster("ates", tusAdi + " — Odun Ekle");
             return;
         }
-
 
         if (!OdunVarMi())
             IpucuYoneticisi.Instance.MesajGoster("ates", gerekliOdun + " odun gerekli");
         else if (!KibritVarMi())
             IpucuYoneticisi.Instance.MesajGoster("ates", "Kibrit gerekli");
         else
-            IpucuYoneticisi.Instance.MesajGoster("ates", "E — Ateş Kur");
+            IpucuYoneticisi.Instance.MesajGoster("ates", tusAdi + " — Ateş Kur");
     }
 
     public void AteşiYak()

@@ -31,20 +31,22 @@ public class Player_Mech : MonoBehaviour
 
     void Update()
     {
+        KeyCode etkilesimTusu = SettingsManager.Instance.GetKey("Interaksiyon");
+
         // TEK SEFERLÝK BASIÞLAR (Faz 0 ve 1)
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(etkilesimTusu))
         {
             if (phase == 0)
             {
-                PlaceInitialBase(); // Küreleri direkt koyar
+                PlaceInitialBase();
             }
             else if (phase == 1)
             {
-                if (CheckAndRemoveWood(3)) // Sadece silindirler için odun eksiltir
+                if (CheckAndRemoveWood(3))
                 {
                     if (visualCylinders != null) visualCylinders.SetActive(true);
                     phase = 2;
-                    Debug.Log("Odunlar dizildi! Ateþ yakmak için F'ye basýlý tut.");
+                    Debug.Log("Odunlar dizildi! Ateþ yakmak için " + etkilesimTusu.ToString() + "'ye basýlý tut.");
                 }
                 else
                 {
@@ -56,12 +58,12 @@ public class Player_Mech : MonoBehaviour
         // BASILI TUTMA (Sadece Faz 2'de)
         if (phase == 2 && currentWoodPile != null)
         {
-            if (Input.GetKey(KeyCode.F))
+            if (Input.GetKey(etkilesimTusu))
             {
                 UpdateFireLightingProgress();
             }
 
-            if (Input.GetKeyUp(KeyCode.F))
+            if (Input.GetKeyUp(etkilesimTusu))
             {
                 ResetProgress();
             }

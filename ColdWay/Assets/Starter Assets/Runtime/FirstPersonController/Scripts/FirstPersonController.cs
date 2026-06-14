@@ -53,6 +53,14 @@ namespace StarterAssets
         public float WalkStepRate = 0.5f;
         public float SprintStepRate = 0.3f;
 
+        public KeyCode forwardKey = KeyCode.W;
+        public KeyCode backwardKey = KeyCode.S;
+        public KeyCode leftKey = KeyCode.A;
+        public KeyCode rightKey = KeyCode.D;
+        public KeyCode jumpKey = KeyCode.Space;
+        public KeyCode sprintKey = KeyCode.LeftShift;
+
+
         // DİNAMİK YÜRÜME SESİ DEĞİŞKENİ
         [HideInInspector]
         public string currentFootstepSound = "Yurume_Sesi";
@@ -98,10 +106,32 @@ namespace StarterAssets
 #endif
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+
+            LoadKeys();
+        }
+
+        public void LoadKeys()
+        {
+            forwardKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Ileri", "W"));
+            backwardKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Geri", "S"));
+            leftKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Sol", "A"));
+            rightKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Sag", "D"));
+            jumpKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Ziplama", "Space"));
+            sprintKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Kosma", "LeftShift"));
         }
 
         private void Update()
         {
+            Vector2 customMove = Vector2.zero;
+            if (Input.GetKey(rightKey)) customMove.x += 1f;
+            if (Input.GetKey(leftKey)) customMove.x -= 1f;
+            if (Input.GetKey(forwardKey)) customMove.y += 1f;
+            if (Input.GetKey(backwardKey)) customMove.y -= 1f;
+
+            _input.move = customMove.normalized;
+            _input.sprint = Input.GetKey(sprintKey);
+            _input.jump = Input.GetKey(jumpKey);
+
             JumpAndGravity();
             GroundedCheck();
             Move();

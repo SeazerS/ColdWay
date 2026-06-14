@@ -41,7 +41,9 @@ public class UykuSistemi : MonoBehaviour
         if (!oyuncuYakinda) return;
         GuncelleMesaj();
 
-        if (Input.GetKeyDown(KeyCode.T))
+        KeyCode uyumaTusu = SettingsManager.Instance.GetKey("Uyuma");
+
+        if (Input.GetKeyDown(uyumaTusu))
         {
             switch (cadirDurum)
             {
@@ -61,18 +63,19 @@ public class UykuSistemi : MonoBehaviour
     void GuncelleMesaj()
     {
         bool geceVakti = sicaklikSistemi != null && sicaklikSistemi.geceBonusu;
+        string tusAdi = SettingsManager.Instance.GetKey("Uyuma").ToString();
 
         switch (cadirDurum)
         {
             case CadirDurum.Kurulmadi:
                 IpucuYoneticisi.Instance.MesajGoster("cadir",
-                    geceVakti ? "T — Çadýr Kur" : "Hava henüz kararmadý");
+                    geceVakti ? tusAdi + " — Çadýr Kur" : "Hava henüz kararmadý");
                 break;
             case CadirDurum.KurulduUyunmadi:
-                IpucuYoneticisi.Instance.MesajGoster("cadir", "T — Uyu");
+                IpucuYoneticisi.Instance.MesajGoster("cadir", tusAdi + " — Uyu");
                 break;
             case CadirDurum.Uyundu:
-                IpucuYoneticisi.Instance.MesajGoster("cadir", "T — Çadýrý Topla");
+                IpucuYoneticisi.Instance.MesajGoster("cadir", tusAdi + " — Çadýrý Topla");
                 break;
         }
     }
