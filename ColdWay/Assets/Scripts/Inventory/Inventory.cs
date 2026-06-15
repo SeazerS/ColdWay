@@ -154,6 +154,11 @@ public class Inventory : MonoBehaviour
                 dragIcon.sprite = hovered.GetItem().icon;
                 dragIcon.color = new Color(1, 1, 1, 0.5f);
                 dragIcon.enabled = true;
+
+                if (StarterAssets.AudioManager.instance != null)
+                {
+                    StarterAssets.AudioManager.instance.Play("Item_Surukleme");
+                }
             }
         }
     }
@@ -167,11 +172,13 @@ public class Inventory : MonoBehaviour
             {
                 HandleDrop(draggedSlot, hovered);
 
-                dragIcon.enabled = false;
-
-                draggedSlot = null;
-                isDragging = false;
+               
             }
+
+            // Oyuncu eþyayý slota veya boþa býraktýðýnda farenin ucundan temizle
+            dragIcon.enabled = false;
+            draggedSlot = null;
+            isDragging = false;
         }
     }
 

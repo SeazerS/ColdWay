@@ -108,6 +108,8 @@ namespace StarterAssets
             _fallTimeoutDelta = FallTimeout;
 
             LoadKeys();
+
+            RotationSpeed = PlayerPrefs.GetFloat("MouseSensitivity", 2.0f);
         }
 
         public void LoadKeys()

@@ -41,7 +41,6 @@ public class SettingsManager : MonoBehaviour
     public TMP_Text interactText;
     public TMP_Text sleepText;
 
-
     private Dictionary<string, KeyCode> keys = new Dictionary<string, KeyCode>();
     private string waitingForKey = "";
 
@@ -51,7 +50,6 @@ public class SettingsManager : MonoBehaviour
     {
         Instance = this;
         LoadSettings();
-
     }
 
     void Start()
@@ -69,8 +67,34 @@ public class SettingsManager : MonoBehaviour
                 {
                     if (Input.GetKeyDown(kcode) && kcode != KeyCode.Mouse0 && kcode != KeyCode.Mouse1)
                     {
+                        // EÐER OYUNCU ESC'YE BASARSA ATAMAYI ÝPTAL ET
+                        if (kcode == KeyCode.Escape)
+                        {
+                            UpdateUI_Text(waitingForKey, keys[waitingForKey].ToString());
+                            waitingForKey = "";
+                            break;
+                        }
+
+                        // ÇAKIÞMA KONTROLÜ: Ayný tuþ baþka eylemde var mý?
+                        string cakisanIslem = "";
+                        foreach (var kvp in keys)
+                        {
+                            if (kvp.Value == kcode && kvp.Key != waitingForKey)
+                            {
+                                cakisanIslem = kvp.Key;
+                                break;
+                            }
+                        }
+
+                        // Eðer çakýþan varsa onu "..." yap
+                        if (cakisanIslem != "")
+                        {
+                            keys[cakisanIslem] = KeyCode.None;
+                            UpdateUI_Text(cakisanIslem, "...");
+                        }
+
                         keys[waitingForKey] = kcode;
-                        UpdateUI_Text(waitingForKey, kcode.ToString()); // Sadece arayüzde gösterir, henüz KAYDETMEZ
+                        UpdateUI_Text(waitingForKey, kcode.ToString());
                         waitingForKey = "";
                         break;
                     }
@@ -82,8 +106,7 @@ public class SettingsManager : MonoBehaviour
     #region TAB MANAGEMENT
     public void SwitchTab(int tabIndex)
     {
-        currentTabIndex = tabIndex; // Açýk olan sekmeyi hafýzaya al
-
+        currentTabIndex = tabIndex;
         graphicsPanel.SetActive(tabIndex == 0);
         audioPanel.SetActive(tabIndex == 1);
         keysPanel.SetActive(tabIndex == 2);
@@ -93,7 +116,6 @@ public class SettingsManager : MonoBehaviour
     #region SAVE, RESET & CLOSE
     public void SaveSettings()
     {
-        // "KAYDET" BUTONUNA BASILINCA TÜM DEÐERLERÝ UI'DAN ALIP HAFIZAYA YAZIYORUZ
         PlayerPrefs.SetFloat("MasterVolume", masterSlider.value);
         PlayerPrefs.SetFloat("SFXVolume", sfxSlider.value);
 
@@ -112,37 +134,36 @@ public class SettingsManager : MonoBehaviour
 
         PlayerPrefs.Save();
         Debug.Log("Ayarlar baþarýyla kalýcý olarak kaydedildi!");
+
         if (StarterAssets.FirstPersonController.Instance != null)
         {
             StarterAssets.FirstPersonController.Instance.LoadKeys();
+            // Hassasiyeti anýnda uygula
+            StarterAssets.FirstPersonController.Instance.RotationSpeed = sensitivitySlider.value;
         }
     }
 
     public void CloseSettings()
     {
-        // EÐER KAYDETMEDEN ÇIKILDIYSA, ESKÝ AYARLARI GERÝ YÜKLE (Ýptal etme mantýðý)
         LoadSettings();
-
         if (optionsPanel != null) optionsPanel.SetActive(false);
         if (menuArea != null) menuArea.SetActive(true);
-
         SwitchTab(0);
     }
 
     public void ResetToDefaults()
     {
-        // SADECE AKTÝF OLAN SEKMEYÝ SIFIRLA
-        if (currentTabIndex == 0) // Grafik
+        if (currentTabIndex == 0)
         {
-            graphicsDropdown.value = 2; SetGraphicsQuality(2); // Yüksek
-            displayDropdown.value = 0; SetDisplayMode(0);     // Tam Ekran
+            graphicsDropdown.value = 2; SetGraphicsQuality(2);
+            displayDropdown.value = 0; SetDisplayMode(0);
         }
-        else if (currentTabIndex == 1) // Ses
+        else if (currentTabIndex == 1)
         {
             masterSlider.value = 0.75f; SetMasterVolume(0.75f);
             sfxSlider.value = 0.75f; SetSFXVolume(0.75f);
         }
-        else if (currentTabIndex == 2) // Kontroller
+        else if (currentTabIndex == 2)
         {
             sensitivitySlider.value = 2.0f; SetSensitivity(2.0f);
 
@@ -155,8 +176,6 @@ public class SettingsManager : MonoBehaviour
                 UpdateUI_Text(keyNames[i], defaultValues[i]);
             }
         }
-
-        // Not: Sýfýrladýðýnda hemen kaydetmez. Oyuncunun önizlemesi içindir, isterse "Kaydet" butonuna basar.
     }
     #endregion
 
@@ -172,16 +191,19 @@ public class SettingsManager : MonoBehaviour
         if (keyName == "Canta_Acma") inventoryText.text = value;
         if (keyName == "Interaksiyon") interactText.text = value;
         if (keyName == "Uyuma") sleepText.text = value;
-
     }
 
     public void ChangeKey(string keyName) { waitingForKey = keyName; UpdateUI_Text(keyName, "..."); }
     public KeyCode GetKey(string keyName) { return keys.ContainsKey(keyName) ? keys[keyName] : KeyCode.None; }
 
-    // Bu fonksiyonlar artýk PlayerPrefs'e anýnda KAYDETMÝYOR, sadece oyunu anlýk güncelliyor (Önizleme için)
     public void SetMasterVolume(float volume) { audioMixer.SetFloat("MasterVol", Mathf.Log10(Mathf.Max(0.0001f, volume)) * 20); }
     public void SetSFXVolume(float volume) { audioMixer.SetFloat("SFXVol", Mathf.Log10(Mathf.Max(0.0001f, volume)) * 20); }
-    public void SetGraphicsQuality(int index) { QualitySettings.SetQualityLevel(index); }
+
+    public void SetGraphicsQuality(int index)
+    {
+        QualitySettings.SetQualityLevel(index, true); // true parametresi deðiþimi anýnda render motoruna zorlar
+    }
+
     public void SetDisplayMode(int index) { Screen.fullScreenMode = (index == 0) ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed; }
 
     public void SetSensitivity(float value)

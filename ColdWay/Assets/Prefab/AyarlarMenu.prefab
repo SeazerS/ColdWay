@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 7373024822428300222}
   - component: {fileID: 7392915346603574826}
   - component: {fileID: 6308029138686308952}
+  - component: {fileID: 71435317562429085}
   m_Layer: 5
   m_Name: GoruntuAyarlari
   m_TagString: Untagged
@@ -273,8 +274,32 @@ MonoBehaviour:
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
+        m_MethodName: SetGraphicsQuality
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
+--- !u!114 &71435317562429085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170870192414550382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &175022711310704788
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,6 +313,7 @@ GameObject:
   - component: {fileID: 6035154623618119333}
   - component: {fileID: 4541997542060472353}
   - component: {fileID: 7729447128320386470}
+  - component: {fileID: 2542386627256866731}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -429,6 +455,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &2542386627256866731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175022711310704788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &279100067714318636
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,6 +480,7 @@ GameObject:
   - component: {fileID: 7923187710395333243}
   - component: {fileID: 1593763040587377093}
   - component: {fileID: 6479878946511341493}
+  - component: {fileID: 1706986023712317697}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -583,6 +622,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &1706986023712317697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 279100067714318636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &286837757096028943
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,8 +1023,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26
-  m_fontSizeBase: 26
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1106,13 +1157,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1626,6 +1677,7 @@ GameObject:
   - component: {fileID: 7862387815856765381}
   - component: {fileID: 7258944190691920552}
   - component: {fileID: 2415331678908838137}
+  - component: {fileID: 4066293537901712105}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1767,6 +1819,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &4066293537901712105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810799578987643892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &820289842415022547
 GameObject:
   m_ObjectHideFlags: 0
@@ -1779,6 +1843,7 @@ GameObject:
   - component: {fileID: 2018525356350249191}
   - component: {fileID: 4176378136544359961}
   - component: {fileID: 2997434033606857899}
+  - component: {fileID: 2974044972783970966}
   m_Layer: 5
   m_Name: Tab_Tuslar
   m_TagString: Untagged
@@ -1900,6 +1965,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2974044972783970966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820289842415022547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &895621152667356895
 GameObject:
   m_ObjectHideFlags: 0
@@ -1913,6 +1990,7 @@ GameObject:
   - component: {fileID: 3474404863836158803}
   - component: {fileID: 810095013942282474}
   - component: {fileID: 641192995975431821}
+  - component: {fileID: 2053404098300931865}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -2054,6 +2132,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &2053404098300931865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895621152667356895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &976206764397234525
 GameObject:
   m_ObjectHideFlags: 0
@@ -2280,13 +2370,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -2414,13 +2504,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -2950,13 +3040,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -3849,6 +3939,7 @@ GameObject:
   - component: {fileID: 7176919080783045336}
   - component: {fileID: 620733363245702906}
   - component: {fileID: 3388705374365475727}
+  - component: {fileID: 3964653211137209365}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -3990,6 +4081,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &3964653211137209365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2898265093542147600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2906962275038055743
 GameObject:
   m_ObjectHideFlags: 0
@@ -4002,6 +4105,7 @@ GameObject:
   - component: {fileID: 7642470893263374722}
   - component: {fileID: 505107346872089667}
   - component: {fileID: 4165823850004300250}
+  - component: {fileID: 170658831673046690}
   m_Layer: 5
   m_Name: Geri
   m_TagString: Untagged
@@ -4123,6 +4227,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &170658831673046690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2906962275038055743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3082341443526025715
 GameObject:
   m_ObjectHideFlags: 0
@@ -4135,6 +4251,7 @@ GameObject:
   - component: {fileID: 6071522702335821880}
   - component: {fileID: 7345710329965916115}
   - component: {fileID: 9187860874992181897}
+  - component: {fileID: 3566466645524893503}
   m_Layer: 5
   m_Name: Tab_Ses
   m_TagString: Untagged
@@ -4256,6 +4373,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3566466645524893503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3082341443526025715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3158381910195071054
 GameObject:
   m_ObjectHideFlags: 0
@@ -4477,6 +4606,7 @@ GameObject:
   - component: {fileID: 3306166907644546495}
   - component: {fileID: 4968017182990758030}
   - component: {fileID: 5015851737838922861}
+  - component: {fileID: 8862129086837708050}
   m_Layer: 5
   m_Name: "Varsay\u0131lan"
   m_TagString: Untagged
@@ -4598,6 +4728,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8862129086837708050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3200283125092294063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3298439026993319189
 GameObject:
   m_ObjectHideFlags: 0
@@ -5432,13 +5574,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -6006,6 +6148,7 @@ GameObject:
   - component: {fileID: 5733756742076499707}
   - component: {fileID: 7759162620558498306}
   - component: {fileID: 8396120499083643950}
+  - component: {fileID: 2627058252765829006}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -6147,6 +6290,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &2627058252765829006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4923027098588625440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5216458139077881313
 GameObject:
   m_ObjectHideFlags: 0
@@ -7126,6 +7281,7 @@ GameObject:
   - component: {fileID: 3412305268799135712}
   - component: {fileID: 5458625987330705524}
   - component: {fileID: 6935170175400408895}
+  - component: {fileID: 8145642325726540196}
   m_Layer: 5
   m_Name: EkranModu
   m_TagString: Untagged
@@ -7249,8 +7405,32 @@ MonoBehaviour:
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
+        m_MethodName: SetDisplayMode
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
+--- !u!114 &8145642325726540196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6781275329399890481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6874223631675479992
 GameObject:
   m_ObjectHideFlags: 0
@@ -7263,6 +7443,7 @@ GameObject:
   - component: {fileID: 5945456443201011165}
   - component: {fileID: 8189726906086776151}
   - component: {fileID: 2454421650574014901}
+  - component: {fileID: 2223170359420190326}
   m_Layer: 5
   m_Name: Kaydet
   m_TagString: Untagged
@@ -7384,6 +7565,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2223170359420190326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6874223631675479992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6904244706234634318
 GameObject:
   m_ObjectHideFlags: 0
@@ -8010,13 +8203,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -8668,8 +8861,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26
-  m_fontSizeBase: 26
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -8802,13 +8995,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -9155,13 +9348,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -9246,6 +9439,7 @@ GameObject:
   - component: {fileID: 4546999764005354305}
   - component: {fileID: 8938584277301336863}
   - component: {fileID: 5585920360330907386}
+  - component: {fileID: 4760889464927481927}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -9387,6 +9581,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &4760889464927481927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8512957832201886529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8523398070965262249
 GameObject:
   m_ObjectHideFlags: 0
@@ -9633,13 +9839,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -9879,6 +10085,7 @@ GameObject:
   - component: {fileID: 6606447007068855798}
   - component: {fileID: 6035344487485319817}
   - component: {fileID: 2065787186202525518}
+  - component: {fileID: 3492434401997496881}
   m_Layer: 5
   m_Name: Tab_Grafik
   m_TagString: Untagged
@@ -10000,6 +10207,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3492434401997496881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8841989450882279455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8846899461623567398
 GameObject:
   m_ObjectHideFlags: 0
@@ -10013,6 +10232,7 @@ GameObject:
   - component: {fileID: 8352418442967821560}
   - component: {fileID: 8376607365442486889}
   - component: {fileID: 3875462278260912453}
+  - component: {fileID: 6039761237580467479}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -10154,6 +10374,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &6039761237580467479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8846899461623567398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8887728010630887633
 GameObject:
   m_ObjectHideFlags: 0
@@ -10167,6 +10399,7 @@ GameObject:
   - component: {fileID: 2063616189202346343}
   - component: {fileID: 4381507227817758504}
   - component: {fileID: 88124270549872711}
+  - component: {fileID: 1041926506039782660}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -10308,6 +10541,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &1041926506039782660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8887728010630887633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4a03b06e8715948be38b7f446ce5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8917174519309678903
 GameObject:
   m_ObjectHideFlags: 0
