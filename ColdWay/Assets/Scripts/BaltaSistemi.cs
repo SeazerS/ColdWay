@@ -80,16 +80,10 @@ public class BaltaSistemi : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, vurmaMessafesi))
         {
-            AgacKesme agac = hit.collider.GetComponent<AgacKesme>();
+            AgacKesme agac = hit.collider
+                .GetComponentInParent<AgacKesme>();
             if (agac != null)
-            {
-                if (!agac.kuruAagac)
-                {
-                    Debug.Log("Bu agaci kesemezsin — islak veya yesil.");
-                    return;
-                }
-                agac.Vur(odunPrefab);
-            }
+                agac.Vur(transform.position);
         }
     }
 
