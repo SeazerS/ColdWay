@@ -22,6 +22,9 @@ public class AgacKesme : MonoBehaviour
     [Header("Parca Kayma Yonu")]
     public Vector3 kaymaYonu = Vector3.right;
 
+    [Header("Efekt")]
+    public ParticleSystem talasParticlePrefab;
+
     private bool devrildi = false;
     private bool devriliyorMu = false;
     private Vector3 devrilmeYonu;
@@ -36,9 +39,30 @@ public class AgacKesme : MonoBehaviour
         if (anaCollider != null) anaCollider.enabled = false;
     }
 
-    public void Vur(Vector3 oyuncuPozisyon)
+    public void Vur(Vector3 oyuncuPozisyon, Vector3 vurusPozisyon)
     {
         if (devriliyorMu) return;
+
+        // Her vuruþta talaþ efekti
+        if (talasParticlePrefab != null)
+        {
+            ParticleSystem ps = Instantiate(
+                talasParticlePrefab,
+                vurusPozisyon,
+                Quaternion.identity);
+
+            // Random burst count
+            var emission = ps.emission;
+            var burst = emission.GetBurst(0);
+            burst.count = Random.Range(5, 21);
+            emission.SetBurst(0, burst);
+
+            ps.Play();
+        }
+        else
+        {
+            Debug.Log("Particle NULL!");
+        }
 
         if (StarterAssets.AudioManager.instance != null)
         {

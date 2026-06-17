@@ -88,7 +88,10 @@ public class BaltaSistemi : MonoBehaviour
             AgacKesme agac = hit.collider
                 .GetComponentInParent<AgacKesme>();
             if (agac != null)
-                agac.Vur(transform.position);
+            {
+                agac.Vur(transform.position, hit.point);
+                return;
+            }
         }
     }
 

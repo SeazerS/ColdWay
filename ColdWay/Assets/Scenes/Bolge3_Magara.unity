@@ -110647,6 +110647,8 @@ MonoBehaviour:
   inventory: {fileID: 8664859640283797385}
   kaymaMessafesi: 3
   kaymaYonu: {x: 0, y: 0, z: -1}
+  talasParticlePrefab: {fileID: 2222645014102336023, guid: 9570031a77b915747b62f55572ee0d3e,
+    type: 3}
 --- !u!65 &1797891661
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -141568,9 +141570,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1979312601188272861, guid: 93ce1339810786b4bb8f55ee1ea6c55a,
         type: 3}
+      propertyPath: talasParticle
+      value: 
+      objectReference: {fileID: 2222645014102336023, guid: 9570031a77b915747b62f55572ee0d3e,
+        type: 3}
+    - target: {fileID: 1979312601188272861, guid: 93ce1339810786b4bb8f55ee1ea6c55a,
+        type: 3}
       propertyPath: kaymaMessafesi
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1979312601188272861, guid: 93ce1339810786b4bb8f55ee1ea6c55a,
+        type: 3}
+      propertyPath: talasParticlePrefab
+      value: 
+      objectReference: {fileID: 2222645014102336023, guid: 9570031a77b915747b62f55572ee0d3e,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
