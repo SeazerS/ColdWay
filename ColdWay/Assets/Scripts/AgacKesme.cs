@@ -40,14 +40,22 @@ public class AgacKesme : MonoBehaviour
     {
         if (devriliyorMu) return;
 
+        if (StarterAssets.AudioManager.instance != null)
+        {
+            StarterAssets.AudioManager.instance.Play("Odun_Kesme");
+        }
+
         if (!devrildi)
         {
             kalanVurus--;
 
             if (kalanVurus > 0)
             {
+                // AYAKTAKÝ AÐAÇ ÝÇÝN DETAY (3. Parametre eklendi)
                 IpucuYoneticisi.Instance?.MesajGoster(
-                    "agac", kalanVurus + " vurus kaldi");
+                    "agac",
+                    kalanVurus + " vurus kaldi",
+                    "Kuru aðaçlarý baltayla keserek devirebilirsin. Yeþil ve ýslak aðaçlar kesilemez.");
             }
             else
             {
@@ -102,8 +110,11 @@ public class AgacKesme : MonoBehaviour
         // Ana collider'ý aç
         if (anaCollider != null) anaCollider.enabled = true;
 
+        // ÝSTEDÝÐÝN KISIM: Aðaç devrildikten sonraki detay (3. Parametre eklendi)
         IpucuYoneticisi.Instance?.MesajGoster(
-            "agac", "Aðacý parçalamak için vur");
+            "agac",
+            "Aðacý parçalamak için vur",
+            "Yere devrilen kütüðe baltayla vurarak onu kamp ateþinde kullanabileceðin odun parçalarýna ayýrabilirsin.");
     }
 
     void ParcaKop()
@@ -113,17 +124,14 @@ public class AgacKesme : MonoBehaviour
         GameObject parca = parcalar[aktifParcaIndex];
         if (parca == null) return;
 
-        // Ana objeden ayýr — pozisyon deðiþmez
         Vector3 pos = parca.transform.position;
         Quaternion rot = parca.transform.rotation;
         parca.transform.SetParent(null);
         parca.transform.position = pos;
         parca.transform.rotation = rot;
 
-        // Aðacýn sað yönünde kaydýr
         parca.transform.position += transform.TransformDirection(kaymaYonu) * 0.4f;
 
-        // Kopan parçayý belirgin yap
         Renderer rend = parca.GetComponentInChildren<Renderer>();
         if (rend != null)
         {
@@ -133,13 +141,11 @@ public class AgacKesme : MonoBehaviour
             rend.SetPropertyBlock(mpb);
         }
 
-        // AgacParca scripti ekle
         AgacParca ap = parca.GetComponent<AgacParca>();
         if (ap == null) ap = parca.AddComponent<AgacParca>();
         ap.odunItemSO = odunItemSO;
         ap.inventory = inventory;
 
-        // Trigger collider ekle
         Collider col = parca.GetComponent<Collider>();
         if (col != null) col.enabled = false;
         BoxCollider bc = parca.AddComponent<BoxCollider>();
@@ -155,8 +161,11 @@ public class AgacKesme : MonoBehaviour
         }
         else
         {
+            // PARÇALAMA ESNASINDAKÝ DETAY (3. Parametre eklendi)
             IpucuYoneticisi.Instance?.MesajGoster(
-                "agac", (parcalar.Length - aktifParcaIndex) + " parça kaldi");
+                "agac",
+                (parcalar.Length - aktifParcaIndex) + " parça kaldi",
+                "Baltayla vurarak tüm odun parçalarýný serbest býrakabilir ve envanterine toplayabilirsin.");
         }
     }
 

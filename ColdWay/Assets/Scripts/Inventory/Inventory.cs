@@ -240,12 +240,18 @@ public class Inventory : MonoBehaviour
 
     private void Pickup()
     {
-        if (lookedAtRenderers.Count > 0 && Input.GetKeyDown(KeyCode.E))
+        if (lookedAtRenderers.Count > 0 && Input.GetKeyDown(SettingsManager.Instance.GetKey("Interaksiyon")))
         {
             Item item = lookedAtRenderers[0].GetComponentInParent<Item>();
             if (item != null)
             {
                 AddItem(item.item, item.amount);
+
+                if (StarterAssets.AudioManager.instance != null)
+                {
+                    StarterAssets.AudioManager.instance.Play("Item_Alma");
+                }
+
                 Destroy(item.gameObject);
                 lookedAtRenderers.Clear();
                 originalMaterials.Clear();

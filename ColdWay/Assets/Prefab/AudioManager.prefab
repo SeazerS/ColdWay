@@ -91,10 +91,10 @@ MonoBehaviour:
     source: {fileID: 0}
     originalVolume: 0
   - audioName: Odun_Kesme
-    clip: {fileID: 8300000, guid: 3515a988f5437fc4e991c40564c7eb69, type: 3}
+    clip: {fileID: 8300000, guid: 7fcd1fbaa2a569b4a8f3124274a01335, type: 3}
     mixerGroup: {fileID: -8690797647722468662, guid: 77109e3c53ded2a459427a24a4974106,
       type: 2}
-    volume: 0.7
+    volume: 0.2
     pitch: 1
     loop: 0
     source: {fileID: 0}
@@ -135,8 +135,17 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
     originalVolume: 0
-  - audioName: Item_Surukleme
-    clip: {fileID: 8300000, guid: c01b03f5c46ded245b0bcf4f86fe4736, type: 3}
+  - audioName: Odun_Kesme
+    clip: {fileID: 8300000, guid: 7fcd1fbaa2a569b4a8f3124274a01335, type: 3}
+    mixerGroup: {fileID: -8690797647722468662, guid: 77109e3c53ded2a459427a24a4974106,
+      type: 2}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+    originalVolume: 0
+  - audioName: Balta_Savurma
+    clip: {fileID: 8300000, guid: 8f0f0478379dde04381565520a23e7c4, type: 3}
     mixerGroup: {fileID: -8690797647722468662, guid: 77109e3c53ded2a459427a24a4974106,
       type: 2}
     volume: 0.2

@@ -104,19 +104,23 @@ public class AteşNoktasi : MonoBehaviour
     public void GuncelleMesaj()
     {
         string tusAdi = SettingsManager.Instance.GetKey("Interaksiyon").ToString();
+        string atesDetayi = "Ateşe odun ekledikçe yaydığı ısı menzili (range) genişler ve yanma süresi uzar." +
+            " Ayrıca seni dondurucu rüzgarlardan korur.";
 
         if (atesSistemi != null && atesSistemi.YaniyorMu())
         {
-            IpucuYoneticisi.Instance.MesajGoster("ates", tusAdi + " — Odun Ekle");
+            IpucuYoneticisi.Instance.MesajGoster("ates", tusAdi + " — Odun Ekle", atesDetayi);
             return;
         }
 
         if (!OdunVarMi())
-            IpucuYoneticisi.Instance.MesajGoster("ates", gerekliOdun + " odun gerekli");
+            IpucuYoneticisi.Instance.MesajGoster("ates", gerekliOdun + " odun gerekli", "Ateş yakmak için" +
+                " etraftaki kuru ağaçları baltayla kesip odun toplamalısın.");
         else if (!KibritVarMi())
-            IpucuYoneticisi.Instance.MesajGoster("ates", "Kibrit gerekli");
+            IpucuYoneticisi.Instance.MesajGoster("ates", "Kibrit gerekli", "Odunları tutuşturmak için envanterinde bir kibrit olmalı.");
         else
-            IpucuYoneticisi.Instance.MesajGoster("ates", tusAdi + " — Ateş Kur");
+            IpucuYoneticisi.Instance.MesajGoster("ates", tusAdi + " — Ateş Kur", 
+                "Ateş kurmak beden ısını hızla yükseltir ve ıslanan kıyafetlerini kurutmanı sağlar.");
     }
 
     public void AteşiYak()

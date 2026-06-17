@@ -56,6 +56,11 @@ public class BaltaSistemi : MonoBehaviour
 
     void Vur()
     {
+        if (StarterAssets.AudioManager.instance != null)
+        {
+            StarterAssets.AudioManager.instance.Play("Balta_Savurma");
+        }
+
         // Her sol tikta enerji ve omur azalir
         if (enerjiKontrol != null)
             enerjiKontrol.BaltaKullanildi();
