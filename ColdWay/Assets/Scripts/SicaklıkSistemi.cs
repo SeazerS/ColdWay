@@ -77,6 +77,13 @@ public class SicaklikSistemi : MonoBehaviour
         UIGuncelle();
         PostProcessGuncelle();
         OlumKontrol();
+
+        // Ateş başındayken ıslanmışsa buz efektini kapat
+        if (atesBasinda && ayakIslak)
+        {
+            if (PostProsses.Instance != null)
+                PostProsses.Instance.BuzEfektiKapat();
+        }
     }
 
     void HizBelirle()
@@ -105,7 +112,6 @@ public class SicaklikSistemi : MonoBehaviour
     {
         if (atesBasinda)
         {
-            // Ateş yoğunluğunu bul
             float yogunluk = 1f;
             if (tumAtesler != null)
             {

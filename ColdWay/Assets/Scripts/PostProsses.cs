@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine.UI;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
@@ -21,9 +21,14 @@ public class PostProsses : MonoBehaviour
     private float bolgeDisiEtkiGucu = 0f;
     private float bolgeDisiHedef = 0f;
 
+    // Buz efekti
+    private bool buzEfektiAktif = false;
+    private float buzEfektiMevcut = 0f;
+    private float buzEfektiHedef = 0f;
+    public float buzEfektiGelisHizi = 0.3f;  // yavaþ gelsin
+    public float buzEfektiGidisHizi = 0.1f;  // daha yavaþ gitsin
 
-    [Header("Buzlanma UI Ayarlarý")]
-
+    [Header("Buzlanma UI Ayarlari")]
     public Image[] buzDokulari;
 
     void Awake()
@@ -41,8 +46,19 @@ public class PostProsses : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Global Volume veya Profil script tarafýndan bulunamadý!");
+            Debug.LogError("Global Volume veya Profil bulunamadi!");
         }
+    }
+
+    public void BuzEfektiBaslat()
+    {
+        buzEfektiAktif = true;
+        buzEfektiHedef = 0.55f;
+    }
+
+    public void BuzEfektiKapat()
+    {
+        buzEfektiHedef = 0f;
     }
 
     public void BolgeDisiEfektAc(float yogunluk)
@@ -54,7 +70,6 @@ public class PostProsses : MonoBehaviour
     {
         bolgeDisiHedef = 0f;
     }
-
 
     public void SicaklikEfektiGuncelle(float sicaklikOrani)
     {
@@ -69,7 +84,7 @@ public class PostProsses : MonoBehaviour
     void LateUpdate()
     {
         EfektleriUygula();
-        BuzGorselleriniYonet(); 
+        BuzGorselleriniYonet();
     }
 
     void EfektleriUygula()
@@ -86,7 +101,8 @@ public class PostProsses : MonoBehaviour
         if (colorAdjustments != null)
         {
             colorAdjustments.active = donmaEtkiGucu > 0f;
-            colorAdjustments.saturation.Override(Mathf.Lerp(0f, -40f, donmaEtkiGucu));
+            colorAdjustments.saturation.Override(
+                Mathf.Lerp(0f, -40f, donmaEtkiGucu));
         }
 
         float yorgunlukEtkiGucu = 0f;
@@ -95,28 +111,58 @@ public class PostProsses : MonoBehaviour
         if (mevcutEnerjiOrani < 0.20f)
         {
             yorgunlukEtkiGucu = 1f - (mevcutEnerjiOrani / 0.20f);
-            float gozKirpma = Mathf.PingPong(Time.time * 1.2f, 0.2f) * yorgunlukEtkiGucu;
+            float gozKirpma = Mathf.PingPong(Time.time * 1.2f, 0.2f)
+                              * yorgunlukEtkiGucu;
             yanipSonenSiyahVignette = 0.15f + gozKirpma;
         }
 
         if (depthOfField != null)
         {
             depthOfField.active = yorgunlukEtkiGucu > 0f;
-            depthOfField.focusDistance.Override(Mathf.Lerp(10f, 0.1f, yorgunlukEtkiGucu));
+            depthOfField.focusDistance.Override(
+                Mathf.Lerp(10f, 0.1f, yorgunlukEtkiGucu));
+        }
+
+        // Buz efekti — yavaþ gel, ýsýnýnca git
+        float buzVignette = 0f;
+        if (buzEfektiAktif)
+        {
+            float hiz = buzEfektiMevcut < buzEfektiHedef
+                ? buzEfektiGelisHizi
+                : buzEfektiGidisHizi;
+
+            buzEfektiMevcut = Mathf.MoveTowards(
+                buzEfektiMevcut, buzEfektiHedef, Time.deltaTime * hiz);
+
+            buzVignette = buzEfektiMevcut;
+
+            if (buzEfektiMevcut <= 0.01f && buzEfektiHedef <= 0f)
+                buzEfektiAktif = false;
         }
 
         if (vignette != null)
         {
-            if (donmaEtkiGucu > 0f || yorgunlukEtkiGucu > 0f)
+            float nihaiIntensity = Mathf.Max(
+                sabitMaviVignette,
+                yanipSonenSiyahVignette,
+                buzVignette);
+
+            if (donmaEtkiGucu > 0f || yorgunlukEtkiGucu > 0f || buzEfektiAktif)
             {
                 vignette.active = true;
-                float nihaiIntensity = Mathf.Max(sabitMaviVignette, yanipSonenSiyahVignette);
-                vignette.intensity.Override(Mathf.Clamp(nihaiIntensity, 0f, 0.60f));
+                vignette.intensity.Override(
+                    Mathf.Clamp(nihaiIntensity, 0f, 0.55f));
 
-                if (donmaEtkiGucu > 0f)
+
+                if (buzEfektiAktif && buzVignette > 0f)
                 {
-                    Color donmaMavisi = new Color(0.0f, 0.2f, 0.4f); 
-                    vignette.color.Override(Color.Lerp(Color.black, donmaMavisi, donmaEtkiGucu));
+                    vignette.color.Override(new Color(0.2f, 0.5f, 0.9f));
+                }
+                else if (donmaEtkiGucu > 0f)
+                {
+                    Color donmaMavisi = new Color(0.0f, 0.2f, 0.4f);
+                    vignette.color.Override(
+                        Color.Lerp(Color.black, donmaMavisi, donmaEtkiGucu));
                 }
                 else
                 {
@@ -130,13 +176,12 @@ public class PostProsses : MonoBehaviour
             }
         }
 
-        // Bölge dýþý efekti — yumuþak geçiþ
+        // Bölge dýþý efekti
         bolgeDisiEtkiGucu = Mathf.Lerp(
             bolgeDisiEtkiGucu, bolgeDisiHedef, Time.deltaTime * 3f);
 
         if (bolgeDisiEtkiGucu > 0.01f)
         {
-            // Kýrmýzý pulse vignette
             float pulse = Mathf.Abs(Mathf.Sin(Time.time * 2.5f));
             float vignetteYogunluk = Mathf.Lerp(0.3f, 0.65f, pulse)
                                      * bolgeDisiEtkiGucu;
@@ -144,7 +189,6 @@ public class PostProsses : MonoBehaviour
             if (vignette != null)
             {
                 vignette.active = true;
-                // Diðer efektlerle karþýlaþtýr, en yükseði al
                 float mevcutYogunluk = vignette.intensity.value;
                 vignette.intensity.Override(
                     Mathf.Max(mevcutYogunluk, vignetteYogunluk));
@@ -153,7 +197,6 @@ public class PostProsses : MonoBehaviour
                     new Color(0.6f, 0f, 0f), bolgeDisiEtkiGucu));
             }
 
-            // Renk bozulmasý
             if (colorAdjustments != null)
             {
                 colorAdjustments.active = true;
@@ -161,7 +204,6 @@ public class PostProsses : MonoBehaviour
                     Mathf.Lerp(0f, -30f, bolgeDisiEtkiGucu));
             }
 
-            // Blur artar
             if (depthOfField != null)
             {
                 depthOfField.active = true;
@@ -176,18 +218,18 @@ public class PostProsses : MonoBehaviour
         if (buzDokulari == null || buzDokulari.Length == 0) return;
 
         int gorselSayisi = buzDokulari.Length;
-
-        float donmaIlerlemesi = Mathf.InverseLerp(0.40f, 0f, mevcutSicaklikOrani);
+        float donmaIlerlemesi = Mathf.InverseLerp(
+            0.40f, 0f, mevcutSicaklikOrani);
 
         for (int i = 0; i < gorselSayisi; i++)
         {
             float altSinir = (float)i / gorselSayisi;
             float ustSinir = (float)(i + 1) / gorselSayisi;
-
-            float döküOpaklik = Mathf.InverseLerp(altSinir, ustSinir, donmaIlerlemesi);
+            float dokuOpaklik = Mathf.InverseLerp(
+                altSinir, ustSinir, donmaIlerlemesi);
 
             Color c = buzDokulari[i].color;
-            c.a = döküOpaklik;
+            c.a = dokuOpaklik;
             buzDokulari[i].color = c;
         }
     }

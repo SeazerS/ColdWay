@@ -20,13 +20,13 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.424, g: 0.454, b: 0.518, a: 1}
+  m_AmbientSkyColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
-  m_AmbientMode: 3
+  m_AmbientIntensity: 0.23
+  m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 4e154bf235e41704bbd6bbc6fd6c63f6, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -531,6 +531,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: KarYagisi 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7873082646298162718, guid: 4a2d2635d0ed85b4289e719276161ba0,
+        type: 3}
+      propertyPath: karakter
+      value: 
+      objectReference: {fileID: 1611058324}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1203,7 +1208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.21568628}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1257,8 +1262,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 0.06
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1464,6 +1469,11 @@ PrefabInstance:
       objectReference: {fileID: 501884571}
     - target: {fileID: 1592317462486361836, guid: 775516d6ae7e60c4eaa61084099248fd,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1592317462486361836, guid: 775516d6ae7e60c4eaa61084099248fd,
+        type: 3}
       propertyPath: karSistemi
       value: 
       objectReference: {fileID: 637858827}
@@ -1472,6 +1482,11 @@ PrefabInstance:
       propertyPath: ruzgarSistemi
       value: 
       objectReference: {fileID: 2049307114}
+    - target: {fileID: 1592317462486361836, guid: 775516d6ae7e60c4eaa61084099248fd,
+        type: 3}
+      propertyPath: baslangicSaati
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8074694477263573076, guid: 775516d6ae7e60c4eaa61084099248fd,
         type: 3}
       propertyPath: m_Name
