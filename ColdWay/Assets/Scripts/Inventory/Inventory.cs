@@ -157,7 +157,7 @@ public class Inventory : MonoBehaviour
 
                 if (StarterAssets.AudioManager.instance != null)
                 {
-                    StarterAssets.AudioManager.instance.Play("Item_Surukleme");
+                    StarterAssets.AudioManager.instance.Play("Item_Surukleme", 0.3f);
                 }
             }
         }
@@ -172,7 +172,10 @@ public class Inventory : MonoBehaviour
             {
                 HandleDrop(draggedSlot, hovered);
 
-               
+                if (StarterAssets.AudioManager.instance != null)
+                {
+                    StarterAssets.AudioManager.instance.Play("Item_Surukleme", 0.5f);
+                }
             }
 
             // Oyuncu eþyayý slota veya boþa býraktýðýnda farenin ucundan temizle

@@ -8,6 +8,8 @@ TagManager:
   - Agac
   - KuruAgac
   - AtesNoktasi
+  - EvZemini
+  - MagaraZemini
   layers:
   - Default
   - TransparentFX

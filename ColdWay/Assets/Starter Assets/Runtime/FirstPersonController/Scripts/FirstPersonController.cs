@@ -61,7 +61,7 @@ namespace StarterAssets
         public KeyCode sprintKey = KeyCode.LeftShift;
 
 
-        // DİNAMİK YÜRÜME SESİ DEĞİŞKENİ
+        // DİNAMİK YÜRÜME SESİ DEĞİŞKENİ (Artık Raycast bunu kendi güncelleyecek)
         [HideInInspector]
         public string currentFootstepSound = "Yurume_Sesi";
 
@@ -136,6 +136,7 @@ namespace StarterAssets
 
             JumpAndGravity();
             GroundedCheck();
+            ZeminTipiKontrolu(); // Hangi zemine bastığımızı kontrol et
             Move();
         }
 
@@ -148,6 +149,33 @@ namespace StarterAssets
         {
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
             Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
+        }
+
+        // --- YENİ EKLENEN: ZEMİN TİPİ KONTROLÜ ---
+        private void ZeminTipiKontrolu()
+        {
+            if (!Grounded) return;
+
+            // Ayakların biraz üstünden aşağıya doğru kısa bir ışın (Raycast) at
+            Vector3 origin = transform.position + Vector3.up * 0.1f;
+
+            if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 0.5f, GroundLayers, QueryTriggerInteraction.Ignore))
+            {
+                string zeminTagi = hit.collider.tag;
+
+                if (zeminTagi == "EvZemini")
+                {
+                    currentFootstepSound = "Ev_Yurume_Sesi";
+                }
+                else if (zeminTagi == "MagaraZemini")
+                {
+                    currentFootstepSound = "Magara_Yurume_Sesi";
+                }
+                else
+                {
+                    currentFootstepSound = "Yurume_Sesi"; // Dışarıdaki normal zemin (kar, toprak vb.)
+                }
+            }
         }
 
         private void CameraRotation()
@@ -202,10 +230,12 @@ namespace StarterAssets
                 {
                     if (AudioManager.instance != null)
                     {
-                        // Eski sesi kesip yenisini dinamik olarak çalıyoruz
+                        // 1. Önce olası tüm yürüme seslerini kesin olarak sustur (Üst üste binmeyi engeller)
                         AudioManager.instance.Stop("Yurume_Sesi");
                         AudioManager.instance.Stop("Magara_Yurume_Sesi");
+                        AudioManager.instance.Stop("Ev_Yurume_Sesi");
 
+                        // 2. Sadece o anki güncel zeminin sesini çal
                         AudioManager.instance.Play(currentFootstepSound);
                     }
                     _footstepTimer = currentStepRate;
@@ -213,16 +243,18 @@ namespace StarterAssets
             }
             else
             {
+                // OYUNCU DURDUĞUNDA TÜM SESLERİ KES
                 if (AudioManager.instance != null)
                 {
                     AudioManager.instance.Stop("Yurume_Sesi");
                     AudioManager.instance.Stop("Magara_Yurume_Sesi");
+                    AudioManager.instance.Stop("Ev_Yurume_Sesi");
                 }
                 _footstepTimer = 0f;
             }
         }
 
-        private void JumpAndGravity()
+            private void JumpAndGravity()
         {
             if (Grounded)
             {
