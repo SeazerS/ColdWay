@@ -264,7 +264,12 @@ public class SicaklikSistemi : MonoBehaviour
         PostProcessGuncelle();
     }
 
-    public void GoleteGirdi() { if (mevcutBolge == 2) ayakIslak = true; }
+    public void GoleteGirdi()
+    {
+        if (mevcutBolge == 1 || mevcutBolge == 2)
+            ayakIslak = true;
+    }
+
     public void Kurudu() { ayakIslak = false; }
     public void AyakIslandi() { if (islaklıkAktif) ayakIslak = true; }
     public void AtesAktif(bool d) { }

@@ -13,6 +13,9 @@ public class GoletSistemi : MonoBehaviour
     public GameObject suYuzeyi;
     public float suBelirsuresi = 2f;
 
+    [Header("Kopek")]
+    public KopekAI kopek;
+
     private bool buzIcinde = false;
     private bool catladi = false;
     private float goletteGecenSure = 0f;
@@ -77,6 +80,9 @@ public class GoletSistemi : MonoBehaviour
     void BuzuCatlat(Vector3 pozisyon)
     {
         catladi = true;
+
+        if (kopek != null)
+            kopek.BuzKirildiAteseBas();
 
         if (suYuzeyi != null)
         {

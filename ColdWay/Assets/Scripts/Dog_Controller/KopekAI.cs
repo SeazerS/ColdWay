@@ -49,6 +49,9 @@ public class KopekAI : MonoBehaviour
     private Vector3 sonHedef = Vector3.zero;
     private float hedefGuncellemeMesafesi = 0.5f;
 
+    private bool buzYonlendirmesi = false;
+
+
     [Header("Yonlendirme Ayarlari")]
     public float yakinAtesAlgimaMesafesi = 15f; // ? ekle
 
@@ -113,6 +116,7 @@ public class KopekAI : MonoBehaviour
 
     void KritikIsiKontrol()
     {
+        if (buzYonlendirmesi) return;
         if (sicaklikSistemi == null) return;
 
         float isiOrani = sicaklikSistemi.mevcutSicaklik /
@@ -175,6 +179,15 @@ public class KopekAI : MonoBehaviour
             agent.ResetPath();
             AnimasyonAyarla(false, false);
             HavlaZamanla();
+
+            // Oyuncu ateþe yaklaþýnca buz yönlendirmesi biter
+            if (buzYonlendirmesi)
+            {
+                float mesafee = Vector3.Distance(
+                    oyuncu.position, enYakinAtesNoktasi.position);
+                if (mesafee < 5f)
+                    buzYonlendirmesi = false;
+            }
         }
     }
 
@@ -368,6 +381,18 @@ public class KopekAI : MonoBehaviour
         if (AudioManager.instance != null)
         {
             AudioManager.instance.Play("Kopek_Havlama");
+        }
+    }
+
+    public void BuzKirildiAteseBas()
+    {
+        enYakinAtesNoktasi = EnYakinAtesNoktasiniBul();
+        if (enYakinAtesNoktasi != null)
+        {
+            buzYonlendirmesi = true;
+            yonlendirmeAktif = true;
+            agent.stoppingDistance = atesNoktasiDurmaMessafesi;
+            Havla();
         }
     }
     public void KafaEvet() { animator.SetTrigger("KafaEvet"); }
