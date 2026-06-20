@@ -295,6 +295,11 @@ public class KibritMinigame : MonoBehaviour
         aktif = false;
         bar = 1f;
 
+        if (StarterAssets.AudioManager.instance != null)
+        {
+            StarterAssets.AudioManager.instance.Play("Kibrit_Yakma");
+        }
+
         // Ates simgesini goster
         if (atesSimgesi != null)
             atesSimgesi.gameObject.SetActive(true);
