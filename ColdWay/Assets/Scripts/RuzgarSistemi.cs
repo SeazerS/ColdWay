@@ -21,6 +21,9 @@ public class RuzgarSistemi : MonoBehaviour
     public float aksamCarpani = 1.5f;
     public float geceCarpani = 2f;
 
+    [Header("Firtina")]
+    public float firtinaCarpani = 1f;
+
     private float aktifBolgeCarpani = 1f;
     private float aktifZamanCarpani = 1f;
 
@@ -82,12 +85,11 @@ public class RuzgarSistemi : MonoBehaviour
     void RuzgarUygula()
     {
         if (windZone == null) return;
-        float carpan = aktifBolgeCarpani * aktifZamanCarpani;
+        float carpan = aktifBolgeCarpani * aktifZamanCarpani * firtinaCarpani;
         windZone.windMain = orijinalMain * carpan;
         windZone.windTurbulence = orijinalTurbulence * carpan;
         windZone.windPulseMagnitude = orijinalPulseMag * carpan;
         windZone.windPulseFrequency = orijinalPulseFreq;
-
         SesSeviyesiniAyarla();
     }
 
@@ -115,21 +117,25 @@ public class RuzgarSistemi : MonoBehaviour
     {
         if (AudioManager.instance == null) return;
 
-        Sounds ruzgarSesi = System.Array.Find(AudioManager.instance.sounds, sound => sound.audioName == "Ruzgar_Sesi");
+        Sounds ruzgarSesi = System.Array.Find(
+            AudioManager.instance.sounds,
+            sound => sound.audioName == "Ruzgar_Sesi");
 
         if (ruzgarSesi != null && ruzgarSesi.source != null)
         {
-            float toplamCarpan = aktifBolgeCarpani * aktifZamanCarpani;
+            float toplamCarpan = aktifBolgeCarpani
+                               * aktifZamanCarpani
+                               * firtinaCarpani; // bunu ekle
+
             float yeniVolume = ruzgarSesi.originalVolume * toplamCarpan;
 
-            // --- Akþam/Gece Atmosfer Ayarlarý ---
-            if (mevcutVakit == GununVakti.Aksam || mevcutVakit == GununVakti.Gece)
+            if (mevcutVakit == GununVakti.Aksam ||
+                mevcutVakit == GununVakti.Gece)
             {
                 yeniVolume += 0.015f;
-
                 ruzgarSesi.source.pitch = aksamPitchTonu;
             }
-            else 
+            else
             {
                 ruzgarSesi.source.pitch = ruzgarSesi.pitch;
             }
@@ -138,4 +144,6 @@ public class RuzgarSistemi : MonoBehaviour
             ruzgarSesi.source.volume = yeniVolume;
         }
     }
+
+    public float ZamanCarpaniniAl() { return aktifZamanCarpani; }
 }

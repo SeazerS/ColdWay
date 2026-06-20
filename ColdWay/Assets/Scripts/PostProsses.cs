@@ -25,8 +25,11 @@ public class PostProsses : MonoBehaviour
     private bool buzEfektiAktif = false;
     private float buzEfektiMevcut = 0f;
     private float buzEfektiHedef = 0f;
-    public float buzEfektiGelisHizi = 0.3f;  // yavaþ gelsin
-    public float buzEfektiGidisHizi = 0.1f;  // daha yavaþ gitsin
+    public float buzEfektiGelisHizi = 0.3f;
+    public float buzEfektiGidisHizi = 0.1f;
+
+    // Fýrtýna efekti
+    private float firtinYogunluk = 0f;
 
     [Header("Buzlanma UI Ayarlari")]
     public Image[] buzDokulari;
@@ -59,6 +62,11 @@ public class PostProsses : MonoBehaviour
     public void BuzEfektiKapat()
     {
         buzEfektiHedef = 0f;
+    }
+
+    public void FirtinaEfektiGuncelle(float yogunluk)
+    {
+        firtinYogunluk = yogunluk;
     }
 
     public void BolgeDisiEfektAc(float yogunluk)
@@ -100,9 +108,11 @@ public class PostProsses : MonoBehaviour
 
         if (colorAdjustments != null)
         {
-            colorAdjustments.active = donmaEtkiGucu > 0f;
-            colorAdjustments.saturation.Override(
-                Mathf.Lerp(0f, -40f, donmaEtkiGucu));
+            colorAdjustments.active = donmaEtkiGucu > 0f || firtinYogunluk > 0f;
+            float saturation = Mathf.Min(
+                Mathf.Lerp(0f, -40f, donmaEtkiGucu),
+                Mathf.Lerp(0f, -25f, firtinYogunluk));
+            colorAdjustments.saturation.Override(saturation);
         }
 
         float yorgunlukEtkiGucu = 0f;
@@ -118,12 +128,18 @@ public class PostProsses : MonoBehaviour
 
         if (depthOfField != null)
         {
-            depthOfField.active = yorgunlukEtkiGucu > 0f;
-            depthOfField.focusDistance.Override(
-                Mathf.Lerp(10f, 0.1f, yorgunlukEtkiGucu));
+            bool depthAktif = yorgunlukEtkiGucu > 0f || firtinYogunluk > 0.3f;
+            depthOfField.active = depthAktif;
+            if (depthAktif)
+            {
+                float yorgunlukFocus = Mathf.Lerp(10f, 0.1f, yorgunlukEtkiGucu);
+                float firtinFocus = Mathf.Lerp(10f, 2f, firtinYogunluk);
+                depthOfField.focusDistance.Override(
+                    Mathf.Min(yorgunlukFocus, firtinFocus));
+            }
         }
 
-        // Buz efekti — yavaþ gel, ýsýnýnca git
+        // Buz efekti
         float buzVignette = 0f;
         if (buzEfektiAktif)
         {
@@ -140,24 +156,34 @@ public class PostProsses : MonoBehaviour
                 buzEfektiAktif = false;
         }
 
+        // Fýrtýna vignette — gri/koyu
+        float firtinVignette = Mathf.Lerp(0f, 0.4f, firtinYogunluk);
+
         if (vignette != null)
         {
             float nihaiIntensity = Mathf.Max(
                 sabitMaviVignette,
                 yanipSonenSiyahVignette,
-                buzVignette);
+                buzVignette,
+                firtinVignette);
 
-            if (donmaEtkiGucu > 0f || yorgunlukEtkiGucu > 0f || buzEfektiAktif)
+            bool herhangiEfekt = donmaEtkiGucu > 0f
+                || yorgunlukEtkiGucu > 0f
+                || buzEfektiAktif
+                || firtinYogunluk > 0.01f;
+
+            if (herhangiEfekt)
             {
                 vignette.active = true;
                 vignette.intensity.Override(
-                    Mathf.Clamp(nihaiIntensity, 0f, 0.55f));
-
+                    Mathf.Clamp(nihaiIntensity, 0f, 0.65f));
 
                 if (buzEfektiAktif && buzVignette > 0f)
-                {
                     vignette.color.Override(new Color(0.2f, 0.5f, 0.9f));
-                }
+                else if (firtinYogunluk > 0.01f)
+                    vignette.color.Override(
+                        Color.Lerp(Color.black,
+                        new Color(0.15f, 0.15f, 0.2f), firtinYogunluk));
                 else if (donmaEtkiGucu > 0f)
                 {
                     Color donmaMavisi = new Color(0.0f, 0.2f, 0.4f);
@@ -165,9 +191,7 @@ public class PostProsses : MonoBehaviour
                         Color.Lerp(Color.black, donmaMavisi, donmaEtkiGucu));
                 }
                 else
-                {
                     vignette.color.Override(Color.black);
-                }
             }
             else
             {

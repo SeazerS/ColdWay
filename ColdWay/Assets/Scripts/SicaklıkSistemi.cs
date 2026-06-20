@@ -52,6 +52,10 @@ public class SicaklikSistemi : MonoBehaviour
     public Slider sicaklikSlider;
     public Image sliderDolgu;
 
+    [Header("Firtina")]
+    public float firtinaDususCarpani = 3f;
+    public bool firtinAktif = false;
+
     private Color normalRenk = new Color(0.2f, 0.6f, 1f);
     private Color tehlikeRenk = new Color(1f, 0.5f, 0f);
     private Color kritikRenk = new Color(1f, 0.1f, 0.1f);
@@ -102,6 +106,7 @@ public class SicaklikSistemi : MonoBehaviour
 
         dususHizi = baseDusus * gunCarpani;
 
+        if (firtinAktif) dususHizi *= firtinaDususCarpani;
         if (ruzgarda) dususHizi *= aktifRuzgarCarpani;
         if (ayakIslak && islaklıkAktif) dususHizi *= aktifIslaklıkCarpani;
         if (alacakaranlıkBonusu && !geceBonusu) dususHizi *= alacakaranlıkCarpani;

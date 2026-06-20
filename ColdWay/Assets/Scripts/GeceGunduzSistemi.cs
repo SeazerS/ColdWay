@@ -46,7 +46,10 @@ public class GecGunduzSistemi : MonoBehaviour
     public float aksamParlaklik = 1f;
 
     [Header("Bulut Hareketi")]
-    public float bulutHizi = 0.5f; // derece/saniye
+    public float bulutHizi = 0.5f;
+
+    [Header("Firtina")]
+    public float firtinExposureCarpani = 1f;
 
     // --- private ---
     private float mevcutSaat;
@@ -69,7 +72,6 @@ public class GecGunduzSistemi : MonoBehaviour
     void Start()
     {
         mevcutSaat = baslangicSaati;
-        gunes.intensity = gunduzYogunluk;
         gunSuresiSaniye = gununSuresi * 60f;
         sicaklik = FindObjectOfType<SicaklikSistemi>();
 
@@ -101,7 +103,8 @@ public class GecGunduzSistemi : MonoBehaviour
             gunes.color = gunduzIsigiRengi;
             gunes.intensity = gunduzYogunluk;
             float o = Mathf.Clamp01((mevcutSaat - 6f) / 14f);
-            gunes.transform.rotation = Quaternion.Euler(o * 180f - 90f, 170f, 0f);
+            gunes.transform.rotation =
+                Quaternion.Euler(o * 180f - 90f, 170f, 0f);
         }
 
         DynamicGI.UpdateEnvironment();
@@ -112,6 +115,14 @@ public class GecGunduzSistemi : MonoBehaviour
         mevcutSaat += (24f / gunSuresiSaniye) * Time.deltaTime;
         if (mevcutSaat >= 24f) mevcutSaat -= 24f;
 
+        if (gunduzInst != null && gunduzInst.HasProperty("_Exposure"))
+        {
+            float hedef = firtinExposureCarpani < 1f
+                ? Mathf.Lerp(0.52f, 0.1f, 1f - firtinExposureCarpani)
+                : 0.52f;
+            gunduzInst.SetFloat("_Exposure", hedef);
+        }
+
         HedefSkyboxKontrol();
         GecisGuncelle();
         GunesGuncelle();
@@ -119,20 +130,23 @@ public class GecGunduzSistemi : MonoBehaviour
         KarZamanGuncelle();
         UIGuncelle();
         TehlikeKontrol();
+        BulutGuncelle();
+    }
 
-        // Gündüzse bulutu döndür
-        if (mevcutSaat >= 6f && mevcutSaat < 19f)
+    void BulutGuncelle()
+    {
+        if (mevcutSaat >= 6f && mevcutSaat < 19f
+            && RenderSettings.skybox != null
+            && RenderSettings.skybox.HasProperty("_Rotation"))
         {
-            float mevcutRotasyon = RenderSettings.skybox
-                .GetFloat("_Rotation");
+            float rot = RenderSettings.skybox.GetFloat("_Rotation");
             RenderSettings.skybox.SetFloat(
-                "_Rotation", mevcutRotasyon + bulutHizi * Time.deltaTime);
+                "_Rotation", rot + bulutHizi * Time.deltaTime);
         }
     }
 
     void HedefSkyboxKontrol()
     {
-        // Gündüz: 06-19  |  Gece: 19-06
         Material gereken = (mevcutSaat >= 6f && mevcutSaat < 19f)
             ? gunduzInst : aksamInst;
 
@@ -155,7 +169,8 @@ public class GecGunduzSistemi : MonoBehaviour
             gecisIlerleme = Mathf.Clamp01(gecisIlerleme + adim);
             float kaynakOrig = kaynakInst == gunduzInst
                 ? gunduzOrijBrightness : aksamOrijBrightness;
-            BrightnessAyarla(kaynakInst, Mathf.Lerp(kaynakOrig, 0f, gecisIlerleme));
+            BrightnessAyarla(kaynakInst,
+                Mathf.Lerp(kaynakOrig, 0f, gecisIlerleme));
 
             if (gecisIlerleme >= 1f)
             {
@@ -169,14 +184,23 @@ public class GecGunduzSistemi : MonoBehaviour
         {
             gecisIlerleme = Mathf.Clamp01(gecisIlerleme + adim);
             float hedefOrig = hedefInst == gunduzInst
-                ? gunduzOrijBrightness : aksamOrijBrightness;
-            BrightnessAyarla(hedefInst, Mathf.Lerp(0f, hedefOrig, gecisIlerleme));
+                ? gunduzOrijBrightness * firtinExposureCarpani
+                : aksamOrijBrightness;
+            BrightnessAyarla(hedefInst,
+                Mathf.Lerp(0f, hedefOrig, gecisIlerleme));
 
             if (gecisIlerleme >= 1f)
             {
                 BrightnessAyarla(hedefInst, hedefOrig);
                 asama = GecisAsamasi.Stabil;
             }
+        }
+        else if (asama == GecisAsamasi.Stabil
+                 && RenderSettings.skybox == gunduzInst)
+        {
+            // Fýrtýnada gündüz skybox'ý karart
+            BrightnessAyarla(gunduzInst,
+                gunduzOrijBrightness * firtinExposureCarpani);
         }
     }
 
@@ -194,7 +218,6 @@ public class GecGunduzSistemi : MonoBehaviour
         }
         else if (mevcutSaat >= 17f && mevcutSaat < 21f)
         {
-            // 17:00'den itibaren sönmeye baþlar, 21:00'de gece
             float t = (mevcutSaat - 17f) / 4f;
             hedefRenk = Color.Lerp(gunduzIsigiRengi, geceIsigiRengi, t);
             hedefYog = Mathf.Lerp(gunduzYogunluk, geceYogunluk, t);
@@ -205,7 +228,9 @@ public class GecGunduzSistemi : MonoBehaviour
             hedefYog = geceYogunluk;
         }
 
-        // Lerp hýzý artýrýldý — artýk geç kalmaz
+        // Fýrtýnada güneþi de karart
+        hedefYog *= firtinExposureCarpani;
+
         float hiz = Time.deltaTime * 3f;
         gunes.color = Color.Lerp(gunes.color, hedefRenk, hiz);
         gunes.intensity = Mathf.Lerp(gunes.intensity, hedefYog, hiz);
@@ -223,14 +248,12 @@ public class GecGunduzSistemi : MonoBehaviour
 
         if (mevcutSaat >= 6f && mevcutSaat < 19f)
         {
-            // Gündüz
             hedefAmb = gunduzAmbient;
             hedefFog = gunduzFog;
             hedefFogYog = gunduzFogYog;
         }
         else if (mevcutSaat >= 19f && mevcutSaat < 22f)
         {
-            // 19:00-22:00 gündüzden geceye
             float t = (mevcutSaat - 19f) / 3f;
             hedefAmb = Color.Lerp(gunduzAmbient, geceAmbient, t);
             hedefFog = Color.Lerp(gunduzFog, geceFog, t);
@@ -238,12 +261,11 @@ public class GecGunduzSistemi : MonoBehaviour
         }
         else if (mevcutSaat >= 22f || mevcutSaat < 5f)
         {
-            // Gece
             hedefAmb = geceAmbient;
             hedefFog = geceFog;
             hedefFogYog = geceFogYog;
         }
-        else // 05:00-06:00 sabah
+        else
         {
             float t = (mevcutSaat - 5f);
             hedefAmb = Color.Lerp(geceAmbient, gunduzAmbient, t);
@@ -251,25 +273,26 @@ public class GecGunduzSistemi : MonoBehaviour
             hedefFogYog = Mathf.Lerp(geceFogYog, gunduzFogYog, t);
         }
 
+        // Fýrtýnada ambient de kararsýn
+        hedefAmb = Color.Lerp(hedefAmb, geceAmbient,
+            1f - firtinExposureCarpani);
+
         float hiz = Time.deltaTime * 0.35f;
         RenderSettings.ambientLight =
             Color.Lerp(RenderSettings.ambientLight, hedefAmb, hiz);
         RenderSettings.fogColor =
             Color.Lerp(RenderSettings.fogColor, hedefFog, hiz);
-        RenderSettings.fogDensity =
-            Mathf.Lerp(RenderSettings.fogDensity, hedefFogYog, hiz);
+
+        // Fog yoðunluðunu FirtinaSistemi yönetir, burada sadece normal ak
+        if (FirtinaSistemi.Instance == null ||
+            !FirtinaSistemi.Instance.FirtinaAktifMi())
+        {
+            RenderSettings.fogDensity =
+                Mathf.Lerp(RenderSettings.fogDensity, hedefFogYog, hiz);
+        }
     }
 
-    float OrijinalBrightness(Material mat)
-    {
-        if (mat == null) return 1f;
-        if (mat.HasProperty("_Exposure")) return mat.GetFloat("_Exposure");
-        if (mat.HasProperty("_Tint")) return mat.GetColor("_Tint").r;
-        if (mat.HasProperty("_SkyTint")) return mat.GetColor("_SkyTint").r;
-        return 1f;
-    }
-
-    void BrightnessAyarla(Material mat, float deger)
+    public void BrightnessAyarla(Material mat, float deger)
     {
         if (mat == null) return;
         if (mat.HasProperty("_Exposure"))
@@ -277,7 +300,8 @@ public class GecGunduzSistemi : MonoBehaviour
         if (mat.HasProperty("_Tint"))
         {
             Color c = mat.GetColor("_Tint");
-            mat.SetColor("_Tint", new Color(deger, deger, deger, c.a)); return;
+            mat.SetColor("_Tint", new Color(deger, deger, deger, c.a));
+            return;
         }
         if (mat.HasProperty("_SkyTint"))
         {
@@ -288,6 +312,10 @@ public class GecGunduzSistemi : MonoBehaviour
 
     void KarZamanGuncelle()
     {
+        // Fýrtýna aktifse KarTakip ve RuzgarSistemi FirtinaSistemi yönetir
+        if (FirtinaSistemi.Instance != null &&
+            FirtinaSistemi.Instance.FirtinaAktifMi()) return;
+
         float karC, ruzgarC;
         RuzgarSistemi.GununVakti secilenVakit;
 
@@ -360,7 +388,8 @@ public class GecGunduzSistemi : MonoBehaviour
         if (gunes)
         { gunes.color = gunduzIsigiRengi; gunes.intensity = gunduzYogunluk; }
 
-        ruzgarSistemi?.ZamanCarpaniGuncelle(1f, RuzgarSistemi.GununVakti.SabahOglen);
+        ruzgarSistemi?.ZamanCarpaniGuncelle(
+            1f, RuzgarSistemi.GununVakti.SabahOglen);
         DynamicGI.UpdateEnvironment();
     }
 }

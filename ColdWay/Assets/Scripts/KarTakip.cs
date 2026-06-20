@@ -22,6 +22,9 @@ public class KarTakip : MonoBehaviour
     public float bolge2HizCarpani = 2f;
     public float bolge3HizCarpani = 4f;
 
+    [Header("Firtina")]
+    public float firtinaCarpani = 1f;
+
     void Start()
     {
         karPartikul = GetComponent<ParticleSystem>();
@@ -85,12 +88,13 @@ public class KarTakip : MonoBehaviour
     void EmissionUygula()
     {
         if (karPartikul == null) return;
-
         var emission = karPartikul.emission;
         var mainModule = karPartikul.main;
-
-        emission.rateOverTime = orijinalEmission * bolgeEmissionCarpani * zamanEmissionCarpani;
-        mainModule.startSpeed = orijinalHiz * bolgeHizCarpani;
+        emission.rateOverTime = orijinalEmission * bolgeEmissionCarpani
+                              * zamanEmissionCarpani * firtinaCarpani;
+        mainModule.startSpeed = orijinalHiz * bolgeHizCarpani * firtinaCarpani;
     }
+
+    public float ZamanCarpaniniAl() { return zamanEmissionCarpani; }
 }
 
