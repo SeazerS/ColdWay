@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Wood
   icon: {fileID: 21300000, guid: abcf2473cc8725541aef88fa7ab0ec65, type: 3}
+  iconTwo: {fileID: 21300000, guid: 16b6d82555e042a4a8770f9155559b42, type: 3}
   iconFull: {fileID: 21300000, guid: 9ac441b66cb7ca7489b7bab2b6762ada, type: 3}
   maxStackSize: 3
   itemPrefab: {fileID: 2657490610281938883, guid: b1becedf98c899744be8c3aa25796379,

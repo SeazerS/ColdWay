@@ -45,6 +45,9 @@ public class GecGunduzSistemi : MonoBehaviour
     public float gunduzParlaklik = 1f;
     public float aksamParlaklik = 1f;
 
+    [Header("Bulut Hareketi")]
+    public float bulutHizi = 0.5f; // derece/saniye
+
     // --- private ---
     private float mevcutSaat;
     private float gunSuresiSaniye;
@@ -116,6 +119,15 @@ public class GecGunduzSistemi : MonoBehaviour
         KarZamanGuncelle();
         UIGuncelle();
         TehlikeKontrol();
+
+        // Gündüzse bulutu döndür
+        if (mevcutSaat >= 6f && mevcutSaat < 19f)
+        {
+            float mevcutRotasyon = RenderSettings.skybox
+                .GetFloat("_Rotation");
+            RenderSettings.skybox.SetFloat(
+                "_Rotation", mevcutRotasyon + bulutHizi * Time.deltaTime);
+        }
     }
 
     void HedefSkyboxKontrol()

@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 4e154bf235e41704bbd6bbc6fd6c63f6, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: d9dca9ae1786c394f9e79c637aa9a7bf, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -91969,8 +91969,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 0.5
+  m_Color: {r: 0.7307761, g: 0.90557325, b: 0.9622642, a: 1}
+  m_Intensity: 0.35
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -129252,8 +129252,13 @@ PrefabInstance:
     - target: {fileID: 1592317462486361836, guid: 775516d6ae7e60c4eaa61084099248fd,
         type: 3}
       propertyPath: gununSuresi
-      value: 15
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1592317462486361836, guid: 775516d6ae7e60c4eaa61084099248fd,
+        type: 3}
+      propertyPath: gunduzSkybox
+      value: 
+      objectReference: {fileID: 2100000, guid: d9dca9ae1786c394f9e79c637aa9a7bf, type: 2}
     - target: {fileID: 1592317462486361836, guid: 775516d6ae7e60c4eaa61084099248fd,
         type: 3}
       propertyPath: ruzgarSistemi
@@ -129262,7 +129267,17 @@ PrefabInstance:
     - target: {fileID: 1592317462486361836, guid: 775516d6ae7e60c4eaa61084099248fd,
         type: 3}
       propertyPath: baslangicSaati
-      value: 15
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1592317462486361836, guid: 775516d6ae7e60c4eaa61084099248fd,
+        type: 3}
+      propertyPath: gunduzYogunluk
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 1592317462486361836, guid: 775516d6ae7e60c4eaa61084099248fd,
+        type: 3}
+      propertyPath: gunduzParlaklik
+      value: 0.52
       objectReference: {fileID: 0}
     - target: {fileID: 8074694477263573076, guid: 775516d6ae7e60c4eaa61084099248fd,
         type: 3}
@@ -134694,12 +134709,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   durumIkonu: {fileID: 7584883176105909295}
   atesIcon: {fileID: 21300000, guid: dfb3d3802b3aeb14b9e909fd24d22334, type: 3}
-  karIcon: {fileID: 21300000, guid: 9196c811a25e729439f3e3ee649e0402, type: 3}
-  aclikIcon: {fileID: 21300000, guid: 3c51eb0e34a1dc34abd0e3e48c25eb43, type: 3}
+  karIcon: {fileID: 21300000, guid: 17f14570c8d78b1409a0bdecaa324469, type: 3}
+  aclikIcon: {fileID: 21300000, guid: 2d5d9fb7f05090f4b83af149bfd942c7, type: 3}
   ruzgarIcon: {fileID: 21300000, guid: ec69e827e66831d42a6691e276744e96, type: 3}
-  "islakl\u0131kIcon": {fileID: 21300000, guid: 8f545f6287170b243a2f51fb94c54c4e,
+  "islakl\u0131kIcon": {fileID: 21300000, guid: 0ed00fb885789b146a8aa9bd7c8de704,
     type: 3}
-  enerjIcon: {fileID: 21300000, guid: db18342fb6d99534fb58bd397c8e6c71, type: 3}
+  enerjIcon: {fileID: 21300000, guid: 80f58d37c6318994a953b2a3cd7b027b, type: 3}
   olumIcon: {fileID: 21300000, guid: a5fa54e77c708cd4c8493798944f2a4b, type: 3}
   sicaklikSistemi: {fileID: 1030150354}
   enerjiyoneticisi: {fileID: 1030150355}
