@@ -48,6 +48,9 @@ public class KibritMinigame : MonoBehaviour
     private float kirilmaZamanlayici = 0f;
     private float kirilmaBekleme = 1.5f;
 
+    // Ses için zamanlayýcý
+    private float surtmeSesZamanlayici = 0f;
+
     void Start()
     {
         if (minigamePanel != null) minigamePanel.SetActive(false);
@@ -82,6 +85,7 @@ public class KibritMinigame : MonoBehaviour
         basiliMi = false;
         kibritKirildi = false;
         hedefZamanlayici = 0f;
+        surtmeSesZamanlayici = 0f;
 
         if (minigameCanvas != null) minigameCanvas.SetActive(true);
         if (minigamePanel != null) minigamePanel.SetActive(true);
@@ -145,8 +149,31 @@ public class KibritMinigame : MonoBehaviour
         float uzaklik = Vector2.Distance(fareLocalPoz, hedefPoz);
         bool hedefdeMi = uzaklik < hedefYaricap;
 
-        // Surtme alani disina cikinca kibrit kirilir
-        // SurtmeAlani koordinatinda fareyi kontrol et
+        // --- YENÝ SES SÝSTEMÝ (Hedeften Baðýmsýz) ---
+        // 1. Oyuncu sol týka ÝLK bastýðý an sesi kesin çýkar
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (StarterAssets.AudioManager.instance != null)
+                StarterAssets.AudioManager.instance.Play("Kibrit_Yakma");
+            surtmeSesZamanlayici = 0.25f;
+        }
+        // 2. Basýlý tutmaya ve hafifçe hareket etmeye (sürtmeye) devam ettiði sürece çal
+        else if (basiliMi && hareketMiktari > 0.1f)
+        {
+            surtmeSesZamanlayici -= Time.deltaTime;
+            if (surtmeSesZamanlayici <= 0f)
+            {
+                if (StarterAssets.AudioManager.instance != null)
+                    StarterAssets.AudioManager.instance.Play("Kibrit_Yakma");
+                surtmeSesZamanlayici = 0.25f;
+            }
+        }
+        else if (!basiliMi)
+        {
+            surtmeSesZamanlayici = 0f;
+        }
+
+        // --- KÝBRÝT KIRILMA KONTROLÜ ---
         if (surtmeAlani != null && basiliMi)
         {
             Vector2 surtmeFarePoz;
@@ -166,6 +193,7 @@ public class KibritMinigame : MonoBehaviour
             }
         }
 
+        // --- ZORLUK VE BAR DOLUMU HESAPLAMALARI ---
         bool ruzgar = sicaklikSistemi != null && sicaklikSistemi.ruzgarda;
         bool islak = sicaklikSistemi != null && sicaklikSistemi.ayakIslak;
         bool geceVakti = sicaklikSistemi != null && sicaklikSistemi.geceBonusu;
@@ -174,13 +202,12 @@ public class KibritMinigame : MonoBehaviour
         float artis = islak ? artisHizi * 0.6f : artisHizi;
         float dusus = ruzgar ? dususHizi * 1.6f : dususHizi;
 
-        // Gece carpani
         if (geceVakti)
         {
-            dusus *= geceZorluCarpani;        // Bar daha hýzlý düþer
-            artis *= 0.5f;                     // Bar daha yavaþ dolar
-            hedefYaricap = 25f;               // Hedef daha küçük
-            hedefHareketSuresi = 1.5f;        // Hedef daha hýzlý hareket eder
+            dusus *= geceZorluCarpani;
+            artis *= 0.5f;
+            hedefYaricap = 25f;
+            hedefHareketSuresi = 1.5f;
         }
         else if (alacakaranlik)
         {
@@ -191,7 +218,6 @@ public class KibritMinigame : MonoBehaviour
         }
         else
         {
-            // Gunduz normal degerler
             hedefYaricap = 40f;
             hedefHareketSuresi = 3f;
         }
@@ -203,7 +229,6 @@ public class KibritMinigame : MonoBehaviour
                 bar += artis * Time.deltaTime;
                 IpucuGuncelle("iyi gidiyorsun — devam et!");
                 kivilcimSistemi?.Baslat();
-
             }
             else
             {
@@ -229,14 +254,12 @@ public class KibritMinigame : MonoBehaviour
         if (dolumBar != null)
         {
             dolumBar.fillAmount = bar;
-            // Renk ayarýný kaldýr - texture kendi rengini kullansýn
             dolumBar.color = Color.white;
         }
     }
 
     void KibritiKir()
     {
-
         kalanKibrit--;
         Slot secilenSlot = inventory.hotbarSlots[inventory.equippedHotbarIndex];
         if (secilenSlot.HasItem() && secilenSlot.GetItem() == kibritItemSO)
@@ -291,20 +314,12 @@ public class KibritMinigame : MonoBehaviour
 
     void Basarili()
     {
-        // Oyunu durdur ama paneli kapat
         aktif = false;
         bar = 1f;
 
-        if (StarterAssets.AudioManager.instance != null)
-        {
-            StarterAssets.AudioManager.instance.Play("Kibrit_Yakma");
-        }
-
-        // Ates simgesini goster
         if (atesSimgesi != null)
             atesSimgesi.gameObject.SetActive(true);
 
-        // Gecikme ile kapat
         StartCoroutine(BasariliGecikme());
         Debug.Log("Ates yandi!");
     }

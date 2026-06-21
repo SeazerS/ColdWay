@@ -23463,6 +23463,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tower_01
       objectReference: {fileID: 0}
+    - target: {fileID: 4370293047039470921, guid: 1d8461b50802a0444a813b9bf8d664de,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8031064707165284092, guid: 1d8461b50802a0444a813b9bf8d664de,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -24296,7 +24301,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: a0df932afe03a86468c820ea2642d8d3, type: 2}
-  m_TreeDistance: 500
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -30414,6 +30419,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: streetLamb (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447533799054681353, guid: b318f4c88d1521747a1d2881d1d80ee5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40756,6 +40766,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: House_03
       objectReference: {fileID: 0}
+    - target: {fileID: 237309850813039340, guid: a6c5e1a96aea86841b02cbb9946be8e5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8111642584923814422, guid: a6c5e1a96aea86841b02cbb9946be8e5,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -49892,37 +49907,37 @@ PrefabInstance:
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 585.86
+      value: 570.9
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 29.51
+      value: 29.68
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 138.39
+      value: 143.25
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.61141366
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.79131114
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
@@ -49932,7 +49947,7 @@ PrefabInstance:
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 104.616
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3,
         type: 3}
@@ -50069,6 +50084,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: housedemo05
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2089929988be722498d4bb9c748a6e96,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -51178,7 +51198,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: ac7ac2d1011e33744997ae77c7d72fc5, type: 2}
-  m_TreeDistance: 500
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -57469,6 +57489,16 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.24
       objectReference: {fileID: 0}
+    - target: {fileID: 3009419916155558325, guid: 9950121feccf08e47acc4b4fd2f5c331,
+        type: 3}
+      propertyPath: m_LODs.Array.data[0].renderers.Array.data[0].renderer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3009419916155558325, guid: 9950121feccf08e47acc4b4fd2f5c331,
+        type: 3}
+      propertyPath: m_LODs.Array.data[1].renderers.Array.data[0].renderer
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4024250780655085990, guid: 9950121feccf08e47acc4b4fd2f5c331,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -58759,7 +58789,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 8bd85289f5e518e4cb10cb95d9f17adf, type: 2}
-  m_TreeDistance: 500
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -67209,6 +67239,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: house5
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f53e1fae339a4f94b847d6afb2680330,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -68988,7 +69023,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: b309645eb466aed4ba10d08abde7b72e, type: 2}
-  m_TreeDistance: 500
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -75968,7 +76003,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: e54ec428e83a3c74a8ff036265a87a1d, type: 2}
-  m_TreeDistance: 500
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -78705,7 +78740,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: bb21d4bf5f878b04a8ff535c7d82bdd5, type: 2}
-  m_TreeDistance: 500
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -88615,6 +88650,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Balk_Stair_01 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5975940101895038112, guid: 4b0563e70e01bae4dac962936d681d04,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6459601610741349914, guid: 4b0563e70e01bae4dac962936d681d04,
         type: 3}
       propertyPath: m_RootOrder
@@ -90981,7 +91021,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: cf628e4119e0cdc42a34bbd9ee317a1a, type: 2}
-  m_TreeDistance: 500
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -91961,6 +92001,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: House_04
+      objectReference: {fileID: 0}
+    - target: {fileID: 5429868823047222379, guid: 0871b5f18c32fda478b3c816082a35e9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5904633817350623657, guid: 0871b5f18c32fda478b3c816082a35e9,
         type: 3}
@@ -94259,6 +94304,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: _House_Demo_05
       objectReference: {fileID: 0}
+    - target: {fileID: 1163039747811994780, guid: b2be72f7f55a926429d342f59cdd3a0b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4644689653463438347, guid: b2be72f7f55a926429d342f59cdd3a0b,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -94493,7 +94543,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 3c13ff00b009b0244bb7e0ab521b29ea, type: 2}
-  m_TreeDistance: 500
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -99723,7 +99773,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 8802a0a7765791f4d8d758b1c6bad8f3, type: 2}
-  m_TreeDistance: 500
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -103402,7 +103452,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 0488789c337bcf04d8214fd40bd6dbcd, type: 2}
-  m_TreeDistance: 500
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -108783,7 +108833,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 3fc3efdf6d8447e4caed9844b10c8f58, type: 2}
-  m_TreeDistance: 500
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -111084,6 +111134,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d7c727e6747d1474c9b8834f0d08d659,
         type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d7c727e6747d1474c9b8834f0d08d659,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -113311,6 +113366,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: house03
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 942be5827f0441a41b22dbee98ee1507,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -118146,7 +118206,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 47df73dc28f39544fb180959fe9c403b, type: 2}
-  m_TreeDistance: 500
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -119047,7 +119107,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: d0747a697a808e84e9b5f5f6bf455894, type: 2}
-  m_TreeDistance: 500
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -123646,6 +123706,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BozukLamb
+      objectReference: {fileID: 0}
+    - target: {fileID: 731104317841861677, guid: 8a4cc76432aaf2349b09183df14567f0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7484213904988765600, guid: 8a4cc76432aaf2349b09183df14567f0,
         type: 3}
@@ -129083,7 +129148,7 @@ PrefabInstance:
     - target: {fileID: 3135937337204851468, guid: fcdb2fb0613e2804d96998c0c8ecbda2,
         type: 3}
       propertyPath: sounds.Array.data[14].volume
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3135937337204851468, guid: fcdb2fb0613e2804d96998c0c8ecbda2,
         type: 3}
