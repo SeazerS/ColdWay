@@ -34,10 +34,16 @@ public class FirtinaSistemi : MonoBehaviour
     [Header("Ses")]
     public string ruzgarSesiAdi = "Ruzgar_Sesi";
 
+    [Header("Kopek")]
+    public KopekAI kopek;
+
     private bool firtinAktif = false;
     private float firtinYogunluk = 0f;
     private float hedefYogunluk = 0f;
     private bool korunuyor = false;
+
+    private float gercekYogunlukHedef = 0f;
+    private float gercekYogunlukMevcut = 0f;
 
     void Awake()
     {
@@ -80,6 +86,9 @@ public class FirtinaSistemi : MonoBehaviour
         firtinAktif = true;
         hedefYogunluk = 1f;
 
+        if (kopek != null)
+            kopek.FirtinaYaklasiyorSigina();
+
         IpucuYoneticisi.Instance?.MesajGoster(
             "firtina", "Fýrtýna yaklaþýyor!");
     }
@@ -89,23 +98,34 @@ public class FirtinaSistemi : MonoBehaviour
         firtinAktif = false;
         hedefYogunluk = 0f;
 
+        if (kopek != null)
+            kopek.FirtinaBittiSigina();
+
         IpucuYoneticisi.Instance?.MesajGizle("firtina");
     }
 
     void EfektleriUygula()
     {
-        float gercekYogunluk = korunuyor ? 0f : firtinYogunluk;
+        // Hedefi belirle
+        gercekYogunlukHedef = korunuyor ? 0f : firtinYogunluk;
 
-        // Fog
+        // Yavaþ geçiþ
+        gercekYogunlukMevcut = Mathf.MoveTowards(
+            gercekYogunlukMevcut, gercekYogunlukHedef,
+            Time.deltaTime * 0.3f);
+
+        float gercekYogunluk = gercekYogunlukMevcut;
+
+        // Fog — korunuyorsa etkilenme
         RenderSettings.fogDensity = Mathf.Lerp(
             normalFogYog, firtinaliFogYog, gercekYogunluk);
 
-        // Gökyüzü karart
+        // Gökyüzü — korunuyor olsa da görsel devam etsin
         if (gecGunduz != null)
             gecGunduz.firtinExposureCarpani =
-                Mathf.Lerp(1f, 0.2f, gercekYogunluk);
+                Mathf.Lerp(1f, 0.2f, firtinYogunluk); // gercekYogunluk deðil
 
-        // Sýcaklýk
+        // Sýcaklýk — sadece korunmuyorsa etkilensin
         if (sicaklikSistemi != null)
         {
             sicaklikSistemi.ruzgarda = gercekYogunluk > 0.3f;

@@ -10,6 +10,7 @@ TagManager:
   - AtesNoktasi
   - EvZemini
   - MagaraZemini
+  - KopekHedefi
   layers:
   - Default
   - TransparentFX

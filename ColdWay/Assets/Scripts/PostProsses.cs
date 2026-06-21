@@ -31,6 +31,7 @@ public class PostProsses : MonoBehaviour
     // Fýrtýna efekti
     private float firtinYogunluk = 0f;
 
+
     [Header("Buzlanma UI Ayarlari")]
     public Image[] buzDokulari;
 

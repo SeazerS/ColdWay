@@ -37,7 +37,6 @@ public class PauseMenuController : MonoBehaviour
         float exp = RenderSettings.skybox != null &&
                     RenderSettings.skybox.HasProperty("_Exposure")
                     ? RenderSettings.skybox.GetFloat("_Exposure") : -1f;
-        Debug.Log($"RESUME - Light: {gunesIsigi?.intensity} | Exposure: {exp} | Fog: {RenderSettings.fogDensity}");
     }
 
     void PauseGame()
@@ -45,8 +44,6 @@ public class PauseMenuController : MonoBehaviour
         float exp = RenderSettings.skybox != null &&
                     RenderSettings.skybox.HasProperty("_Exposure")
                     ? RenderSettings.skybox.GetFloat("_Exposure") : -1f;
-        Debug.Log($"PAUSE - Light: {gunesIsigi?.intensity} | Exposure: {exp} | Fog: {RenderSettings.fogDensity}");
-
         pausePanel.SetActive(true);
         menuButtonsContainer.SetActive(true);
         optionsPanel.SetActive(false);
