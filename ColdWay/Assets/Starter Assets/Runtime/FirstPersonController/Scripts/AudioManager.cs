@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace StarterAssets
 {
+    [DefaultExecutionOrder(-50)]
     public class AudioManager : MonoBehaviour
     {
         public static AudioManager instance;
