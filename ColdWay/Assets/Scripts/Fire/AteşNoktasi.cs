@@ -29,6 +29,8 @@ public class AteşNoktasi : MonoBehaviour
         DumanBaslat();
     }
 
+
+
     public void DumanBaslat()
     {
         if (dumanParticle == null) return;
@@ -84,6 +86,14 @@ public class AteşNoktasi : MonoBehaviour
             }
             if (kibritMinigame != null)
                 kibritMinigame.Baslat(this);
+
+            if (FirtinaSistemi.Instance != null &&
+    FirtinaSistemi.Instance.FirtinaAktifMi())
+            {
+                IpucuYoneticisi.Instance?.MesajGoster(
+                    "ates", "Fırtınada ateş yakılamaz!");
+                return;
+            }
         }
     }
 

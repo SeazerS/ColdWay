@@ -37,6 +37,10 @@ public class FirtinaSistemi : MonoBehaviour
     [Header("Kopek")]
     public KopekAI kopek;
 
+    [Header("Ates")]
+    public AtesSistemi[] tumAtesler;
+
+
     private bool firtinAktif = false;
     private float firtinYogunluk = 0f;
     private float hedefYogunluk = 0f;
@@ -85,6 +89,14 @@ public class FirtinaSistemi : MonoBehaviour
     {
         firtinAktif = true;
         hedefYogunluk = 1f;
+
+        // Yanan ateþleri söndür
+        if (tumAtesler == null)
+            tumAtesler = FindObjectsOfType<AtesSistemi>();
+
+        foreach (AtesSistemi ates in tumAtesler)
+            if (ates != null && ates.YaniyorMu())
+                ates.FirtinaSonduAtes();
 
         if (kopek != null)
             kopek.FirtinaYaklasiyorSigina();

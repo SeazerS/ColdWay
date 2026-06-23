@@ -355,7 +355,7 @@ public class AtesSistemi : MonoBehaviour
         IpucuYoneticisi.Instance?.MesajGoster("ates", "Odunu eline al!");
     }
 
-    void AtesSon()
+    public void AtesSon()
     {
         yaniyor = false;
         mevcutOdun = 0;
@@ -461,6 +461,12 @@ public class AtesSistemi : MonoBehaviour
         float maxY = 0.3f + (maxOdun - 2) * 0.1f;
         float scaleOrani = Mathf.Clamp01(alphaBaseScale.y / maxY);
         return scaleOrani * mevcutKuculmeFaktoru;
+    }
+
+    public void FirtinaSonduAtes()
+    {
+        // Ateþi söndür
+        AtesSon();
     }
 
     public bool YaniyorMu() { return yaniyor; }

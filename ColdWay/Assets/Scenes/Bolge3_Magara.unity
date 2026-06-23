@@ -42215,6 +42215,11 @@ MonoBehaviour:
   firtinKarCarpani: 15
   ruzgarSesiAdi: Ruzgar_Sesi
   kopek: {fileID: 1674033573}
+  tumAtesler:
+  - {fileID: 2115343843}
+  - {fileID: 2116465258}
+  - {fileID: 884380842}
+  - {fileID: 1515714253}
 --- !u!4 &462961150
 Transform:
   m_ObjectHideFlags: 0
@@ -67932,6 +67937,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 884208630}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &884380842 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2665152014311589598, guid: 0e591b8e30bd85e459b3bce303515712,
+    type: 3}
+  m_PrefabInstance: {fileID: 770419604}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 362cb0d792a96724fbad319047a51009, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &886347980 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2329587094957510662, guid: 9001a06528f57994782e850300a8cac6,
@@ -101100,6 +101117,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1147903189}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1515714253 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2665152014311589598, guid: 0e591b8e30bd85e459b3bce303515712,
+    type: 3}
+  m_PrefabInstance: {fileID: 1695248278}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 362cb0d792a96724fbad319047a51009, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1516562962 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 848767284645841518, guid: 21e86e7d1837b75448928e0ba0c592e3,
@@ -126073,6 +126102,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1042400399}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2116465258 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2665152014311589598, guid: 0e591b8e30bd85e459b3bce303515712,
+    type: 3}
+  m_PrefabInstance: {fileID: 387456278}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 362cb0d792a96724fbad319047a51009, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2118607659
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -141831,6 +141872,56 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1724594187767919866, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: ForceModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724594187767919866, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: ForceModule.x.scalar
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724594187767919866, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: VelocityModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724594187767919866, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: ForceModule.inWorldSpace
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724594187767919866, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: VelocityModule.inWorldSpace
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724594187767919866, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: ExternalForcesModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724594187767919866, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: VelocityModule.orbitalX.scalar
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724594187767919866, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: ExternalForcesModule.influenceFilter
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724594187767919866, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: VelocityModule.orbitalOffsetX.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724594187767919866, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: ExternalForcesModule.multiplierCurve.scalar
+      value: 0.02
+      objectReference: {fileID: 0}
     - target: {fileID: 1802273610211115197, guid: 0e591b8e30bd85e459b3bce303515712,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -142170,6 +142261,56 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979788393200475, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: ForceModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979788393200475, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: ForceModule.x.scalar
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979788393200475, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: VelocityModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979788393200475, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: ForceModule.inWorldSpace
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979788393200475, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: VelocityModule.inWorldSpace
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979788393200475, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: ExternalForcesModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979788393200475, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: VelocityModule.orbitalX.scalar
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979788393200475, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: ExternalForcesModule.influenceFilter
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979788393200475, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: VelocityModule.orbitalOffsetX.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929979788393200475, guid: 0e591b8e30bd85e459b3bce303515712,
+        type: 3}
+      propertyPath: ExternalForcesModule.multiplierCurve.scalar
+      value: 0.02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

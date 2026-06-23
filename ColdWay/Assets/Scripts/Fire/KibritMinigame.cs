@@ -60,6 +60,17 @@ public class KibritMinigame : MonoBehaviour
     {
         if (!aktif) return;
 
+
+        // Fýrtýnada minigame kapat
+        if (FirtinaSistemi.Instance != null &&
+            FirtinaSistemi.Instance.FirtinaAktifMi())
+        {
+            IpucuYoneticisi.Instance?.MesajGoster(
+                "ates", "Fýrtýnada ateþ yakýlamaz!");
+            Kapat();
+            return;
+        }
+
         if (kibritKirildi)
         {
             kirilmaZamanlayici += Time.deltaTime;

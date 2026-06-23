@@ -106,9 +106,15 @@ public class KopekAI : MonoBehaviour
 
     void KritikIsiKontrol()
     {
+        // Fýrtýnada kritik ýsý uyarýsý yapma
+        if (FirtinaSistemi.Instance != null &&
+            FirtinaSistemi.Instance.FirtinaAktifMi()) return;
+
         if (firtinayonlendirmesi) return;
         if (buzYonlendirmesi) return;
         if (sicaklikSistemi == null) return;
+
+
 
         float isiOrani = sicaklikSistemi.mevcutSicaklik /
                          sicaklikSistemi.maxSicaklik;
@@ -142,6 +148,10 @@ public class KopekAI : MonoBehaviour
 
     void KritikEnerjiKontrol()
     {
+        // Fýrtýnada enerji uyarýsý yapma
+        if (FirtinaSistemi.Instance != null &&
+            FirtinaSistemi.Instance.FirtinaAktifMi()) return;
+
         if (enerjiKontrol == null || yonlendirmeAktif) return;
         float oran = enerjiKontrol.mevcutEnerji / enerjiKontrol.maxEnerji;
         enerjiUyariAktif = oran < kritikEnerjiEsigi;
