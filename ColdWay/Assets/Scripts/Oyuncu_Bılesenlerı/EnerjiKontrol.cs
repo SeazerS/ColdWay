@@ -12,22 +12,26 @@ public class EnerjiKontrol : MonoBehaviour
     public float alacakaranlýkEnerjCarpani = 1.5f;
 
     [Header("Dusus Hizlari - Bolge 1")]
-    public float yuruyusDususu_B1 = 0.05f;
-    public float kosmaDususu_B1 = 0.14f;
+    public float durmaDususu_B1 = 0.01f;
+    public float yuruyusDususu_B1 = 0.08f;
+    public float kosmaDususu_B1 = 0.20f;
+    public float ziplamaDususu = 2f; // anlýk
 
     [Header("Dusus Hizlari - Bolge 2")]
-    public float yuruyusDususu_B2 = 0.09f;
-    public float kosmaDususu_B2 = 0.22f;
+    public float durmaDususu_B2 = 0.02f;
+    public float yuruyusDususu_B2 = 0.14f;
+    public float kosmaDususu_B2 = 0.30f;
 
     [Header("Dusus Hizlari - Bolge 3")]
-    public float yuruyusDususu_B3 = 0.15f;
-    public float kosmaDususu_B3 = 0.35f;
+    public float durmaDususu_B3 = 0.03f;
+    public float yuruyusDususu_B3 = 0.22f;
+    public float kosmaDususu_B3 = 0.45f;
 
     [Header("Magara")]
     public float magaraCarpani = 1f;
 
     [Header("Sabit Degerler")]
-    public float baltaDususu = 5f;
+    public float baltaDususu = 2f;
     public float atesBasiArtisi = 0.333f;
     public float etArtisi = 20f;
     public float konserveArtisi = 35f;
@@ -46,6 +50,7 @@ public class EnerjiKontrol : MonoBehaviour
     private Player_Controller hareket;
     private bool atesBasinda = false;
     private bool oldu = false;
+    private bool oncekiZiplama = false;
 
     [Header("Ates Isinma")]
     public float atesEtkiMesafesi = 5f;
@@ -64,12 +69,24 @@ public class EnerjiKontrol : MonoBehaviour
     {
         AtesYakinlikKontrol();
         EnerjiGuncelle();
+        ZiplamaKontrol();
         UIGuncelle();
         KisitlamaKontrol();
         OlumKontrol();
 
         if (PostProsses.Instance != null)
             PostProsses.Instance.EnerjiEfektiGuncelle(mevcutEnerji / maxEnerji);
+    }
+
+    void ZiplamaKontrol()
+    {
+        bool simdikiZiplama = Input.GetButtonDown("Jump");
+        if (simdikiZiplama && !oncekiZiplama)
+        {
+            mevcutEnerji -= ziplamaDususu;
+            mevcutEnerji = Mathf.Clamp(mevcutEnerji, 0f, maxEnerji);
+        }
+        oncekiZiplama = simdikiZiplama;
     }
 
     void EnerjiGuncelle()
@@ -81,24 +98,33 @@ public class EnerjiKontrol : MonoBehaviour
             return;
         }
 
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-        if (Mathf.Abs(h) < 0.1f && Mathf.Abs(v) < 0.1f) return;
-
         float gunCarpani = GunSayaci.Instance != null ?
                            GunSayaci.Instance.ZorlukCarpani : 1f;
 
-        float yuruDusus, kosDusus;
+        float yuruDusus, kosDusus, durDusus;
         switch (mevcutBolge)
         {
-            case 2: yuruDusus = yuruyusDususu_B2; kosDusus = kosmaDususu_B2; break;
-            case 3: yuruDusus = yuruyusDususu_B3; kosDusus = kosmaDususu_B3; break;
-            default: yuruDusus = yuruyusDususu_B1; kosDusus = kosmaDususu_B1; break;
+            case 2:
+                yuruDusus = yuruyusDususu_B2;
+                kosDusus = kosmaDususu_B2;
+                durDusus = durmaDususu_B2;
+                break;
+            case 3:
+                yuruDusus = yuruyusDususu_B3;
+                kosDusus = kosmaDususu_B3;
+                durDusus = durmaDususu_B3;
+                break;
+            default:
+                yuruDusus = yuruyusDususu_B1;
+                kosDusus = kosmaDususu_B1;
+                durDusus = durmaDususu_B1;
+                break;
         }
 
-        // Maðara çarpaný uygula
+        // Maðara çarpaný
         yuruDusus *= magaraCarpani;
         kosDusus *= magaraCarpani;
+        durDusus *= magaraCarpani;
 
         float geceCarpani = 1f;
         if (SicaklikSistemi != null && SicaklikSistemi.geceBonusu)
@@ -106,13 +132,24 @@ public class EnerjiKontrol : MonoBehaviour
         else if (SicaklikSistemi != null && SicaklikSistemi.alacakaranlýkBonusu)
             geceCarpani = alacakaranlýkEnerjCarpani;
 
-        // Gece çarpaný + gün çarpaný
         float toplamCarpan = geceCarpani * gunCarpani;
 
-        if (hareket != null && hareket.KosuyorMu())
-            mevcutEnerji -= kosDusus * toplamCarpan * Time.deltaTime;
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+        bool harketEdiyor = Mathf.Abs(h) > 0.1f || Mathf.Abs(v) > 0.1f;
+
+        if (harketEdiyor)
+        {
+            if (hareket != null && hareket.KosuyorMu())
+                mevcutEnerji -= kosDusus * toplamCarpan * Time.deltaTime;
+            else
+                mevcutEnerji -= yuruDusus * toplamCarpan * Time.deltaTime;
+        }
         else
-            mevcutEnerji -= yuruDusus * toplamCarpan * Time.deltaTime;
+        {
+            // Duruyorken de yavaþ düþüþ
+            mevcutEnerji -= durDusus * toplamCarpan * Time.deltaTime;
+        }
 
         mevcutEnerji = Mathf.Clamp(mevcutEnerji, 0f, maxEnerji);
     }

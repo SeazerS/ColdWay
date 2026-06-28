@@ -25,6 +25,9 @@ public class KopekIziSistemi : MonoBehaviour
     public float yerdenYukseklik = 0.02f;
     public LayerMask zeminLayer;
 
+    [Header("Bina Filtresi")]
+    public LayerMask binaLayer; // bina layer'ý seç
+
     [Header("Ýz Rengi")]
     public Color izRengi = new Color(0.75f, 0.80f, 0.85f, 0.5f);
 
@@ -110,7 +113,22 @@ public class KopekIziSistemi : MonoBehaviour
         if (Physics.Raycast(spawnPoz + Vector3.up * 0.5f,
             Vector3.down, out hit, 2f, zeminLayer))
         {
+            // Bina zeminine iz býrakma
+            if (binaLayer != 0 &&
+                (binaLayer.value & (1 << hit.collider.gameObject.layer)) != 0)
+                return;
+
+            // Tag kontrolü — Terrain tag'i yoksa iz býrakma
+            if (!hit.collider.CompareTag("Terrain") &&
+                !hit.collider.CompareTag("Untagged"))
+                return;
+
             spawnPoz = hit.point + Vector3.up * yerdenYukseklik;
+        }
+        else
+        {
+            // Zemin bulunamazsa iz býrakma
+            return;
         }
 
         float yonAci = Mathf.Atan2(sonHareketYonu.x, sonHareketYonu.z)
@@ -125,7 +143,7 @@ public class KopekIziSistemi : MonoBehaviour
         SpriteRenderer sr = iz.AddComponent<SpriteRenderer>();
         sr.sprite = penceIziSprite;
         sr.sortingOrder = 1;
-        sr.color = izRengi; // ? kar rengine yakýn ton
+        sr.color = izRengi;
 
         aktifIzler.Enqueue(iz);
         if (aktifIzler.Count > maxIzSayisi)

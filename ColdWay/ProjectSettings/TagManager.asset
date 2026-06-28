@@ -11,6 +11,7 @@ TagManager:
   - EvZemini
   - MagaraZemini
   - KopekHedefi
+  - Terrain
   layers:
   - Default
   - TransparentFX

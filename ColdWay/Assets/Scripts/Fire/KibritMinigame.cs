@@ -22,10 +22,10 @@ public class KibritMinigame : MonoBehaviour
     [Range(1f, 5f)] public float hedefHareketSuresi = 3f;
 
     [Header("Gece Ayarlari")]
-    public float geceZorluCarpani = 3.5f;
+    public float geceZorluCarpani = 1.5f;
     [Range(10f, 40f)] public float geceHedefYaricap = 18f;
     [Range(0.5f, 2f)] public float geceHedefHareketSuresi = 0.9f;
-    [Range(0.1f, 0.5f)] public float geceArtisOrani = 0.25f;
+    [Range(0.1f, 1f)] public float geceArtisOrani = 0.25f;
 
     [Header("Alacakaranlik Ayarlari")]
     [Range(15f, 40f)] public float alacakaranlikHedefYaricap = 28f;
