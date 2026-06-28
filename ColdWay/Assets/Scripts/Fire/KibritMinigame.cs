@@ -21,15 +21,23 @@ public class KibritMinigame : MonoBehaviour
     [Range(20f, 60f)] public float hedefYaricap = 40f;
     [Range(1f, 5f)] public float hedefHareketSuresi = 3f;
 
+    [Header("Gece Ayarlari")]
+    public float geceZorluCarpani = 3.5f;
+    [Range(10f, 40f)] public float geceHedefYaricap = 18f;
+    [Range(0.5f, 2f)] public float geceHedefHareketSuresi = 0.9f;
+    [Range(0.1f, 0.5f)] public float geceArtisOrani = 0.25f;
+
+    [Header("Alacakaranlik Ayarlari")]
+    [Range(15f, 40f)] public float alacakaranlikHedefYaricap = 28f;
+    [Range(1f, 3f)] public float alacakaranlikHedefHareketSuresi = 1.8f;
+    [Range(0.3f, 0.8f)] public float alacakaranlikArtisOrani = 0.6f;
+
     [Header("Kibrit Kutusu")]
     public int kibritBasinaKullanim = 3;
     private int kalanKibrit;
 
     [Header("Hava Sartlari")]
     public SicaklikSistemi sicaklikSistemi;
-
-    [Header("Gece Ayarlari")]
-    public float geceZorluCarpani = 2.5f;
 
     [Header("Envanter")]
     public Inventory inventory;
@@ -47,8 +55,6 @@ public class KibritMinigame : MonoBehaviour
     private bool kibritKirildi = false;
     private float kirilmaZamanlayici = 0f;
     private float kirilmaBekleme = 1.5f;
-
-    // Ses için zamanlayýcý
     private float surtmeSesZamanlayici = 0f;
 
     void Start()
@@ -60,8 +66,6 @@ public class KibritMinigame : MonoBehaviour
     {
         if (!aktif) return;
 
-
-        // Fýrtýnada minigame kapat
         if (FirtinaSistemi.Instance != null &&
             FirtinaSistemi.Instance.FirtinaAktifMi())
         {
@@ -157,18 +161,13 @@ public class KibritMinigame : MonoBehaviour
 
         basiliMi = Input.GetMouseButton(0);
         float hareketMiktari = (sonFare - oncekiFare).magnitude;
-        float uzaklik = Vector2.Distance(fareLocalPoz, hedefPoz);
-        bool hedefdeMi = uzaklik < hedefYaricap;
 
-        // --- YENÝ SES SÝSTEMÝ (Hedeften Baðýmsýz) ---
-        // 1. Oyuncu sol týka ÝLK bastýðý an sesi kesin çýkar
         if (Input.GetMouseButtonDown(0))
         {
             if (StarterAssets.AudioManager.instance != null)
                 StarterAssets.AudioManager.instance.Play("Kibrit_Yakma");
             surtmeSesZamanlayici = 0.25f;
         }
-        // 2. Basýlý tutmaya ve hafifçe hareket etmeye (sürtmeye) devam ettiði sürece çal
         else if (basiliMi && hareketMiktari > 0.1f)
         {
             surtmeSesZamanlayici -= Time.deltaTime;
@@ -184,7 +183,6 @@ public class KibritMinigame : MonoBehaviour
             surtmeSesZamanlayici = 0f;
         }
 
-        // --- KÝBRÝT KIRILMA KONTROLÜ ---
         if (surtmeAlani != null && basiliMi)
         {
             Vector2 surtmeFarePoz;
@@ -204,7 +202,6 @@ public class KibritMinigame : MonoBehaviour
             }
         }
 
-        // --- ZORLUK VE BAR DOLUMU HESAPLAMALARI ---
         bool ruzgar = sicaklikSistemi != null && sicaklikSistemi.ruzgarda;
         bool islak = sicaklikSistemi != null && sicaklikSistemi.ayakIslak;
         bool geceVakti = sicaklikSistemi != null && sicaklikSistemi.geceBonusu;
@@ -216,22 +213,25 @@ public class KibritMinigame : MonoBehaviour
         if (geceVakti)
         {
             dusus *= geceZorluCarpani;
-            artis *= 0.5f;
-            hedefYaricap = 25f;
-            hedefHareketSuresi = 1.5f;
+            artis *= geceArtisOrani;
+            hedefYaricap = geceHedefYaricap;
+            hedefHareketSuresi = geceHedefHareketSuresi;
         }
         else if (alacakaranlik)
         {
             dusus *= geceZorluCarpani * 0.5f;
-            artis *= 0.75f;
-            hedefYaricap = 32f;
-            hedefHareketSuresi = 2f;
+            artis *= alacakaranlikArtisOrani;
+            hedefYaricap = alacakaranlikHedefYaricap;
+            hedefHareketSuresi = alacakaranlikHedefHareketSuresi;
         }
         else
         {
             hedefYaricap = 40f;
             hedefHareketSuresi = 3f;
         }
+
+        float uzaklik = Vector2.Distance(fareLocalPoz, hedefPoz);
+        bool hedefdeMi = uzaklik < hedefYaricap;
 
         if (basiliMi && hareketMiktari > 0.3f)
         {
@@ -332,7 +332,6 @@ public class KibritMinigame : MonoBehaviour
             atesSimgesi.gameObject.SetActive(true);
 
         StartCoroutine(BasariliGecikme());
-        Debug.Log("Ates yandi!");
     }
 
     System.Collections.IEnumerator BasariliGecikme()

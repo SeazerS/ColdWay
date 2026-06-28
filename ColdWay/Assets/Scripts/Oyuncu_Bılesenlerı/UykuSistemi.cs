@@ -176,7 +176,9 @@ public class UykuSistemi : MonoBehaviour
         oyuncuYakinda = true;
         cadirKurulacakPoz = other.transform.position;
 
-        // Oyuncu alana ilk girdiðinde mesajý 1 kere göster
+        // Kamp alanýna girince checkpoint kaydet
+        checkpoint?.CheckpointKaydet(other.transform.position);
+
         GuncelleMesaj();
     }
 

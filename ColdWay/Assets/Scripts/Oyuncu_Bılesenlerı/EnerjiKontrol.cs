@@ -12,16 +12,19 @@ public class EnerjiKontrol : MonoBehaviour
     public float alacakaranlýkEnerjCarpani = 1.5f;
 
     [Header("Dusus Hizlari - Bolge 1")]
-    public float yuruyusDususu_B1 = 0.025f;
-    public float kosmaDususu_B1 = 0.08f;
+    public float yuruyusDususu_B1 = 0.05f;
+    public float kosmaDususu_B1 = 0.14f;
 
     [Header("Dusus Hizlari - Bolge 2")]
-    public float yuruyusDususu_B2 = 0.05f;
-    public float kosmaDususu_B2 = 0.14f;
+    public float yuruyusDususu_B2 = 0.09f;
+    public float kosmaDususu_B2 = 0.22f;
 
     [Header("Dusus Hizlari - Bolge 3")]
-    public float yuruyusDususu_B3 = 0.09f;
-    public float kosmaDususu_B3 = 0.22f;
+    public float yuruyusDususu_B3 = 0.15f;
+    public float kosmaDususu_B3 = 0.35f;
+
+    [Header("Magara")]
+    public float magaraCarpani = 1f;
 
     [Header("Sabit Degerler")]
     public float baltaDususu = 5f;
@@ -42,10 +45,9 @@ public class EnerjiKontrol : MonoBehaviour
     private int mevcutBolge = 1;
     private Player_Controller hareket;
     private bool atesBasinda = false;
-
     private bool oldu = false;
 
-    [Header("Ates Isýnma")]
+    [Header("Ates Isinma")]
     public float atesEtkiMesafesi = 5f;
     private AtesSistemi[] tumAtesler;
 
@@ -56,7 +58,6 @@ public class EnerjiKontrol : MonoBehaviour
         BolgeGuncelle(1);
         UIGuncelle();
         tumAtesler = FindObjectsOfType<AtesSistemi>();
-
     }
 
     void Update()
@@ -68,9 +69,7 @@ public class EnerjiKontrol : MonoBehaviour
         OlumKontrol();
 
         if (PostProsses.Instance != null)
-        {
             PostProsses.Instance.EnerjiEfektiGuncelle(mevcutEnerji / maxEnerji);
-        }
     }
 
     void EnerjiGuncelle()
@@ -85,8 +84,7 @@ public class EnerjiKontrol : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         if (Mathf.Abs(h) < 0.1f && Mathf.Abs(v) < 0.1f) return;
-        
-        // Gun sayaci zorluk carpani
+
         float gunCarpani = GunSayaci.Instance != null ?
                            GunSayaci.Instance.ZorlukCarpani : 1f;
 
@@ -98,24 +96,23 @@ public class EnerjiKontrol : MonoBehaviour
             default: yuruDusus = yuruyusDususu_B1; kosDusus = kosmaDususu_B1; break;
         }
 
+        // Maðara çarpaný uygula
+        yuruDusus *= magaraCarpani;
+        kosDusus *= magaraCarpani;
+
         float geceCarpani = 1f;
         if (SicaklikSistemi != null && SicaklikSistemi.geceBonusu)
             geceCarpani = geceEnerjCarpani;
         else if (SicaklikSistemi != null && SicaklikSistemi.alacakaranlýkBonusu)
             geceCarpani = alacakaranlýkEnerjCarpani;
 
-        if (hareket != null && hareket.KosuyorMu())
-            mevcutEnerji -= kosDusus * geceCarpani * Time.deltaTime;
-        else
-            mevcutEnerji -= yuruDusus * geceCarpani * Time.deltaTime;
-
-        yuruDusus *= gunCarpani;
-        kosDusus *= gunCarpani;
+        // Gece çarpaný + gün çarpaný
+        float toplamCarpan = geceCarpani * gunCarpani;
 
         if (hareket != null && hareket.KosuyorMu())
-            mevcutEnerji -= kosDusus * Time.deltaTime;
+            mevcutEnerji -= kosDusus * toplamCarpan * Time.deltaTime;
         else
-            mevcutEnerji -= yuruDusus * Time.deltaTime;
+            mevcutEnerji -= yuruDusus * toplamCarpan * Time.deltaTime;
 
         mevcutEnerji = Mathf.Clamp(mevcutEnerji, 0f, maxEnerji);
     }
@@ -136,17 +133,14 @@ public class EnerjiKontrol : MonoBehaviour
     public void Oldu_Sifirla()
     {
         oldu = false;
-        mevcutEnerji = maxEnerji * 0.15f; // Az enerji ama sýfýr deðil
+        mevcutEnerji = maxEnerji * 0.15f;
     }
 
-
-    // Uyku sonrasi enerji
     public void UykuSonrasiEnerji(float mevcut)
     {
         float artisOrani = 0.15f;
         float artis = maxEnerji * artisOrani;
         mevcutEnerji = Mathf.Min(maxEnerji, mevcutEnerji + artis);
-        Debug.Log($"Uyku sonrasý enerji +{artis:F1}. Mevcut: {mevcutEnerji:F1}");
     }
 
     public void BolgeGuncelle(int bolgeNo) { mevcutBolge = bolgeNo; }
@@ -168,6 +162,7 @@ public class EnerjiKontrol : MonoBehaviour
         if (hareket == null) return;
         hareket.kosmakAktif = (mevcutEnerji / maxEnerji) >= 0.2f;
     }
+
     void AtesYakinlikKontrol()
     {
         if (tumAtesler == null || tumAtesler.Length == 0)
@@ -180,21 +175,24 @@ public class EnerjiKontrol : MonoBehaviour
         foreach (AtesSistemi ates in tumAtesler)
         {
             if (ates == null || !ates.YaniyorMu()) continue;
-
             float mesafe = Vector3.Distance(
                 transform.position, ates.transform.position);
-
             if (mesafe <= atesEtkiMesafesi)
             {
                 yakinAtes = true;
                 break;
             }
         }
-
         atesBasinda = yakinAtes;
     }
-    public void AtesAktif(bool d) { } // mesafe ile kontrol ediliyor
-    public void BaltaKullanildi() { mevcutEnerji -= baltaDususu; }
+
+    public void BaltaKullanildi(float oran = 1f)
+    {
+        mevcutEnerji -= baltaDususu * oran;
+        mevcutEnerji = Mathf.Clamp(mevcutEnerji, 0f, maxEnerji);
+    }
+
+    public void AtesAktif(bool d) { }
     public void EtYe() { mevcutEnerji = Mathf.Min(mevcutEnerji + etArtisi, maxEnerji); }
     public void KonserveYe() { mevcutEnerji = Mathf.Min(mevcutEnerji + konserveArtisi, maxEnerji); }
 }

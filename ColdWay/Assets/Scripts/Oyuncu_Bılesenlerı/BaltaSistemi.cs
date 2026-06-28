@@ -13,7 +13,8 @@ public class BaltaSistemi : MonoBehaviour
 
     [Header("Enerji")]
     public EnerjiKontrol enerjiKontrol;
-    public float enerjiKaybi = 5f;
+    public float enerjiKaybi = 1f;
+    public float bosVurmaEnerjiOrani = 0.3f; // boþa sallayýnca %30 enerji harcar
 
     [Header("Odun")]
     public GameObject odunPrefab;
@@ -24,9 +25,7 @@ public class BaltaSistemi : MonoBehaviour
     void Update()
     {
         if (kalanVurus <= 0) return;
-
         HotbarKontrol();
-
         if (baltaElde && Input.GetMouseButtonDown(0))
             Vur();
     }
@@ -34,54 +33,31 @@ public class BaltaSistemi : MonoBehaviour
     void HotbarKontrol()
     {
         if (inventory == null) return;
-
         int mevcutIndex = inventory.equippedHotbarIndex;
         Slot mevcutSlot = inventory.hotbarSlots[mevcutIndex];
 
         if (mevcutSlot.HasItem() && mevcutSlot.GetItem() == baltaItem)
         {
             baltaElde = true;
-            if (mevcutIndex != oncekiHotbarIndex)
-                Debug.Log("Balta ele alindi! Kalan vurus: " + kalanVurus);
         }
         else
         {
-            if (baltaElde)
-                Debug.Log("Balta birakidi.");
             baltaElde = false;
         }
-
         oncekiHotbarIndex = mevcutIndex;
     }
 
     void Vur()
     {
         if (StarterAssets.AudioManager.instance != null)
-        {
             StarterAssets.AudioManager.instance.Play("Balta_Savurma");
-        }
 
-        // Her sol tikta enerji ve omur azalir
-        if (enerjiKontrol != null)
-            enerjiKontrol.BaltaKullanildi();
-
-        kalanVurus--;
-        Debug.Log("Balta vurus: " + kalanVurus + " / " + maxVurus + " kaldi.");
-
-        // Balta bitti mi?
-        if (kalanVurus <= 0)
-        {
-            baltaElde = false;
-            EnvanterdenKaldir();
-            Debug.Log("Balta kiridi!");
-            return;
-        }
-
-        // Agac kesme kontrolu
+        // Raycast — aðaca çarpýyor mu?
         Camera cam = Camera.main;
         Ray ray = cam.ScreenPointToRay(
             new Vector3(Screen.width / 2, Screen.height / 2));
         RaycastHit hit;
+        bool agacaVurdu = false;
 
         if (Physics.Raycast(ray, out hit, vurmaMessafesi))
         {
@@ -89,16 +65,33 @@ public class BaltaSistemi : MonoBehaviour
                 .GetComponentInParent<AgacKesme>();
             if (agac != null)
             {
+                agacaVurdu = true;
+                // Aðaca vurma — normal enerji, kýrýlma azalýr
+                if (enerjiKontrol != null)
+                    enerjiKontrol.BaltaKullanildi();
+                kalanVurus--;
                 agac.Vur(transform.position, hit.point);
-                return;
             }
+        }
+
+        if (!agacaVurdu)
+        {
+            // Boþa sallama — az enerji, kýrýlma azalmaz
+            if (enerjiKontrol != null)
+                enerjiKontrol.BaltaKullanildi(bosVurmaEnerjiOrani);
+        }
+
+        // Balta bitti mi?
+        if (kalanVurus <= 0)
+        {
+            baltaElde = false;
+            EnvanterdenKaldir();
         }
     }
 
     void EnvanterdenKaldir()
     {
         if (inventory == null || baltaItem == null) return;
-
         foreach (Slot slot in inventory.allSlots)
         {
             if (slot.HasItem() && slot.GetItem() == baltaItem)

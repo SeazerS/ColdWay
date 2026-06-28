@@ -5,7 +5,7 @@ public class SicaklikSistemi : MonoBehaviour
 {
     [Header("Gece Ayarlari")]
     public bool geceBonusu = false;
-    public float geceDususCarpani = 5f;
+    public float geceDususCarpani = 4f;
     public bool alacakaranlıkBonusu = false;
     public float alacakaranlıkCarpani = 2f;
 
@@ -14,9 +14,9 @@ public class SicaklikSistemi : MonoBehaviour
     public float mevcutSicaklik = 100f;
 
     [Header("Dusus Hizlari")]
-    public float bolge1Hiz = 0.033f;
-    public float bolge2Hiz = 0.055f;
-    public float bolge3Hiz = 0.120f;
+    public float bolge1Hiz = 0.14f;
+    public float bolge2Hiz = 0.25f;
+    public float bolge3Hiz = 0.39f;
 
     [Header("Hava Durumu Carpanlari")]
     public float ruzgarCarpani_B1 = 1.5f;
@@ -36,7 +36,7 @@ public class SicaklikSistemi : MonoBehaviour
 
     [Header("Islak Durum")]
     public float islaklıkDususCarpani = 4f;
-    public float atesIyilesmeHizi = 0.8f;
+    public float atesIyilesmeHizi = 0.15f;
     private float islaklıkZamani = 0f;
     public float maxIslaklıkSuresi = 120f;
 
@@ -48,13 +48,16 @@ public class SicaklikSistemi : MonoBehaviour
     public float minAtesMesafesi = 2f;
     public float maxAtesMesafesi = 6f;
 
-    [Header("UI")]
-    public Slider sicaklikSlider;
-    public Image sliderDolgu;
-
     [Header("Firtina")]
     public float firtinaDususCarpani = 3f;
     public bool firtinAktif = false;
+
+    [Header("Magara")]
+    public float magaraCarpani = 1f;
+
+    [Header("UI")]
+    public Slider sicaklikSlider;
+    public Image sliderDolgu;
 
     private Color normalRenk = new Color(0.2f, 0.6f, 1f);
     private Color tehlikeRenk = new Color(1f, 0.5f, 0f);
@@ -82,7 +85,6 @@ public class SicaklikSistemi : MonoBehaviour
         PostProcessGuncelle();
         OlumKontrol();
 
-        // Ateş başındayken ıslanmışsa buz efektini kapat
         if (atesBasinda && ayakIslak)
         {
             if (PostProsses.Instance != null)
@@ -104,7 +106,7 @@ public class SicaklikSistemi : MonoBehaviour
         float gunCarpani = GunSayaci.Instance != null ?
                            GunSayaci.Instance.ZorlukCarpani : 1f;
 
-        dususHizi = baseDusus * gunCarpani;
+        dususHizi = baseDusus * gunCarpani * magaraCarpani;
 
         if (firtinAktif) dususHizi *= firtinaDususCarpani;
         if (ruzgarda) dususHizi *= aktifRuzgarCarpani;

@@ -25,6 +25,10 @@ public class AgacKesme : MonoBehaviour
     [Header("Efekt")]
     public ParticleSystem talasParticlePrefab;
 
+    [Header("Mesaj")]
+    public float etkilesimMesafesi = 3f;
+    private bool oyuncuYakinda = false;
+
     private bool devrildi = false;
     private bool devriliyorMu = false;
     private Vector3 devrilmeYonu;
@@ -139,6 +143,25 @@ public class AgacKesme : MonoBehaviour
             "agac",
             "Aðacý parçalamak için vur",
             "Yere devrilen kütüðe baltayla vurarak onu kamp ateþinde kullanabileceðin odun parçalarýna ayýrabilirsin.");
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+        oyuncuYakinda = true;
+        if (!devrildi)
+            IpucuYoneticisi.Instance?.MesajGoster(
+                "agac", maxVurus + " vuruþla devirebilirsin");
+        else
+            IpucuYoneticisi.Instance?.MesajGoster(
+                "agac", "Aðacý parçalamak için vur");
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+        oyuncuYakinda = false;
+        IpucuYoneticisi.Instance?.MesajGizle("agac");
     }
 
     void ParcaKop()
