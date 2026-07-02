@@ -31,9 +31,14 @@ public class PostProsses : MonoBehaviour
     // Fýrtýna efekti
     private float firtinYogunluk = 0f;
 
-
     [Header("Buzlanma UI Ayarlari")]
     public Image[] buzDokulari;
+    [Range(0f, 1f)] private float maxBuzOpaklik = 0.4f;
+    [Range(0f, 1f)] public float index8MaxOpaklik = 0.4f;
+
+    [Header("UI Elemanlar")]
+    public CanvasGroup[] uiElemanlar; // barlar, hotbar vs
+    public float minUIOpaklik = 0.8f; // kritik noktada minimum opaklýk
 
     void Awake()
     {
@@ -94,6 +99,23 @@ public class PostProsses : MonoBehaviour
     {
         EfektleriUygula();
         BuzGorselleriniYonet();
+        UIOpakliginiYonet();
+    }
+
+    void UIOpakliginiYonet()
+    {
+        if (uiElemanlar == null || uiElemanlar.Length == 0) return;
+
+        float donmaIlerlemesi = Mathf.InverseLerp(
+            0.30f, 0f, mevcutSicaklikOrani);
+
+        float hedefOpaklik = Mathf.Lerp(1f, minUIOpaklik, donmaIlerlemesi);
+
+        foreach (CanvasGroup cg in uiElemanlar)
+        {
+            if (cg != null)
+                cg.alpha = Mathf.Lerp(cg.alpha, hedefOpaklik, Time.deltaTime * 2f);
+        }
     }
 
     void EfektleriUygula()
@@ -104,7 +126,7 @@ public class PostProsses : MonoBehaviour
         if (mevcutSicaklikOrani < 0.50f)
         {
             donmaEtkiGucu = 1f - (mevcutSicaklikOrani / 0.50f);
-            sabitMaviVignette = Mathf.Lerp(0f, 0.55f, donmaEtkiGucu);
+            sabitMaviVignette = Mathf.Lerp(0f, 0.25f, donmaEtkiGucu);
         }
 
         if (colorAdjustments != null)
@@ -176,8 +198,9 @@ public class PostProsses : MonoBehaviour
             if (herhangiEfekt)
             {
                 vignette.active = true;
+                vignette.smoothness.Override(0.8f);
                 vignette.intensity.Override(
-                    Mathf.Clamp(nihaiIntensity, 0f, 0.65f));
+                    Mathf.Clamp(nihaiIntensity, 0f, 0.35f));
 
                 if (buzEfektiAktif && buzVignette > 0f)
                     vignette.color.Override(new Color(0.2f, 0.5f, 0.9f));
@@ -244,7 +267,7 @@ public class PostProsses : MonoBehaviour
 
         int gorselSayisi = buzDokulari.Length;
         float donmaIlerlemesi = Mathf.InverseLerp(
-            0.40f, 0f, mevcutSicaklikOrani);
+            0.30f, 0f, mevcutSicaklikOrani);
 
         for (int i = 0; i < gorselSayisi; i++)
         {
@@ -252,6 +275,11 @@ public class PostProsses : MonoBehaviour
             float ustSinir = (float)(i + 1) / gorselSayisi;
             float dokuOpaklik = Mathf.InverseLerp(
                 altSinir, ustSinir, donmaIlerlemesi);
+
+            if (i == 8)
+                dokuOpaklik = Mathf.Clamp(dokuOpaklik, 0f, index8MaxOpaklik);
+            else
+                dokuOpaklik = Mathf.Clamp(dokuOpaklik, 0f, maxBuzOpaklik);
 
             Color c = buzDokulari[i].color;
             c.a = dokuOpaklik;
